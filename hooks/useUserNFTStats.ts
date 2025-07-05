@@ -4,20 +4,22 @@ import { useState, useEffect } from "react"
 import { useAccount, useReadContract } from "wagmi"
 import { TOKEN_CONTRACT_ADDRESS } from "@/config/wagmi"
 import { tokenAbi } from "@/config/abis/tokenAbi"
-import { formatEther } from "viem"
-import { useAlchemyNfts } from "./useAlchemyNfts"
+import { formatUnits } from "viem"
+import { useNFTs } from "./useNFTs" // Используем исправленный безопасный хук
 import type { UserNFTStats } from "@/types/nft"
 
 export function useUserNFTStats() {
   const { address, isConnected } = useAccount()
-  const { nfts } = useAlchemyNfts()
+  // Используем наш новый, безопасный хук для получения NFT
+  const { nfts, isLoading: isNftsLoading } = useNFTs()
+  
   const [stats, setStats] = useState<UserNFTStats>({
     totalOwned: 0,
     totalFrozen: 0,
     totalRewards: 0,
     estimatedValue: "0",
   })
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true) // Общий статус загрузки
   const [error, setError] = useState<Error | null>(null)
 
   // Получаем баланс токенов пользователя
@@ -33,35 +35,31 @@ export function useUserNFTStats() {
 
   // Обновляем статистику пользователя при изменении данных
   useEffect(() => {
-    if (!isConnected) {
-      setIsLoading(false)
+    // Ждем, пока загрузятся и NFT, и баланс токенов
+    if (isNftsLoading || !isConnected) {
       return
     }
 
     try {
       const totalOwned = nfts.length
       const totalFrozen = nfts.filter((nft) => nft.frozen).length
-      const totalRewards = nfts.reduce((sum, nft) => sum + nft.rewardBalance, 0)
+      // TODO: Заменить на реальные данные из контракта, когда они будут
+      const totalRewards = nfts.reduce((sum, nft) => sum + (nft.rewardBalance || 0), 0)
 
-      // Оцениваем стоимость NFT на основе редкости
-      const rarityValues = {
-        Common: 10,
-        Uncommon: 25,
-        Rare: 50,
-        Epic: 100,
-        Legendary: 250,
-        Mythic: 500,
-      }
-
-      const nftValue = nfts.reduce((sum, nft) => sum + rarityValues[nft.rarity], 0)
-      const tokenValue = tokenBalance ? Number(formatEther(tokenBalance)) : 0
-      const estimatedValue = (nftValue + tokenValue).toFixed(2)
+      // --- ИСПРАВЛЕНИЕ БЕЗОПАСНОСТИ ---
+      // УБИРАЕМ опасную оценку на основе метаданных NFT
+      // Показываем только реальный баланс токенов
+      
+      const tokenValue = tokenBalance ? parseFloat(formatUnits(tokenBalance, 18)) : 0
+      // В реальном приложении сюда нужно добавить стоимость NFT в токенах, 
+      // полученную с API маркетплейса или из verified контракта
+      const estimatedValue = tokenValue.toFixed(6) // Показываем только токены
 
       setStats({
         totalOwned,
         totalFrozen,
         totalRewards,
-        estimatedValue,
+        estimatedValue, // Теперь это только токены, без фейковой оценки NFT
       })
 
       setIsLoading(false)
@@ -70,25 +68,22 @@ export function useUserNFTStats() {
       setError(err instanceof Error ? err : new Error("Failed to update user stats"))
       setIsLoading(false)
     }
-  }, [nfts, tokenBalance, isConnected])
+  }, [nfts, tokenBalance, isConnected, isNftsLoading])
 
-  // Для демонстрации, если нет подключения к кошельку, возвращаем моковые данные
+  // Сбрасываем состояние, если кошелек отключен
   useEffect(() => {
-    if (!isConnected && isLoading) {
-      // Имитируем задержку загрузки данных
-      const timer = setTimeout(() => {
-        setStats({
-          totalOwned: 1,
-          totalFrozen: 0,
-          totalRewards: 0,
-          estimatedValue: "12535.99",
-        })
-        setIsLoading(false)
-      }, 1000)
-
-      return () => clearTimeout(timer)
+    if (!isConnected) {
+      // Очищаем статистику для неподключенных пользователей
+      setStats({
+        totalOwned: 0,
+        totalFrozen: 0,
+        totalRewards: 0,
+        estimatedValue: "0",
+      })
+      setIsLoading(false)
+      setError(null)
     }
-  }, [isConnected, isLoading])
+  }, [isConnected])
 
   return {
     stats,

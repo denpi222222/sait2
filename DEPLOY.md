@@ -6,7 +6,7 @@
 ```bash
 git init
 git add .
-git commit -m "Initial commit: CrazyCube NFT Game"
+git commit -m "🔒 Security Update: Removed mock data and unsafe stubs"
 git branch -M main
 git remote add origin https://github.com/denpi222222/sait2.git
 git push -u origin main

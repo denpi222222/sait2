@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "target": "es2020",
     "skipLibCheck": true,
@@ -25,9 +29,27 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./*"
+      ]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "subgraph/**", "**/generated/**", "**/*.assembly.ts", "contracts/**", "kontrakt 6-1/**", "scripts/**", "floor-oracle-bot/**", "bots/**" ]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "next-env.d.ts",
+    "out/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "subgraph/**",
+    "**/generated/**",
+    "**/*.assembly.ts",
+    "contracts/**",
+    "kontrakt 6-1/**",
+    "scripts/**",
+    "floor-oracle-bot/**",
+    "bots/**"
+  ]
 }

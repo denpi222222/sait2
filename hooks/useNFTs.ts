@@ -1,13 +1,13 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useAccount, useReadContract } from "wagmi"
+import { useAccount, useReadContract, useReadContracts } from "wagmi"
 import { NFT_CONTRACT_ADDRESS } from "@/config/wagmi"
 import { nftAbi } from "@/config/abis/nftAbi"
 import type { NFT, NFTMetadata } from "@/types/nft"
 
 export function useNFTs() {
-  const { address, isConnected } = useAccount()
+  const { address, isConnected, chain } = useAccount()
   const [nfts, setNfts] = useState<NFT[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
@@ -25,155 +25,133 @@ export function useNFTs() {
 
   // Получаем токены пользователя
   useEffect(() => {
+    const controller = new AbortController()
+    const signal = controller.signal
+
     const fetchNFTs = async () => {
-      if (!address || !isConnected || !balanceData) return
+      if (!address || !isConnected || balanceData === undefined) {
+        if (!isConnected) setNfts([]) // Очищаем NFT если кошелек отключен
+        return
+      }
 
       setIsLoading(true)
       setError(null)
 
       try {
         const balance = Number(balanceData)
-        const tokenIds: number[] = []
-
-        // Получаем ID токенов пользователя
-        for (let i = 0; i < balance; i++) {
-          try {
-            const tokenId = await fetchTokenOfOwnerByIndex(address, BigInt(i))
-            if (tokenId) tokenIds.push(Number(tokenId))
-          } catch (err) {
-            console.error("Error fetching token ID:", err)
-          }
+        if (balance === 0) {
+          setNfts([])
+          setIsLoading(false)
+          return
         }
 
-        // Получаем метаданные для каждого токена
-        const nftPromises = tokenIds.map(async (tokenId) => {
-          try {
-            const tokenURI = await fetchTokenURI(tokenId)
-            const metadata = await fetchMetadata(tokenURI)
+        // 1. Получаем все ID токенов пользователя одним батч-запросом
+        const tokenOfOwnerByIndexContracts = Array.from({ length: balance }, (_, i) => ({
+          address: NFT_CONTRACT_ADDRESS,
+          abi: nftAbi,
+          functionName: "tokenOfOwnerByIndex",
+          args: [address, BigInt(i)],
+        }))
 
-            return {
-              id: `${tokenId}`,
-              tokenId,
-              name: metadata.name,
-              image: metadata.image,
-              rarity: determineRarity(metadata.attributes),
-              attributes: metadata.attributes,
-              rewardBalance: Math.floor(Math.random() * 100), // Заглушка, в реальности получаем из контракта
-              frozen: Math.random() > 0.7, // Заглушка, в реальности получаем из контракта
-            } as NFT
-          } catch (err) {
-            console.error(`Error fetching metadata for token ${tokenId}:`, err)
-            return null
-          }
-        })
+        const tokenIdsResults = await readContracts({ contracts: tokenOfOwnerByIndexContracts })
+        const tokenIds = tokenIdsResults.map(r => r.result as bigint).filter(Boolean)
 
-        const fetchedNFTs = (await Promise.all(nftPromises)).filter((nft): nft is NFT => nft !== null)
+        // 2. Получаем все tokenURI одним батч-запросом
+        const tokenURIContracts = tokenIds.map(tokenId => ({
+          address: NFT_CONTRACT_ADDRESS,
+          abi: nftAbi,
+          functionName: "tokenURI",
+          args: [tokenId],
+        }))
+
+        const tokenURIResults = await readContracts({ contracts: tokenURIContracts })
+        const tokenURIs = tokenURIResults.map(r => r.result as string).filter(Boolean)
+
+        // 3. Загружаем метаданные
+        const nftPromises = tokenURIs.map((tokenURI, index) =>
+          fetchMetadata(tokenURI, Number(tokenIds[index]), signal)
+        )
+
+        const fetchedNFTs = (await Promise.all(nftPromises)).filter(
+          (nft): nft is NFT => nft !== null
+        )
         setNfts(fetchedNFTs)
       } catch (err) {
         console.error("Error fetching NFTs:", err)
-        setError(err instanceof Error ? err : new Error("Failed to fetch NFTs"))
+        if (!signal.aborted) {
+          setError(err instanceof Error ? err : new Error("Failed to fetch NFTs"))
+        }
       } finally {
-        setIsLoading(false)
+        if (!signal.aborted) {
+          setIsLoading(false)
+        }
       }
     }
 
     fetchNFTs()
-  }, [address, isConnected, balanceData])
 
-  // Вспомогательные функции
-  const fetchTokenOfOwnerByIndex = async (owner: string, index: bigint): Promise<bigint | null> => {
-    try {
-      const result = await fetch(`/api/nft/tokenOfOwnerByIndex?owner=${owner}&index=${index}`)
-      const data = await result.json()
-      return BigInt(data.tokenId)
-    } catch (err) {
-      console.error("Error fetching token by index:", err)
-      return null
+    // Отменяем запросы при уходе со страницы
+    return () => {
+      controller.abort()
     }
-  }
+  }, [address, isConnected, balanceData, chain]) // Добавляем chain в зависимости
 
-  const fetchTokenURI = async (tokenId: number): Promise<string> => {
-    try {
-      const result = await fetch(`/api/nft/tokenURI?tokenId=${tokenId}`)
-      const data = await result.json()
-      return data.tokenURI
-    } catch (err) {
-      console.error("Error fetching token URI:", err)
-      return ""
-    }
-  }
+  // Используем useReadContracts для батчинга
+  const { readContracts } = useReadContracts()
 
-  const fetchMetadata = async (tokenURI: string): Promise<NFTMetadata> => {
+  const fetchMetadata = async (tokenURI: string, tokenId: number, signal: AbortSignal): Promise<NFT | null> => {
     try {
       // Если URI начинается с ipfs://, преобразуем его в HTTP URL
       const url = tokenURI.startsWith("ipfs://") ? `https://ipfs.io/ipfs/${tokenURI.slice(7)}` : tokenURI
 
-      const response = await fetch(url)
-      return await response.json()
-    } catch (err) {
-      console.error("Error fetching metadata:", err)
-      return {
-        name: "Unknown NFT",
-        description: "Metadata could not be loaded",
-        image: "/placeholder.svg",
-        attributes: [],
+      // Проверяем, что URL безопасен (базовая проверка)
+      if (!url.startsWith('https://') && !url.startsWith('http://localhost')) { // localhost для тестов
+        console.warn(`Skipping insecure metadata URL for token ${tokenId}: ${url}`)
+        return null
       }
+
+      const response = await fetch(url, { signal })
+      if (!response.ok) throw new Error(`Failed to fetch metadata: ${response.statusText}`)
+      const metadata: NFTMetadata = await response.json()
+
+      return {
+        id: `${tokenId}`,
+        tokenId,
+        name: metadata.name,
+        image: metadata.image, // В идеале, это изображение тоже нужно проксировать и санировать
+        rarity: determineRarity(metadata.attributes),
+        attributes: metadata.attributes,
+        rewardBalance: 0,
+        frozen: false,
+      }
+    } catch (err) {
+      if ((err as Error).name !== 'AbortError') {
+        console.error(`Error fetching metadata for token ${tokenId}:`, err)
+      }
+      return null
     }
   }
 
   const determineRarity = (attributes: { trait_type: string; value: string | number }[]): NFT["rarity"] => {
-    // Логика определения редкости на основе атрибутов
-    const rarityAttribute = attributes.find((attr) => attr.trait_type.toLowerCase() === "rarity")
-    if (rarityAttribute) {
-      const value = String(rarityAttribute.value).toLowerCase()
-      if (value.includes("common")) return "Common"
-      if (value.includes("uncommon")) return "Uncommon"
-      if (value.includes("rare")) return "Rare"
-      if (value.includes("epic")) return "Epic"
-      if (value.includes("legendary")) return "Legendary"
-      if (value.includes("mythic")) return "Mythic"
-    }
-
-    // Если атрибут редкости не найден, используем случайное значение
-    const rarities: NFT["rarity"][] = ["Common", "Uncommon", "Rare", "Epic", "Legendary", "Mythic"]
-    const weights = [50, 30, 15, 3, 1.5, 0.5] // Вероятности в процентах
-    const random = Math.random() * 100
-
-    let cumulativeWeight = 0
-    for (let i = 0; i < rarities.length; i++) {
-      cumulativeWeight += weights[i]
-      if (random <= cumulativeWeight) {
-        return rarities[i]
-      }
-    }
-
-    return "Common"
+    // --- ИСПРАВЛЕНИЕ БЕЗОПАСНОСТИ ---
+    // НЕЛЬЗЯ доверять метаданным NFT для определения редкости!
+    // Злоумышленник может указать любую редкость в своих метаданных.
+    // 
+    // В продакшене здесь должна быть логика:
+    // 1. Проверка tokenId в whitelist verified NFT
+    // 2. Получение редкости из verified smart contract
+    // 3. Или API, которое проверяет подлинность NFT
+    
+    // Пока что для безопасности возвращаем "Common" для всех NFT
+    // и выводим предупреждение в консоль
+    
+    console.warn("⚠️ SECURITY WARNING: Rarity determination from metadata is unsafe!")
+    console.warn("This could be exploited by malicious NFTs with fake rarity attributes.")
+    console.warn("In production, verify rarity from trusted smart contract or API.")
+    
+    // TODO: Заменить на проверенный источник редкости
+    return "Common" // Безопасное значение по умолчанию
   }
-
-  // Для демонстрации, если нет подключения к кошельку, возвращаем моковые данные
-  useEffect(() => {
-    if (!isConnected) {
-      // Генерируем моковые NFT для демонстрации
-      const mockNFTs: NFT[] = Array.from({ length: 8 }, (_, i) => ({
-        id: `mock-${i + 1}`,
-        tokenId: 1000 + i,
-        name: `CrazyCube #${1000 + i}`,
-        image: `/images/cube${(i % 8) + 1}.png`,
-        rarity: ["Common", "Uncommon", "Rare", "Epic", "Legendary", "Mythic"][
-          Math.floor(Math.random() * 6)
-        ] as NFT["rarity"],
-        attributes: [
-          { trait_type: "Background", value: ["Blue", "Red", "Green", "Purple"][Math.floor(Math.random() * 4)] },
-          { trait_type: "Eyes", value: ["Happy", "Sad", "Angry", "Surprised"][Math.floor(Math.random() * 4)] },
-          { trait_type: "Mouth", value: ["Smile", "Frown", "Open", "Closed"][Math.floor(Math.random() * 4)] },
-        ],
-        rewardBalance: Math.floor(Math.random() * 100),
-        frozen: Math.random() > 0.7,
-      }))
-
-      setNfts(mockNFTs)
-    }
-  }, [isConnected])
 
   return {
     nfts,

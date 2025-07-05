@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "export": "next build && next export",
+    "export": "echo 'Static export not needed for Netlify'",
     "check:deploy": "node scripts/pre-deploy-check.js",
     "check:security": "npm audit --production",
     "analyze": "ANALYZE=true npm run build",

@@ -77,28 +77,24 @@ export function useNFTStats() {
     }
   }, [totalSupply, graveyardSize, burnRewardPool])
 
-  // Для демонстрации, если данные не загружены, используем моковые данные
+  // Инициализируем пустые статистики если данные не загружены
   useEffect(() => {
     if (isLoading && !totalSupply) {
-      // Имитируем задержку загрузки данных
-      const timer = setTimeout(() => {
-        setStats({
-          totalSupply: 10000,
-          burnedCount: 1234,
-          mintedCount: 8766,
-          inGraveyard: 987,
-          burned24h: 25,
-          minted24h: 15,
-          bridged24h: 8,
-          rewardPool: "500000",
-          monthlyUnlock: "100000",
-          totalValueLocked: "2500000",
-          holders: 1250,
-        })
-        setIsLoading(false)
-      }, 1500)
-
-      return () => clearTimeout(timer)
+      // Показываем пустые данные пока идет загрузка
+      setStats({
+        totalSupply: 0,
+        burnedCount: 0,
+        mintedCount: 0,
+        inGraveyard: 0,
+        burned24h: 0,
+        minted24h: 0,
+        bridged24h: 0,
+        rewardPool: "0",
+        monthlyUnlock: "0",
+        totalValueLocked: "0",
+        holders: 0,
+      })
+      setIsLoading(false)
     }
   }, [isLoading, totalSupply])
 

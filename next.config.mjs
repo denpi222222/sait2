@@ -14,6 +14,16 @@ if (process.env.ANALYZE === 'true') {
 
 /** @type {import('next').NextConfig} */
 const baseConfig = {
+  // Use standard build for Netlify
+  // output: 'export', // Commented out because we have API routes
+  trailingSlash: true,
+  skipTrailingSlashRedirect: true,
+  
+  // Disable image optimization for Netlify
+  images: {
+    unoptimized: true,
+  },
+  
   // Disable strict TypeScript checks
   typescript: {
     ignoreBuildErrors: true,
