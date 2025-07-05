@@ -10,6 +10,7 @@ const ContentSecurityPolicy = `
   img-src 'self' data: https:;
   font-src 'self' https://fonts.gstatic.com;
   connect-src 'self' https: wss:;
+  media-src 'self' https: data:;
   frame-src 'self' https://*.walletconnect.org;
   object-src 'none';
   base-uri 'self';
@@ -21,13 +22,7 @@ const ContentSecurityPolicy = `
 const nextConfig = {
   reactStrictMode: true,
   
-  // Enable static export for Netlify deployment
-  output: 'export',
-  trailingSlash: true,
-  distDir: 'out',
-  
   images: {
-    unoptimized: true, // Required for static export
     remotePatterns: [
       {
         protocol: 'https',

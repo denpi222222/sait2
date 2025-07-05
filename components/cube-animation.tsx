@@ -33,7 +33,9 @@ type MusicTrack = {
   cubeIndices: number[] // Cube indices for this track
 }
 
-// Move musicTracks outside the component to prevent recreation on each render
+// Включаем аудио – пользователь сообщил, что ссылки рабочие
+const AUDIO_DISABLED = false
+
 const musicTracks: MusicTrack[] = [
   {
     id: "track1",
@@ -165,7 +167,9 @@ export function CubeAnimation() {
     while (indices.length < count && availableIndices.length > 0) {
       const randomIndex = Math.floor(Math.random() * availableIndices.length)
       const selectedIndex = availableIndices[randomIndex]
-      indices.push(selectedIndex)
+      if (selectedIndex !== undefined) {
+        indices.push(selectedIndex)
+      }
       // Remove the selected index from available ones
       availableIndices.splice(randomIndex, 1)
     }
@@ -187,13 +191,13 @@ export function CubeAnimation() {
       setInitialCubeIndices(initialIndices)
 
       // Set the first track as default
-      setCurrentTrack(musicTracks[0])
+      setCurrentTrack(musicTracks[0] || null)
     }
   }, [isClient, getUniqueRandomCubeIndices])
 
   // Function for safe audio playback
   const safePlayAudio = useCallback(() => {
-    if (!audioRef.current) return Promise.resolve()
+    if (AUDIO_DISABLED || !audioRef.current) return Promise.resolve()
 
     // If there's already an active playback promise, return it
     if (audioPlayPromiseRef.current) {
@@ -224,7 +228,7 @@ export function CubeAnimation() {
 
   // Function for safe audio stopping
   const safePauseAudio = useCallback(() => {
-    if (!audioRef.current) return
+    if (AUDIO_DISABLED || !audioRef.current) return
 
     // If there's an active playback promise, wait for it to complete before pausing
     if (audioPlayPromiseRef.current) {
@@ -254,7 +258,7 @@ export function CubeAnimation() {
 
   // Optimize toggle music function with useCallback
   const toggleMusic = useCallback(() => {
-    if (!audioRef.current) return
+    if (AUDIO_DISABLED || !audioRef.current) return
 
     if (audioRef.current.paused) {
       safePlayAudio()
@@ -534,29 +538,31 @@ export function CubeAnimation() {
       className="relative h-[400px] w-full flex items-center justify-center overflow-hidden"
     >
       {/* Audio element with preload="auto" for preloading */}
-      <audio
-        ref={audioRef}
-        src={currentTrack?.url || musicTracks[0].url}
-        loop
-        preload="auto"
-        onError={(e) => {
-          console.error("Audio error:", e)
-          const fallbackUrl = "https://dulcet-cannoli-e7490f.netlify.app/456.mp3"
-          // Switch to fallback only if we're not already using it to avoid endless loops
-          if (audioRef.current && audioRef.current.src !== fallbackUrl) {
-            audioRef.current.src = fallbackUrl
-            // Attempt to play the fallback silently
-            audioRef.current
-              .play()
-              .then(() => {
-                console.log("Fallback track started")
-              })
-              .catch((err) => {
-                console.error("Failed to play fallback track:", err)
-              })
-          }
-        }}
-      />
+      {!AUDIO_DISABLED && (
+        <audio
+          ref={audioRef}
+          src={currentTrack?.url || musicTracks[0]?.url || ""}
+          loop
+          preload="auto"
+          onError={(e) => {
+            console.error("Audio error:", e)
+            const fallbackUrl = ""
+            // Switch to fallback only if we're not already using it to avoid endless loops
+            if (audioRef.current && audioRef.current.src !== fallbackUrl) {
+              audioRef.current.src = fallbackUrl
+              // Attempt to play the fallback silently
+              audioRef.current
+                .play()
+                .then(() => {
+                  console.log("Fallback track started")
+                })
+                .catch((err) => {
+                  console.error("Failed to play fallback track:", err)
+                })
+            }
+          }}
+        />
+      )}
 
       {/* Button for selecting and playing music */}
       {showMusicButton && (
@@ -723,7 +729,7 @@ export function CubeAnimation() {
               >
                 <div className={`${isMobile ? "w-28 h-28" : "w-36 h-36 md:w-44 md:h-44"} relative`}>
                   <Image
-                    src={cubeImages[initialCubeIndices[index]] || "/placeholder.svg"}
+                    src={cubeImages[initialCubeIndices[index] ?? 0] ?? "/placeholder.svg"}
                     alt={`Cube Character ${index + 1}`}
                     width={240}
                     height={240}
@@ -737,7 +743,7 @@ export function CubeAnimation() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       className="absolute bottom-[-60px] left-1/2 -translate-x-1/2 z-20"
                     >
-                      <SpeechBubble text={speechBubbles[index % speechBubbles.length]} />
+                      <SpeechBubble text={speechBubbles && speechBubbles.length > 0 ? speechBubbles[index % speechBubbles.length] ?? "" : ""} />
                     </motion.div>
                   )}
                 </div>
@@ -780,7 +786,7 @@ export function CubeAnimation() {
             />
             <div className={`${isMobile ? "w-28 h-28" : "w-36 h-36 md:w-44 md:h-44"} relative`}>
               <Image
-                src={cubeImages[initialCubeIndices[4]] || "/placeholder.svg"}
+                src={cubeImages[initialCubeIndices[4] ?? 0] ?? "/placeholder.svg"}
                 alt="Blue Sad Pizza Cube"
                 width={240}
                 height={240}
@@ -796,7 +802,7 @@ export function CubeAnimation() {
                   exit={{ opacity: 0, y: 10, scale: 0.8 }}
                   className="absolute bottom-[-60px] left-1/2 -translate-x-1/2 z-20"
                 >
-                  <SpeechBubble text={whereIsEveryone} />
+                  <SpeechBubble text={whereIsEveryone || ""} />
                 </motion.div>
               )}
 
@@ -811,7 +817,7 @@ export function CubeAnimation() {
                     className="absolute bottom-[-60px] left-1/2 -translate-x-1/2 z-20"
                   >
                     <SpeechBubble
-                      text={waitingForMusicPhrases[waitingForMusicPhraseIndex % waitingForMusicPhrases.length]}
+                      text={waitingForMusicPhrases[waitingForMusicPhraseIndex % waitingForMusicPhrases.length] ?? ""}
                     />
                   </motion.div>
                 )}
@@ -827,7 +833,7 @@ export function CubeAnimation() {
                       exit={{ opacity: 0, y: 10, scale: 0.8 }}
                       className="absolute bottom-[-60px] left-1/2 -translate-x-1/2 z-20"
                     >
-                      <SpeechBubble text={partyBubble} />
+                      <SpeechBubble text={partyBubble || ""} />
                     </motion.div>
                   )}
 
@@ -839,7 +845,7 @@ export function CubeAnimation() {
                       exit={{ opacity: 0, y: 10, scale: 0.8 }}
                       className="absolute bottom-[-60px] left-1/2 -translate-x-1/2 z-20"
                     >
-                      <SpeechBubble text={partyPhrases[currentPartyPhrase % partyPhrases.length]} />
+                      <SpeechBubble text={partyPhrases[currentPartyPhrase % partyPhrases.length] ?? ""} />
                     </motion.div>
                   )}
                 </>
@@ -881,7 +887,7 @@ export function CubeAnimation() {
                 />
                 <div className={`${isMobile ? "w-28 h-28" : "w-36 h-36 md:w-44 md:h-44"} relative`}>
                   <Image
-                    src={cubeImages[cubeIndex] || "/placeholder.svg"}
+                    src={cubeImages[cubeIndex ?? 0] ?? "/placeholder.svg"}
                     alt={`Party Cube ${index + 1}`}
                     width={240}
                     height={240}

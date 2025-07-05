@@ -5,7 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
 import { BuildErrorDisplay } from "@/components/build-error-display"
 import { SocialSidebar } from "@/components/social-sidebar"
-import { MobileNavigation } from "@/components/mobile-navigation"
+// import { MobileNavigation } from "@/components/mobile-navigation"
 import { setupGlobalErrorHandling } from "@/utils/logger"
 import { ErrorBoundary } from "@/components/error-boundary"
 import { useEffect, useState } from "react"
@@ -145,7 +145,7 @@ export default function ClientLayout({
                           <Toaster />
                           <BuildErrorDisplay />
                           <SocialSidebar />
-                          <MobileNavigation />
+                          {/* <MobileNavigation /> */}
                         </>
                       )}
                     </div>

@@ -9,10 +9,16 @@ export function useMobile() {
 
   useEffect(() => {
     const checkDevice = () => {
-      // Check if mobile device
-      const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      // Check if mobile device - only by user agent, not by window width
+      const mobileUserAgent = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
         navigator.userAgent
-      ) || window.innerWidth < 768
+      )
+      
+      // Additional check for touch devices
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+      
+      // Combine checks - must be mobile user agent OR touch device with small screen
+      const mobile = mobileUserAgent || (isTouchDevice && window.innerWidth < 768)
 
       // Check if Telegram browser
       const telegram = /Telegram/i.test(navigator.userAgent) || 
