@@ -1,0 +1,583 @@
+{
+  "home": {
+    "title": "CrazyCube",
+    "subtitle": "Küplerin ağlayıp şakalaştığı yer!",
+    "balance": "Bakiye:",
+    "connectWallet": "MetaMask Bağla",
+    "walletNotDetected": "MetaMask bulunamadı. Lütfen MetaMask kurun"
+  },
+  "sections": {
+    "bridge": {
+      "title": "Köprü (Küpü Geri Getir!)",
+      "description": "Küpler mezarlıktan geri döner — rastgele bir NFT \"Özgürüm!\" diye bağırarak fırlar",
+      "button": "NFT Köprüsü",
+      "guide": {
+        "title": "🪄 Diriltme Rehberi",
+        "intro": "OpenSea veya Magic Eden'deki güncel fiyatının 20%'si kadar CRA ücreti ödeyerek bir küpü mezarlıktan geri getirebilirsiniz.",
+        "fee": "Ücret son piyasa fiyatına göre otomatik hesaplanır ve kalıcı olarak yakılır.",
+        "requirement": "Diriltme için en az 1 yıldıza sahip 2 NFT seçin.",
+        "rarity": "Yıldız derecelendirmesi: 1 ⭐ — Yaygın, 2 ⭐ — Az Bulunan, 3 ⭐ — Nadir, 4 ⭐ — Epik, 5 ⭐ — Efsanevi.",
+        "penalty": "Başarılı diriltme sonrası seçilen her NFT 1 yıldız kaybeder.",
+        "step1": "1. %20 ücret için CRA harcamasını onayla.",
+        "step2": "2. Köprü işlemini onayla — NFT anında cüzdanınıza döner.",
+        "note": "Sadece 5,000 küp mevcuttur, sayıları asla değişmez. Yakılan CRA ölü cüzdana gider; kimse kurtaramaz."
+      }
+    },
+    "burn": {
+      "title": "NFT Yak (Küpü Izgara Yap!)",
+      "description": "NFT yak ve CRA token kazan! Alevli ızgarada çığlık atan küpler: \"Anneme sevdiğimi söyle!\"",
+      "button": "NFT Yak",
+      "feeBox": {
+        "title": "🔥 Yakma Ücreti ve Adımlar",
+        "line1": "• Yakma ücreti küp içindeki kilitli CRA'nın <1>%5</1>'idir.",
+        "line2": "• Yakma <1>üç onay</1> gerektirir:",
+        "step1": "1. Sözleşmeye NFT'nizi taşıma izni verin.",
+        "step2": "2. Kilitli jetonların %5'i için CRA harcamasına izin verin.",
+        "step3": "3. Son işlemi onayla — küp yanar, CRA size gelir.",
+        "note": "Başlamadan önce cüzdanınızda ücret için yeterli CRA olduğundan emin olun.",
+        "guide": {
+          "title": "🔥 Yakma Rehberi",
+          "intro": "Yakmadan önce madeni CRA'yı açmak için MUTLAKA ping atın (7 günde bir).",
+          "loss": "Yakma sonrası NFT kalıcı olarak mezarlığa gönderilir. CRA ödüller bölümünden talep edilebilir.",
+          "step1": "1. Sözleşmeye NFT'nizi taşıma izni verin.",
+          "step2": "2. Kilitli jetonların %5'i için CRA harcamasına izin verin.",
+          "step3": "3. Son işlemi onayla — küp yanar, CRA size gelir.",
+          "timing": "CRA seçilen gecikme (12s / 24s / 48s) sonrasında gelir. Bu süre boyunca küp gridir (bekleme).",
+          "note": "Örnek: 10,000 CRA kilitli → ücret 500 CRA (%5). Daha uzun gecikme = daha küçük havuz payı.",
+          "pingLock": "Ping sırasında CRA cüzdana gitmez — NFT içinde kilitli kalır. Sadece yakarak çekilebilir.",
+          "bridgeNote": "Mezarlıktan NFT'yi 'Köprü' bölümünde dirilt. Küp sayısı 5000 ile sınırlı ve asla değişmez. Her eylemde yakılan CRA sonsuza dek ölü cüzdana gider — kimse geri alamaz."
+        }
+      }
+    },
+    "claim": {
+      "title": "Ödül Talep Et (CRA Nerede?)",
+      "description": "Kocaman üzgün gözlü bir küp bağırır: \"Beni talep et ve CRA'ını al!\"",
+      "button": "Ödül Talep Et",
+      "processing": "İŞLENİYOR...",
+      "claimReward": "ÖDÜL TALEP ET",
+      "waitingForWallet": "Cüzdan onayı bekleniyor...",
+      "processingClaim": "Talep işleniyor..."
+    },
+    "stats": {
+      "title": "İstatistikler (Gözyaşı ve Acı Sayacı)",
+      "description": "Kaç NFT yakıldı, mezarlıktan döndü ve havuzda ne kadar CRA var gösterir",
+      "button": "İstatistikleri Gör"
+    },
+    "ping": {
+      "title": "Küp Ping (Canlı Tut)",
+      "description": "Küplerinize kalp atışı gönderin ki boşluğa sürüklenmesinler.",
+      "button": "Ping",
+      "readyToPing": "Ping Hazır",
+      "cooldown": "Bekleme:",
+      "waitingForWallet": "Cüzdan onayı bekleniyor...",
+      "processingPing": "Ping işleniyor..."
+    },
+    "graveyard": {
+      "title": "Mezarlık",
+      "description": "Yakılmış küplerinizi görün, yas tutun ve CRA ödüllerini talep edin.",
+      "button": "Mezarlığa Git",
+      "phrases": [
+        "Burada neden bu kadar karanlık… ☠️",
+        "Üşüyorum… 🥶",
+        "O ışık mı? 💀",
+        "Hiç pişman değilim! 🔥",
+        "Külden küle…",
+        "Anneme iyi olduğumu söyle!",
+        "Burası oldukça rahat… belki?"
+      ]
+    },
+    "breed": {
+      "title": "NFT Çiftleştir (Küpsel Aşk!)",
+      "description": "İki NFT'yi birleştirerek mezarlıktan birini dirilt! Aşk havada uçuşuyor! 💕",
+      "button": "NFT Çiftleştir",
+      "feeNotice": "OpenSea veya Magic Eden'deki güncel NFT fiyatının %20'si",
+      "cooldown": "⏳ Bekleme:",
+      "needTwoNfts": "Çiftleştirme için tam olarak 2 NFT seçmeniz gerekiyor",
+      "waitingForWallet": "Cüzdan onayı bekleniyor...",
+      "processingBreeding": "Çiftleştirme işleniyor...",
+      "graveyardCooldown": "Mezarlık bekleme süresi aktif",
+      "graveyardCooldownDesc": "En az bir yakılmış küp bekleme süresini bitirene kadar bekleyin",
+      "graveyardReady": "Mezarlık çiftleştirme için hazır",
+      "graveyardEmpty": "Mezarlıkta yakılmış küp yok",
+      "timeUntilReady": "Hazır olana kadar süre:",
+      "selectNft": "NFT Seç",
+      "selectedNft": "Seçilen NFT",
+      "breeding": "Çiftleştirme...",
+      "breedNfts": "NFT Çiftleştir",
+      "returnToHome": "Ana Sayfaya Dön",
+      "connectWallet": "Cüzdanını Bağla",
+      "connectWalletDesc": "Lütfen NFT'lerinizi görüntülemek ve çiftleştirmek için cüzdanınızı bağlayın",
+      "connectWalletButton": "Cüzdan Bağla",
+      "errorLoadingNfts": "NFT Yükleme Hatası",
+      "loadingNfts": "NFT'ler Yükleniyor...",
+      "loadingNftsDesc": "CrazyCube koleksiyonunuz alınıyor",
+      "noNftsFound": "NFT Bulunamadı",
+      "noNftsFoundDesc": "Çiftleştirmek için hiç CrazyCube NFT'niz yok",
+      "goToCollection": "Koleksiyona Git",
+      "selectNftsForBreeding": "Çiftleştirme için 2 NFT Seç",
+      "loadingGraveyardStatus": "Mezarlık durumu yükleniyor...",
+      "insufficientCra": "Yetersiz CRA",
+      "needCraToBreed": "Çiftleştirmek için {amount} CRA gerekiyor",
+      "approveCra": "CRA Onayla",
+      "approveCraDesc": "İlk işlem: kontrata CRA harcama izni ver",
+      "approvalConfirmed": "Onay doğrulandı",
+      "craAllowanceSet": "CRA limiti ayarlandı",
+      "confirmBreeding": "Çiftleştirmeyi onayla",
+      "signBreedingTransaction": "Çiftleştirme işlemini imzala",
+      "breedingCanceled": "Çiftleştirme iptal edildi",
+      "transactionRejected": "İşlem reddedildi",
+      "breedingSuccessful": "Çiftleştirme başarılı! 💕",
+      "txConfirmed": "İşlem onaylandı: {hash}...",
+      "transactionError": "İşlem hatası",
+      "inactiveNftSelected": "Pasif NFT seçildi",
+      "nftNoStarsLeft": "NFT #{id} kalan yıldızı yok ve çiftleştirme için kullanılamaz.",
+      "maximumSelectionReached": "Maksimum seçim sayısına ulaşıldı",
+      "canOnlySelectTwoNfts": "Çiftleştirme için sadece 2 NFT seçebilirsiniz",
+      "invalidSelection": "Geçersiz seçim",
+      "mustSelectExactlyTwoNfts": "Çiftleştirme için tam olarak 2 NFT seçmelisiniz",
+      "walletNotConnected": "Cüzdan bağlı değil",
+      "pleaseConnectWalletFirst": "Lütfen önce cüzdanınızı bağlayın",
+      "selectedNftsNoStars": "Seçilen NFT'lerin kalan yıldızı yok! Yıldızlı aktif NFT'ler seçin.",
+      "cannotBreedSelectedNfts": "Seçilen NFT'ler çiftleştirilemez. Gereksinimleri kontrol edin.",
+      "guide": {
+        "title": "🪄 Çiftleştirme Rehberi",
+        "intro": "OpenSea veya Magic Eden'deki güncel fiyatının %20'si kadar CRA ücreti ödeyerek yeni bir küp çiftleştirebilirsiniz.",
+        "fee": "Ücret son piyasa fiyatına göre otomatik hesaplanır ve kalıcı olarak yakılır.",
+        "requirement": "Çiftleştirme için en az 1 ⭐ olan herhangi 2 NFT seçin.",
+        "rarity": "Yıldız derecelendirmesi: 1 ⭐ — Yaygın, 2 ⭐ — Az Bulunan, 3 ⭐ — Nadir, 4 ⭐ — Epik, 5 ⭐ — Efsanevi, 6 ⭐ — Mitik.",
+        "penalty": "Yıldız kaybedilecek!",
+        "step1": "1. %20 ücret için CRA harcamasına izin ver.",
+        "step2": "2. Çiftleştirme işlemini onayla — yeni küp yaratılır, CRA yakılır.",
+        "note": "Koleksiyon 5,000 küp ile sınırlı; CRA kurtarılamaz şekilde ölü cüzdana yakılır."
+      }
+    }
+  },
+  "footer": {
+    "copyright": "© 2025 CrazyCube — Küplerin ağlayıp şakalaştığı yer!",
+    "crashMessage": "Site çöktüyse küp pizza almaya gitmiştir"
+  },
+  "construction": {
+    "title": "YAPIM AŞAMASINDA",
+    "message": "Bu bölüm hâlâ geliştirme aşamasındadır. Yakında burada birçok ilginç şey olacak!",
+    "returnHome": "Eve Dön",
+    "phrases": [
+      "Burada çalışıyorum! Rahatsız etme!",
+      "Yakında gelir, baretimi taktım!",
+      "İnşaat devam ediyor!",
+      "Küp şantiyede, sonra gel!",
+      "Burası güzel olacak, söz veriyorum!",
+      "Oops, erken geldin! Henüz bitirmedik!",
+      "Küp inşa ediyor, boyuyor, yoruldu..."
+    ]
+  },
+  "wallet": {
+    "connect": "Bağlan",
+    "connecting": "Bağlanıyor…",
+    "copyAddress": "Adresi Kopyala",
+    "copied": "Kopyalandı!",
+    "openExplorer": "Explorer'da Aç",
+    "disconnect": "Cüzdanı Ayır",
+    "balance": "Bakiye:"
+  },
+  "cubeAnimation": {
+    "loading": "Yükleniyor...",
+    "loadingMessage": "Ayy! Site dondu! Bekleyin, biraz tembeliz 🦥",
+    "speechBubbles": [
+      "Ayakta durmaktan sıkıldım! 🥱",
+      "Hey, herkes nereye gitti?! 😱",
+      "Ben de gidiyorum! 👋",
+      "Pizza almaya gidiyorum! 🍕",
+      "Manikür zamanı! 💅"
+    ],
+    "partyBubble": "Yaşasın! Herkes gitti! Parti zamanı! 🎵🎉",
+    "whereIsEveryone": "Hey, herkes nereye gitti?! 😱",
+    "waitingForMusicPhrases": [
+      "Hey, müzik aç! 🎵",
+      "Müziksiz sıkıcı... 😴",
+      "Dans etmek istiyorum! Müzik lazım! 💃",
+      "Biri düğmeye bassın! 👆"
+    ],
+    "partyPhrases": [
+      "Tüm gece dans! 🕺",
+      "Parti yeni başlıyor! 🎉",
+      "Kim dedi küpler parti yapamaz? 🎵",
+      "Müziği aç! 🔊",
+      "Bu partinin kralı benim! 👑",
+      "Benden iyi dans eden yok! 💃",
+      "En sevdiğim parça! 🎧",
+      "DJ, ses ver! 🎚️",
+      "Küpler burada! 🏠",
+      "Güneş doğana kadar parti! 🌅"
+    ],
+    "musicOn": "Müziği Kapat",
+    "musicOff": "Müziği Aç"
+  },
+  "social": {
+    "telegram": "Telegram",
+    "discord": "Discord",
+    "followUs": "Takip Et"
+  },
+  "tabs": {
+    "breed": "Çiftleştir",
+    "bridge": "Köprü",
+    "burn": "Yak",
+    "claim": "Ödüller",
+    "stats": "İstatistikler",
+    "graveyard": "Mezarlık",
+    "ping": "Ping"
+  },
+  "tokenInfo": {
+    "priceUSD": "USD Fiyatı",
+    "marketCap": "Piyasa Değeri",
+    "volume24h": "24s Hacim",
+    "totalBurns": "Toplam Yakım",
+    "avg": "Ort.",
+    "totalSupply": "Toplam Arz",
+    "circulating": "Dolaşımdaki",
+    "burned": "Yakıldı"
+  },
+  "common": {
+    "retry": "Tekrar Dene",
+    "loading": "Yükleniyor..."
+  },
+  "market": {
+    "loading": "Pazar verileri yükleniyor...",
+    "failed": "Pazar verileri yüklenemedi",
+    "header": "Pazar Fiyatları",
+    "subtitle": "Gerçek zamanlı NFT ve tokenlar",
+    "error": "Hata",
+    "live": "Canlı",
+    "floorPrice": "Taban Fiyat",
+    "buyNft": "MagicEden'da NFT Satın Al",
+    "gameToken": "Oyun Tokeni",
+    "baseCurrency": "Ana Para Birimi",
+    "tradeDex": "Camelot DEX'te Ticaret Yap",
+    "additional": "Ek Bilgi",
+    "change1h": "1s Değişim",
+    "change24h": "24s Değişim",
+    "volume24h": "24s Hacim",
+    "marketCap": "Piyasa Değeri"
+  },
+  "rewards": {
+    "loading": {
+      "title": "Ödülleriniz aranıyor…"
+    },
+    "accumulated": "Birikmiş:",
+    "toPool": "Havuza",
+    "burned": "Yakıldı",
+    "toClaim": "Talep Edilecek",
+    "availableIn": "Kullanılabilir:",
+    "processing": "İŞLENİYOR...",
+    "claim": "ÖDÜL TALEP ET",
+    "claimed": "ÖDÜL TALEP EDİLDİ"
+  },
+  "info": {
+    "nftInspector": "⏱️ NFT Bekleme Müfettişi",
+    "lockedCra": "Kilitli CRA",
+    "enterNftId": "Kontrol edilecek NFT ID'sini girin",
+    "connectWallet": "NFT kontrolü için cüzdan bağla",
+    "connectWalletNfts": "NFT'lerinizi görmek için cüzdan bağlayın",
+    "noNfts": "CrazyCube NFT'niz yok",
+    "yourNfts": "NFT'leriniz",
+    "live": "canlı",
+    "inGraveyard": "mezarlıkta",
+    "activeNfts": "Aktif NFT'ler",
+    "nftsInGraveyard": "Mezarlıktaki NFT'ler",
+    "noStars": "Yıldız Yok",
+    "totalCraLocked": "NFT'lerinizde kilitli toplam CRA",
+    "nftCollection": "NFT Koleksiyonu",
+    "totalNfts": "Toplam NFT",
+    "craSupply": "CRA Arzı",
+    "rarity": "Nadirlik",
+    "stars": "Yıldızlar",
+    "status": "Durum",
+    "graveyard": "Mezarlık",
+    "active": "Aktif",
+    "locked": "Kilitli",
+    "timeLeft": "Kalan Süre",
+    "guide": {
+      "title": "CrazyCube Nasıl Oynanır",
+      "subtitle": "Oyun mekanikleri tam rehberi"
+    },
+    "tabs": {
+      "overview": "Genel Bakış",
+      "craToken": "CRA Token",
+      "contract": "Sözleşme",
+      "contractData": "Sözleşme Verileri",
+      "liveAnalytics": "Canlı Analitik"
+    },
+    "features": {
+      "title": "⚡ Benzersiz Oyun Özellikleri",
+      "accumulate": {
+        "title": "Biriken paralar yanmaz",
+        "desc": "CRA tokenlarınız kilitlenir ve birikir, sonsuza dek yanmazlar!"
+      },
+      "future": {
+        "title": "Merkezi Olmayan Gelecek",
+        "desc": "Hata ayıklama sonrası (1-2 ay) takım yönetici haklarını devre dışı bırakıp kontrolü otonom ajana devredecek"
+      },
+      "autonomy": {
+        "title": "Tam Özerklik",
+        "desc": "NFT koleksiyonu tamamen merkezi olmayan pazar yönetimine geçiş yapacak"
+      }
+    },
+    "actions": {
+      "title": "📊 Oyun Eylemleri ve Zamanlayıcıları",
+      "timeLabel": "Süre:",
+      "burn": {
+        "title": "NFT Yak",
+        "time": "12/24/48 saat",
+        "desc": "NFT yak ve ödüller için CRA tokenlarını kilitle"
+      },
+      "graveyard": {
+        "title": "Mezarlık",
+        "desc": "Yakılan NFT'ler 48s beklemeli mezarlığa gider"
+      },
+      "breed": {
+        "title": "Çiftleştirme",
+        "desc": "Mezarlıktan yeni NFT'ler yarat",
+        "note": "Çiftleştirme sonrası NFT eylemlere katılamaz"
+      },
+      "ping": {
+        "title": "Ping",
+        "desc": "Ödüller için NFT'yi etkinleştir",
+        "time": "7 günlük aralık",
+        "note": "NFT'ler birikir ve yanmaz!"
+      },
+      "rewards": {
+        "title": "Havuz Ödülleri",
+        "desc": "Ödül havuzundan CRA tokenları al",
+        "time": "30 günlük aralık"
+      },
+      "other": {
+        "title": "Diğer Eylemler",
+        "desc": "Çeşitli oyun mekanikleri",
+        "time": "24s bekleme"
+      },
+      "cooldown48": "48s bekleme"
+    },
+    "roadmap": {
+      "title": "🛣️ Merkezi Olmayanlığa Giden Yol",
+      "phase1": {
+        "title": "1. Aşama: Hata Ayıklama",
+        "desc": "Tüm oyun mekaniklerinin 1-2 aylık test ve optimizasyonu"
+      },
+      "phase2": {
+        "title": "2. Aşama: Özerklik",
+        "desc": "Otonom ajan bağlama ve yönetici haklarını kaldırma"
+      },
+      "phase3": {
+        "title": "3. Aşama: Özgürlük",
+        "desc": "NFT koleksiyonu ve oyun sözleşmesi tamamen merkezi olmayan olacak, CRA token otonom hale gelecek"
+      },
+      "callout": "🚀 CrazyCube - tam merkezi olmayanlık planı olan ilk NFT koleksiyonu!"
+    }
+  },
+  "status": {
+    "ready": "Hazır",
+    "readyToClaim": "Talep Etmeye Hazır",
+    "waiting": "Hazır Değil",
+    "processing": "İşleniyor",
+    "success": "Başarılı",
+    "failed": "Başarısız",
+    "claim": "Talep Et",
+    "claimed": "Talep Edildi",
+    "alreadyBurned": "Zaten Yakıldı",
+    "alreadyInGraveyard": "Zaten Mezarlıkta",
+    "noStarsLeft": "Yıldız Kalmadı",
+    "activated": "Etkinleştirildi",
+    "notActivated": "Etkinleştirilmedi",
+    "cantPing": "Ping Atılamaz",
+    "rewardReady": "Ödül Hazır",
+    "readyForBreeding": "Çiftleştirmeye Hazır",
+    "claimReady": "Talep Etmeye Hazır",
+    "locked": "Kilitli",
+    "claimable": "Talep Edilebilir"
+  },
+  "pages": {
+    "breed": {
+      "title": "Küp Çiftleştirme",
+      "subtitle": "İki ebeveynden yeni küp yarat",
+      "selectParents": "İki ebeveyn seç",
+      "noNftsAvailable": "Çiftleştirme için mevcut NFT yok",
+      "needTwoParents": "İki ebeveyn seçmeniz gerekiyor",
+      "breedingFee": "Çiftleştirme ücreti",
+      "breedingSuccess": "Çiftleştirme başarılı!",
+      "breedingFailed": "Çiftleştirme başarısız",
+      "howItWorks": "Nasıl çalışır",
+      "breedingGuide": "Çiftleştirme rehberi",
+      "selectTwoNfts": "En az 1 yıldızlı 2 NFT seç",
+      "payFee": "Pazar fiyatının %20'si ücret öde",
+      "getNewCube": "Koleksiyonunda yeni küp al"
+    },
+    "burn": {
+      "title": "Küp Yakma",
+      "subtitle": "Kilitli CRA almak için NFT yak",
+      "selectToBurn": "Yakılacak NFT seç",
+      "burnFee": "Yakma ücreti",
+      "burnSuccess": "Yakma başarılı!",
+      "burnFailed": "Yakma başarısız",
+      "confirmBurn": "Yakmayı onayla",
+      "burnWarning": "Uyarı: yakma geri alınamaz!",
+      "nftWillBeDestroyed": "NFT sonsuza dek yok edilecek",
+      "craWillBeTransferred": "CRA cüzdanınıza transfer edilecek"
+    },
+    "ping": {
+      "title": "Küp Ping",
+      "subtitle": "CRA kazanmak için 3 dakikada bir küpleri pingle",
+      "pingYourCubes": "Küplerinizi pingleyin",
+      "howPingWorks": "Ping nasıl çalışır",
+      "pingInterval": "Ping aralığı",
+      "betweenPings": "Pingler arası",
+      "pingableNfts": "Ping atmaya hazır NFT'ler",
+      "noPingableNfts": "Ping atmaya hazır NFT yok",
+      "nftsNeedActivation": "Ping atabilmek için NFT'leriniz etkinleştirilmeli ve mezarlıkta olmamalı",
+      "pingInitiated": "Ping başlatıldı!",
+      "pingTransaction": "NFT için ping işlemi gönderildi",
+      "earnCraBasedOnRarity": "Nadirliğe göre CRA kazanacaksınız!",
+      "pingSuccessful": "Ping başarılı!",
+      "nftPinged": "NFT'niz pinglendi ve CRA kazandınız!"
+    },
+    "claim": {
+      "title": "Ödül Talep Et",
+      "subtitle": "Kazandığınız CRA tokenlarını talep edin",
+      "searchingRewards": "Ödülleriniz aranıyor",
+      "scanningBlockchain": "Blockchain ve mezarlık taranıyor, bu birkaç saniye sürebilir",
+      "noRewards": "Ödül bulunamadı",
+      "noRewardsDescription": "Henüz talep edilebilir ödülünüz yok"
+    },
+    "graveyard": {
+      "title": "Küp Mezarlığı",
+      "subtitle": "Yakılan NFT'lerin dinlenme yeri",
+      "burnedCubes": "Yakılan küpler",
+      "restInPeace": "Huzur içinde yat",
+      "someStillWhisper": "Bazıları küllerden hâlâ fısıldıyor",
+      "totalBurned": "Toplam yakılan",
+      "viewBurnedNft": "Yakılan NFT'yi gör"
+    },
+    "stats": {
+      "title": "Oyun İstatistikleri",
+      "subtitle": "Gerçek zamanlı oyun durumu verileri",
+      "totalNfts": "Toplam NFT",
+      "activeNfts": "Aktif NFT'ler",
+      "burnedNfts": "Yakılan NFT'ler",
+      "totalCra": "Toplam CRA",
+      "lockedCra": "Kilitli CRA",
+      "burnedCra": "Yakılan CRA",
+      "gameActivity": "Oyun Aktivitesi",
+      "recentTransactions": "Son İşlemler"
+    },
+    "info": {
+      "title": "Bilgi",
+      "subtitle": "NFT'leriniz ve oyun hakkında detaylı bilgi",
+      "overview": "Genel Bakış",
+      "yourCollection": "Koleksiyonunuz",
+      "gameRules": "Oyun Kuralları",
+      "tokenomics": "Tokenomics",
+      "connectWalletNfts": "NFT'lerinizi görmek için cüzdanınızı bağlayın.",
+      "noNfts": "Hiçbir CrazyCube NFT'sine sahip değilsiniz.",
+      "yourNfts": "NFT'leriniz",
+      "live": "canlı",
+      "inGraveyard": "mezarlıkta",
+      "activeNfts": "Aktif NFT'ler",
+      "nftsInGraveyard": "Mezarlıktaki NFT'ler",
+      "noStars": "Yıldız yok",
+      "lockedCra": "Kilitli CRA",
+      "totalCraLocked": "NFT'lerinizde kilitli toplam CRA",
+      "craLockedWarning": "NFT içinde kilitli CRA yakılmaz ve NFT transfer edildiğinde, satıldığında veya herhangi bir şekilde taşındığında NFT ile birlikte seyahat eder. Kalıcı olarak NFT'nin kendisine aittir. Bu tokenleri yalnızca",
+      "craLockedWarningBurn": "yakarak"
+    }
+  },
+  "components": {
+    "buttons": {
+      "connect": "Bağlan",
+      "disconnect": "Bağlantıyı Kes",
+      "approve": "Onayla",
+      "confirm": "Onayla",
+      "cancel": "İptal",
+      "retry": "Tekrar Dene",
+      "close": "Kapat",
+      "back": "Geri",
+      "next": "İleri",
+      "save": "Kaydet",
+      "load": "Yükle",
+      "refresh": "Yenile"
+    },
+    "messages": {
+      "loading": "Yükleniyor...",
+      "connecting": "Bağlanıyor...",
+      "processing": "İşleniyor...",
+      "success": "Başarılı!",
+      "error": "Hata",
+      "warning": "Uyarı",
+      "info": "Bilgi",
+      "noData": "Veri yok",
+      "noResults": "Sonuç bulunamadı",
+      "tryAgain": "Tekrar dene",
+      "somethingWentWrong": "Bir şeyler ters gitti",
+      "pleaseWait": "Lütfen bekleyin",
+      "transactionPending": "İşlem beklemede",
+      "transactionConfirmed": "İşlem onaylandı",
+      "transactionFailed": "İşlem başarısız"
+    },
+    "forms": {
+      "required": "Gerekli alan",
+      "invalid": "Geçersiz değer",
+      "tooShort": "Çok kısa",
+      "tooLong": "Çok uzun",
+      "enterAmount": "Miktar girin",
+      "selectOption": "Seçenek seçin",
+      "searchPlaceholder": "Ara...",
+      "noOptionsAvailable": "Kullanılabilir seçenek yok"
+    },
+    "navigation": {
+      "home": "Ana Sayfa",
+      "back": "Geri",
+      "forward": "İleri",
+      "menu": "Menü",
+      "settings": "Ayarlar",
+      "help": "Yardım",
+      "about": "Hakkında"
+    }
+  },
+  "rarity": {
+    "common": "Yaygın",
+    "uncommon": "Az Bulunan",
+    "rare": "Nadir",
+    "epic": "Epik",
+    "legendary": "Efsanevi",
+    "mythic": "Mitik",
+    "unknown": "Bilinmeyen"
+  },
+  "cube": "Küp",
+  "glueCube": {
+    "phrases": [
+      "Şimdi her şeyi tamir edeceğim!",
+      "Ups... benim hatam!",
+      "Merak etme, tamir edeceğiz!"
+    ]
+  },
+  "cubeObservers": {
+    "idlePhrases": [
+      "Burada ne yapıyorsun?",
+      "Kim gürültü yapıyor?",
+      "Oh-oh-oh...",
+      "Bakmıyorum!",
+      "Uykumu bölme!"
+    ],
+    "successPhrases": [
+      "Yeni küpün için tebrikler!",
+      "Yaşasın, yeni bir küp bebek!",
+      "Hoş geldin, minik!"
+    ]
+  },
+  "shyCubes": {
+    "bubbles": [
+      "Oh-oh-oh!",
+      "Burada neler oluyor?",
+      "Kim gürültü yapıyor?",
+      "Hiçbir şey görmedik!",
+      "Bakma!"
+    ]
+  }
+}

@@ -1,0 +1,583 @@
+{
+  "home": {
+    "title": "CrazyCube",
+    "subtitle": "Where cubes cry and joke!",
+    "balance": "Balance:",
+    "connectWallet": "Connect MetaMask",
+    "walletNotDetected": "MetaMask not detected. Install MetaMask"
+  },
+  "sections": {
+    "bridge": {
+      "title": "Bridge (Bring Back Cube!)",
+      "description": "Cubes return from the graveyard — a random NFT jumps out shouting \"I'm free!\"",
+      "button": "Bridge NFT",
+      "guide": {
+        "title": "🪄 Resurrection Guide",
+        "intro": "You can bring a cube back from the graveyard by paying a CRA fee equal to 20% of its current price on OpenSea or Magic Eden.",
+        "fee": "The fee is calculated automatically from the latest market price and is permanently burned.",
+        "requirement": "To resurrect, select 2 NFTs that have at least 1 star.",
+        "rarity": "Star ratings: 1 ⭐ — Common, 2 ⭐ — Uncommon, 3 ⭐ — Rare, 4 ⭐ — Epic, 5 ⭐ — Mythic.",
+        "penalty": "After successful resurrection, each selected NFT loses 1 star.",
+        "step1": "1. Approve CRA spending for the 20% fee.",
+        "step2": "2. Confirm the Bridge transaction — NFT instantly returns to your wallet.",
+        "note": "Only 5,000 cubes exist, their number will never change. Burned CRA goes to dead-wallet; no one can recover it."
+      }
+    },
+    "burn": {
+      "title": "Burn NFT (Roast the Cube!)",
+      "description": "Burn NFT and get CRA tokens! Epic scene of a fiery grill with piercing screaming cubes: \"Tell my mom I love her!\"",
+      "button": "Burn NFT",
+      "feeBox": {
+        "title": "🔥 Burn Fee & Steps",
+        "line1": "• Burn fee is <1>5% of locked CRA</1> inside the cube.",
+        "line2": "• Burning requires <1>three confirmations</1>:",
+        "step1": "1. Give the contract permission to move your NFT.",
+        "step2": "2. Allow CRA spending for 5% of locked coins.",
+        "step3": "3. Confirm final transaction — cube burns, CRA goes to you.",
+        "note": "Make sure you have enough CRA in your wallet for the fee before starting.",
+        "guide": {
+          "title": "🔥 Burn Guide",
+          "intro": "Before burning, MUST ping (once every 7 days) to unlock mined CRA.",
+          "loss": "After burning, NFT is permanently sent to the graveyard. CRA can be claimed in the rewards section.",
+          "step1": "1. Give the contract permission to move your NFT.",
+          "step2": "2. Allow CRA spending for 5% of locked coins.",
+          "step3": "3. Confirm final transaction — cube burns, CRA goes to you.",
+          "timing": "CRA arrives after selected delay (12h / 24h / 48h). During this time cube is gray (cooldown).",
+          "note": "Example: 10,000 CRA locked → fee 500 CRA (5%). Longer delay = smaller pool share.",
+          "pingLock": "When pinging, CRA doesn't go to wallet — coins stay locked inside NFT. Can only withdraw by burning.",
+          "bridgeNote": "Resurrect NFT from graveyard in 'Bridge' section. Cube count limited to 5000 and never changes. CRA burned in each action goes to dead-wallet forever — no one can retrieve it."
+        }
+      }
+    },
+    "claim": {
+      "title": "Claim Rewards (Where's my CRA?)",
+      "description": "A cube with huge sad eyes shouts: \"Claim me and get your CRA!\"",
+      "button": "Claim Reward",
+      "processing": "PROCESSING...",
+      "claimReward": "CLAIM REWARD",
+      "waitingForWallet": "Waiting for wallet confirmation...",
+      "processingClaim": "Processing claim..."
+    },
+    "stats": {
+      "title": "Statistics (Tears and Pain Counter)",
+      "description": "Shows how many NFTs were burned, returned from graveyard, and how much CRA is in the pool",
+      "button": "View Statistics"
+    },
+    "ping": {
+      "title": "Ping Cubes (Keep Them Alive)",
+      "description": "Send heartbeat to your cubes so they don't drift into the void.",
+      "button": "Ping",
+      "readyToPing": "Ready to Ping",
+      "cooldown": "Cooldown:",
+      "waitingForWallet": "Waiting for wallet confirmation...",
+      "processingPing": "Processing ping..."
+    },
+    "graveyard": {
+      "title": "Graveyard",
+      "description": "Look at your burned cubes, mourn them, and claim CRA rewards.",
+      "button": "Go to Graveyard",
+      "phrases": [
+        "Why is it so dark here… ☠️",
+        "I'm cold… 🥶",
+        "Is that the light? 💀",
+        "I regret nothing! 🔥",
+        "Ashes to ashes…",
+        "Tell mom I'm okay!",
+        "It's cozy here… maybe?"
+      ]
+    },
+    "breed": {
+      "title": "Breed NFT (Cubic Love!)",
+      "description": "Combine two NFTs to resurrect one from the graveyard! Love is in the air! 💕",
+      "button": "Breed NFT",
+      "feeNotice": "20% of current NFT price on OpenSea or Magic Eden",
+      "cooldown": "⏳ Cooldown:",
+      "needTwoNfts": "Need to select exactly 2 NFTs for breeding",
+      "waitingForWallet": "Waiting for wallet confirmation...",
+      "processingBreeding": "Processing breeding...",
+      "graveyardCooldown": "Graveyard cooldown active",
+      "graveyardCooldownDesc": "Wait until at least one burned cube finishes cooldown",
+      "graveyardReady": "Graveyard is ready for breeding",
+      "graveyardEmpty": "No burned cubes in graveyard",
+      "timeUntilReady": "Time until ready:",
+      "selectNft": "Select NFT",
+      "selectedNft": "Selected NFT",
+      "breeding": "Breeding...",
+      "breedNfts": "Breed NFTs",
+      "returnToHome": "Return to Home",
+      "connectWallet": "Connect Your Wallet",
+      "connectWalletDesc": "Please connect your wallet to view and breed your NFTs",
+      "connectWalletButton": "Connect Wallet",
+      "errorLoadingNfts": "Error Loading NFTs",
+      "loadingNfts": "Loading NFTs...",
+      "loadingNftsDesc": "Fetching your CrazyCube collection",
+      "noNftsFound": "No NFTs Found",
+      "noNftsFoundDesc": "You don't have any CrazyCube NFTs to breed",
+      "goToCollection": "Go to Collection",
+      "selectNftsForBreeding": "Select 2 NFTs for Breeding",
+      "loadingGraveyardStatus": "Loading graveyard status...",
+      "insufficientCra": "Insufficient CRA",
+      "needCraToBreed": "Need {amount} CRA to breed",
+      "approveCra": "Approve CRA",
+      "approveCraDesc": "First transaction: give contract permission to spend CRA",
+      "approvalConfirmed": "Approval confirmed",
+      "craAllowanceSet": "CRA allowance set",
+      "confirmBreeding": "Confirm breeding",
+      "signBreedingTransaction": "Sign breeding transaction",
+      "breedingCanceled": "Breeding canceled",
+      "transactionRejected": "Transaction rejected",
+      "breedingSuccessful": "Breeding Successful! 💕",
+      "txConfirmed": "Tx confirmed: {hash}...",
+      "transactionError": "Transaction error",
+      "inactiveNftSelected": "Inactive NFT selected",
+      "nftNoStarsLeft": "NFT #{id} has no stars left and cannot be used for breeding.",
+      "maximumSelectionReached": "Maximum selection reached",
+      "canOnlySelectTwoNfts": "You can only select 2 NFTs for breeding",
+      "invalidSelection": "Invalid selection",
+      "mustSelectExactlyTwoNfts": "You must select exactly 2 NFTs for breeding",
+      "walletNotConnected": "Wallet not connected",
+      "pleaseConnectWalletFirst": "Please connect your wallet first",
+      "selectedNftsNoStars": "Selected NFTs have no stars left! Choose active NFTs with stars.",
+      "cannotBreedSelectedNfts": "Cannot breed selected NFTs. Check requirements.",
+      "guide": {
+        "title": "🪄 Breeding Guide",
+        "intro": "You can breed a new cube by paying a CRA fee equal to 20% of its current price on OpenSea or Magic Eden.",
+        "fee": "The fee is calculated automatically from the latest market price and is permanently burned.",
+        "requirement": "Select any 2 NFTs with at least 1 ⭐ for breeding.",
+        "rarity": "Star ratings: 1 ⭐ — Common, 2 ⭐ — Uncommon, 3 ⭐ — Rare, 4 ⭐ — Epic, 5 ⭐ — Legendary, 6 ⭐ — Mythic.",
+        "penalty": "Star will be lost!",
+        "step1": "1. Allow CRA spending for 20% fee.",
+        "step2": "2. Confirm breeding transaction — new cube is created, CRA is burned.",
+        "note": "Collection limited to 5,000 cubes; CRA burns to dead-wallet without recovery possibility."
+      }
+    }
+  },
+  "footer": {
+    "copyright": "© 2025 CrazyCube — Where cubes cry and joke!",
+    "crashMessage": "If the site crashed, the cube went for pizza"
+  },
+  "construction": {
+    "title": "UNDER CONSTRUCTION",
+    "message": "This section is still in development. Soon there will be lots of interesting things here!",
+    "returnHome": "Return Home",
+    "phrases": [
+      "I'm working here! Don't disturb!",
+      "Coming soon, I'm wearing a hard hat!",
+      "Construction in progress!",
+      "Cube at construction site, come back later!",
+      "It'll be beautiful here, I promise!",
+      "Oops, you're early! We're not finished!",
+      "Cube builds, paints, tired..."
+    ]
+  },
+  "wallet": {
+    "connect": "Connect",
+    "connecting": "Connecting…",
+    "copyAddress": "Copy Address",
+    "copied": "Copied!",
+    "openExplorer": "Open in Explorer",
+    "disconnect": "Disconnect Wallet",
+    "balance": "Balance:"
+  },
+  "cubeAnimation": {
+    "loading": "Loading...",
+    "loadingMessage": "Oh no, the site is stuck! Wait, we're just lazy 🦥",
+    "speechBubbles": [
+      "Tired of standing! 🥱",
+      "Hey, where did everyone go?! 😱",
+      "I'm leaving too! 👋",
+      "Going for pizza! 🍕",
+      "Manicure time! 💅"
+    ],
+    "partyBubble": "Yay! Everyone's gone! Party time! 🎵🎉",
+    "whereIsEveryone": "Hey, where did everyone go?! 😱",
+    "waitingForMusicPhrases": [
+      "Hey, turn on the music! 🎵",
+      "Boring without music... 😴",
+      "Want to dance! Need music! 💃",
+      "Someone, press the button! 👆"
+    ],
+    "partyPhrases": [
+      "Dancing all night! 🕺",
+      "The party's just getting started! 🎉",
+      "Who said cubes can't party? 🎵",
+      "Turn up the music! 🔊",
+      "I'm the king of this party! 👑",
+      "Nobody dances better than me! 💃",
+      "This is my favorite track! 🎧",
+      "DJ, turn it up! 🎚️",
+      "Cubes in the house! 🏠",
+      "Party till dawn! 🌅"
+    ],
+    "musicOn": "Turn Off Music",
+    "musicOff": "Turn On Music"
+  },
+  "social": {
+    "telegram": "Telegram",
+    "discord": "Discord",
+    "followUs": "Follow Us"
+  },
+  "tabs": {
+    "breed": "Breed",
+    "bridge": "Bridge",
+    "burn": "Burn",
+    "claim": "Rewards",
+    "stats": "Statistics",
+    "graveyard": "Graveyard",
+    "ping": "Ping"
+  },
+  "tokenInfo": {
+    "priceUSD": "Price USD",
+    "marketCap": "Market Cap",
+    "volume24h": "Volume 24h",
+    "totalBurns": "Total Burns",
+    "avg": "Avg.",
+    "totalSupply": "Total Supply",
+    "circulating": "Circulating",
+    "burned": "Burned"
+  },
+  "common": {
+    "retry": "Retry",
+    "loading": "Loading..."
+  },
+  "market": {
+    "loading": "Loading market data...",
+    "failed": "Failed to load market data",
+    "header": "Market Prices",
+    "subtitle": "Real-time NFT and tokens",
+    "error": "Error",
+    "live": "Live",
+    "floorPrice": "Floor Price",
+    "buyNft": "Buy NFT on MagicEden",
+    "gameToken": "Game Token",
+    "baseCurrency": "Base Currency",
+    "tradeDex": "Trade on Camelot DEX",
+    "additional": "Additional Information",
+    "change1h": "1h Change",
+    "change24h": "24h Change",
+    "volume24h": "24h Volume",
+    "marketCap": "Market Cap"
+  },
+  "rewards": {
+    "loading": {
+      "title": "Searching for your rewards…"
+    },
+    "accumulated": "Accumulated:",
+    "toPool": "To Pool",
+    "burned": "Burned",
+    "toClaim": "To Claim",
+    "availableIn": "Available in:",
+    "processing": "PROCESSING...",
+    "claim": "CLAIM REWARD",
+    "claimed": "REWARD CLAIMED"
+  },
+  "info": {
+    "nftInspector": "⏱️ NFT Cooldown Inspector",
+    "lockedCra": "Locked CRA",
+    "enterNftId": "Enter NFT ID to check",
+    "connectWallet": "Connect wallet to check NFT",
+    "connectWalletNfts": "Connect wallet to see your NFTs",
+    "noNfts": "You don't have CrazyCube NFTs",
+    "yourNfts": "Your NFTs",
+    "live": "live",
+    "inGraveyard": "in graveyard",
+    "activeNfts": "Active NFTs",
+    "nftsInGraveyard": "NFTs in Graveyard",
+    "noStars": "No Stars",
+    "totalCraLocked": "Total CRA locked in your NFTs",
+    "nftCollection": "NFT Collection",
+    "totalNfts": "Total NFTs",
+    "craSupply": "CRA Supply",
+    "rarity": "Rarity",
+    "stars": "Stars",
+    "status": "Status",
+    "graveyard": "Graveyard",
+    "active": "Active",
+    "locked": "Locked",
+    "timeLeft": "Time Left",
+    "guide": {
+      "title": "How to Play CrazyCube",
+      "subtitle": "Complete guide to game mechanics"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "craToken": "CRA Token",
+      "contract": "Contract",
+      "contractData": "Contract Data",
+      "liveAnalytics": "Live Analytics"
+    },
+    "features": {
+      "title": "⚡ Unique Game Features",
+      "accumulate": {
+        "title": "Accumulated coins don't burn",
+        "desc": "Your CRA tokens are locked and accumulate, they don't burn forever!"
+      },
+      "future": {
+        "title": "Decentralized Future",
+        "desc": "After debugging (1-2 months) the team will disable admin rights and transfer control to autonomous agent"
+      },
+      "autonomy": {
+        "title": "Full Autonomy",
+        "desc": "NFT collection will transition to fully decentralized market governance"
+      }
+    },
+    "actions": {
+      "title": "📊 Game Actions and Timers",
+      "timeLabel": "Time:",
+      "burn": {
+        "title": "Burn NFT",
+        "time": "12/24/48 hours",
+        "desc": "Burn NFT and lock CRA tokens for rewards"
+      },
+      "graveyard": {
+        "title": "Graveyard",
+        "desc": "Burned NFTs go to graveyard with 48h cooldown"
+      },
+      "breed": {
+        "title": "Breeding",
+        "desc": "Create new NFTs from graveyard",
+        "note": "After breeding NFT cannot participate in actions"
+      },
+      "ping": {
+        "title": "Ping",
+        "desc": "Activate NFT for rewards",
+        "time": "7-day interval",
+        "note": "NFTs accumulate and don't burn!"
+      },
+      "rewards": {
+        "title": "Pool Rewards",
+        "desc": "Get CRA tokens from reward pool",
+        "time": "30-day interval"
+      },
+      "other": {
+        "title": "Other Actions",
+        "desc": "Various game mechanics",
+        "time": "24h cooldown"
+      },
+      "cooldown48": "48h cooldown"
+    },
+    "roadmap": {
+      "title": "🛣️ Path to Decentralization",
+      "phase1": {
+        "title": "Phase 1: Debugging",
+        "desc": "1-2 months of testing and optimizing all game mechanics"
+      },
+      "phase2": {
+        "title": "Phase 2: Autonomy",
+        "desc": "Connecting autonomous agent and removing admin rights"
+      },
+      "phase3": {
+        "title": "Phase 3: Freedom",
+        "desc": "NFT collection and game contract will be fully decentralized, CRA token becomes autonomous"
+      },
+      "callout": "🚀 CrazyCube - first NFT collection with complete decentralization plan!"
+    }
+  },
+  "status": {
+    "ready": "Ready",
+    "readyToClaim": "Ready to Claim",
+    "waiting": "Not Ready",
+    "processing": "Processing",
+    "success": "Success",
+    "failed": "Failed",
+    "claim": "Claim",
+    "claimed": "Claimed",
+    "alreadyBurned": "Already Burned",
+    "alreadyInGraveyard": "Already in Graveyard",
+    "noStarsLeft": "No Stars Left",
+    "activated": "Activated",
+    "notActivated": "Not Activated",
+    "cantPing": "Can't Ping",
+    "rewardReady": "Reward Ready",
+    "readyForBreeding": "Ready for Breeding",
+    "claimReady": "Ready to Claim",
+    "locked": "Locked",
+    "claimable": "Claimable"
+  },
+  "pages": {
+    "breed": {
+      "title": "Cube Breeding",
+      "subtitle": "Create a new cube from two parents",
+      "selectParents": "Select two parents",
+      "noNftsAvailable": "No NFTs available for breeding",
+      "needTwoParents": "Need to select two parents",
+      "breedingFee": "Breeding fee",
+      "breedingSuccess": "Breeding successful!",
+      "breedingFailed": "Breeding failed",
+      "howItWorks": "How it works",
+      "breedingGuide": "Breeding guide",
+      "selectTwoNfts": "Select 2 NFTs with at least 1 star",
+      "payFee": "Pay 20% of market price fee",
+      "getNewCube": "Get new cube in your collection"
+    },
+    "burn": {
+      "title": "Cube Burning",
+      "subtitle": "Burn NFT to get locked CRA",
+      "selectToBurn": "Select NFT to burn",
+      "burnFee": "Burn fee",
+      "burnSuccess": "Burn successful!",
+      "burnFailed": "Burn failed",
+      "confirmBurn": "Confirm burn",
+      "burnWarning": "Warning: burning is irreversible!",
+      "nftWillBeDestroyed": "NFT will be destroyed forever",
+      "craWillBeTransferred": "CRA will be transferred to your wallet"
+    },
+    "ping": {
+      "title": "Cube Ping",
+      "subtitle": "Ping cubes every 3 minutes to earn CRA",
+      "pingYourCubes": "Ping your cubes",
+      "howPingWorks": "How ping works",
+      "pingInterval": "Ping interval",
+      "betweenPings": "Between pings",
+      "pingableNfts": "NFTs ready to ping",
+      "noPingableNfts": "No NFTs ready to ping",
+      "nftsNeedActivation": "Your NFTs must be activated and not in graveyard to ping",
+      "pingInitiated": "Ping initiated!",
+      "pingTransaction": "Ping transaction sent for NFT",
+      "earnCraBasedOnRarity": "You'll earn CRA based on rarity!",
+      "pingSuccessful": "Ping successful!",
+      "nftPinged": "Your NFT was pinged and CRA earned!"
+    },
+    "claim": {
+      "title": "Claim Rewards",
+      "subtitle": "Claim your earned CRA tokens",
+      "searchingRewards": "Searching for your rewards",
+      "scanningBlockchain": "Scanning blockchain and graveyard, this may take a few seconds",
+      "noRewards": "No rewards found",
+      "noRewardsDescription": "You don't have any available rewards to claim yet"
+    },
+    "graveyard": {
+      "title": "Cube Graveyard",
+      "subtitle": "Resting place of burned NFTs",
+      "burnedCubes": "Burned cubes",
+      "restInPeace": "Rest in peace",
+      "someStillWhisper": "Some still whisper from the ashes",
+      "totalBurned": "Total burned",
+      "viewBurnedNft": "View burned NFT"
+    },
+    "stats": {
+      "title": "Game Statistics",
+      "subtitle": "Real-time game state data",
+      "totalNfts": "Total NFTs",
+      "activeNfts": "Active NFTs",
+      "burnedNfts": "Burned NFTs",
+      "totalCra": "Total CRA",
+      "lockedCra": "Locked CRA",
+      "burnedCra": "Burned CRA",
+      "gameActivity": "Game Activity",
+      "recentTransactions": "Recent Transactions"
+    },
+    "info": {
+      "title": "Information",
+      "subtitle": "Detailed information about your NFTs and the game",
+      "overview": "Overview",
+      "yourCollection": "Your Collection",
+      "gameRules": "Game Rules",
+      "tokenomics": "Tokenomics",
+      "connectWalletNfts": "Connect your wallet to see your NFTs.",
+      "noNfts": "You don't own any CrazyCube NFTs.",
+      "yourNfts": "Your NFTs",
+      "live": "live",
+      "inGraveyard": "in graveyard",
+      "activeNfts": "Active NFTs",
+      "nftsInGraveyard": "NFTs in Graveyard",
+      "noStars": "No stars",
+      "lockedCra": "Locked CRA",
+      "totalCraLocked": "Total CRA locked in your NFTs",
+      "craLockedWarning": "CRA locked inside an NFT are not burned and travel with the NFT when it is transferred, sold or moved in any way. They permanently belong to the NFT itself. You can obtain these tokens only by",
+      "craLockedWarningBurn": "burning"
+    }
+  },
+  "components": {
+    "buttons": {
+      "connect": "Connect",
+      "disconnect": "Disconnect",
+      "approve": "Approve",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "retry": "Retry",
+      "close": "Close",
+      "back": "Back",
+      "next": "Next",
+      "save": "Save",
+      "load": "Load",
+      "refresh": "Refresh"
+    },
+    "messages": {
+      "loading": "Loading...",
+      "connecting": "Connecting...",
+      "processing": "Processing...",
+      "success": "Success!",
+      "error": "Error",
+      "warning": "Warning",
+      "info": "Information",
+      "noData": "No data",
+      "noResults": "No results found",
+      "tryAgain": "Try again",
+      "somethingWentWrong": "Something went wrong",
+      "pleaseWait": "Please wait",
+      "transactionPending": "Transaction pending",
+      "transactionConfirmed": "Transaction confirmed",
+      "transactionFailed": "Transaction failed"
+    },
+    "forms": {
+      "required": "Required field",
+      "invalid": "Invalid value",
+      "tooShort": "Too short",
+      "tooLong": "Too long",
+      "enterAmount": "Enter amount",
+      "selectOption": "Select option",
+      "searchPlaceholder": "Search...",
+      "noOptionsAvailable": "No options available"
+    },
+    "navigation": {
+      "home": "Home",
+      "back": "Back",
+      "forward": "Forward",
+      "menu": "Menu",
+      "settings": "Settings",
+      "help": "Help",
+      "about": "About"
+    }
+  },
+  "rarity": {
+    "common": "Common",
+    "uncommon": "Uncommon",
+    "rare": "Rare",
+    "epic": "Epic",
+    "legendary": "Legendary",
+    "mythic": "Mythic",
+    "unknown": "Unknown"
+  },
+  "cube": "Cube",
+  "glueCube": {
+    "phrases": [
+      "I'll fix everything now!",
+      "Oops... my bad!",
+      "Don't worry, we'll fix it!"
+    ]
+  },
+  "cubeObservers": {
+    "idlePhrases": [
+      "What are you doing here?",
+      "Who's making noise?",
+      "Oh-oh-oh...",
+      "I'm not looking!",
+      "Don't disturb my sleep!"
+    ],
+    "successPhrases": [
+      "Congrats on your new cube!",
+      "Hooray, a new cube baby!",
+      "Welcome, little one!"
+    ]
+  },
+  "shyCubes": {
+    "bubbles": [
+      "Oh-oh-oh!",
+      "What's going on here?",
+      "Who's making noise?",
+      "We didn't see anything!",
+      "Don't look!"
+    ]
+  }
+}

@@ -1,0 +1,583 @@
+{
+  "home": {
+    "title": "CrazyCube",
+    "subtitle": "큐브가 울고 웃는 곳!",
+    "balance": "잔액:",
+    "connectWallet": "MetaMask 연결",
+    "walletNotDetected": "MetaMask가 감지되지 않았습니다. 먼저 설치하세요"
+  },
+  "sections": {
+    "bridge": {
+      "title": "브릿지 (큐브 되돌리기!)",
+      "description": "큐브가 묘지에서 돌아옵니다 — 무작위 NFT가 뛰쳐나오며 \"자유다!\"라고 외칩니다",
+      "button": "NFT 브릿지",
+      "guide": {
+        "title": "🪄 부활 가이드",
+        "intro": "묘지에서 큐브를 되살리려면 OpenSea 또는 Magic Eden에서의 현재 가격의 20%에 해당하는 CRA 수수료를 지불할 수 있습니다.",
+        "fee": "수수료는 최신 시장가에 따라 자동 계산되며 영구적으로 소각됩니다.",
+        "requirement": "부활을 위해 최소 별 1개를 가진 NFT 2개를 선택하세요.",
+        "rarity": "별 등급: 1 ⭐ — 일반, 2 ⭐ — 희귀, 3 ⭐ — 레어, 4 ⭐ — 에픽, 5 ⭐ — 미식.",
+        "penalty": "성공적인 부활 후 선택된 각 NFT는 별 1개를 잃습니다.",
+        "step1": "1. 20% 수수료를 위한 CRA 지출 승인.",
+        "step2": "2. 브릿지 트랜잭션 확인 — NFT가 즉시 지갑으로 돌아옵니다.",
+        "note": "5,000개의 큐브만 존재하며, 그 수는 절대 변하지 않습니다. 소각된 CRA는 데드지갑으로 가며 누구도 복구할 수 없습니다."
+      }
+    },
+    "burn": {
+      "title": "NFT 소각 (큐브를 구워요!)",
+      "description": "NFT를 소각하고 CRA 토큰을 받으세요! 불타는 그릴에서 큐브들이 날아다니며 외칩니다: \"엄마한테 사랑한다고 전해줘!\"",
+      "button": "NFT 소각",
+      "feeBox": {
+        "title": "🔥 소각 수수료 및 단계",
+        "line1": "• 소각 수수료는 큐브 내 잠긴 CRA의 <1>5%</1>입니다.",
+        "line2": "• 소각하려면 <1>세 번의 확인</1>이 필요합니다:",
+        "step1": "1. 계약에 NFT 이동 권한을 부여합니다.",
+        "step2": "2. 잠긴 코인의 5% CRA 지출을 허용합니다.",
+        "step3": "3. 최종 트랜잭션 확인 — 큐브가 소각되고 CRA가 당신에게 갑니다.",
+        "note": "시작하기 전에 지갑에 수수료를 위한 충분한 CRA가 있는지 확인하세요.",
+        "guide": {
+          "title": "🔥 소각 가이드",
+          "intro": "소각 전에 반드시 핑(7일마다 한 번)을 해서 채굴된 CRA를 잠금 해제해야 합니다.",
+          "loss": "소각 후 NFT는 영구적으로 묘지로 보내집니다. CRA는 보상 섹션에서 청구할 수 있습니다.",
+          "step1": "1. 계약에 NFT 이동 권한을 부여합니다.",
+          "step2": "2. 잠긴 코인의 5% CRA 지출을 허용합니다.",
+          "step3": "3. 최종 트랜잭션 확인 — 큐브가 소각되고 CRA가 당신에게 갑니다.",
+          "timing": "CRA는 선택한 지연(12시간 / 24시간 / 48시간) 후에 도착합니다. 이 시간 동안 큐브는 회색(쿨다운)입니다.",
+          "note": "예: 10,000 CRA 잠김 → 수수료 500 CRA (5%). 더 긴 지연 = 더 작은 풀 점유율.",
+          "pingLock": "핑할 때 CRA는 지갑으로 가지 않고 NFT 내에 잠겨 있습니다. 소각으로만 인출할 수 있습니다.",
+          "bridgeNote": "'브릿지' 섹션에서 묘지의 NFT를 부활시킵니다. 큐브 수는 5000개로 제한되며 절대 변하지 않습니다. 각 행동에서 소각되는 CRA는 영원히 데드지갑으로 가며 누구도 되찾을 수 없습니다."
+        }
+      }
+    },
+    "claim": {
+      "title": "보상 청구 (내 CRA 어디에?)",
+      "description": "커다란 슬픈 눈의 큐브가 \"날 청구하고 CRA를 받아가!\"라고 외칩니다",
+      "button": "보상 청구",
+      "processing": "처리 중...",
+      "claimReward": "보상 청구",
+      "waitingForWallet": "지갑 확인 대기 중...",
+      "processingClaim": "청구 처리 중..."
+    },
+    "stats": {
+      "title": "통계 (눈물과 고통 카운터)",
+      "description": "얼마나 많은 NFT가 소각되었고, 묘지에서 돌아왔으며, 풀에 얼마나 많은 CRA가 있는지 보여줍니다",
+      "button": "통계 보기"
+    },
+    "ping": {
+      "title": "큐브 핑 (살려 두세요)",
+      "description": "큐브들이 허공으로 떠다니지 않도록 심장박동을 보내세요.",
+      "button": "핑",
+      "readyToPing": "핑 준비됨",
+      "cooldown": "쿨다운:",
+      "waitingForWallet": "지갑 확인 대기 중...",
+      "processingPing": "핑 처리 중..."
+    },
+    "graveyard": {
+      "title": "묘지",
+      "description": "소각된 큐브들을 보고, 애도하며, CRA 보상을 청구하세요.",
+      "button": "묘지로 가기",
+      "phrases": [
+        "여기는 왜 이렇게 어두워… ☠️",
+        "추워… 🥶",
+        "저게 빛인가? 💀",
+        "후회 없어! 🔥",
+        "재는 재로…",
+        "엄마에게 괜찮다고 전해줘!",
+        "여기 꽤 아늑한데… 아마도?"
+      ]
+    },
+    "breed": {
+      "title": "NFT 교배 (큐브 사랑!)",
+      "description": "두 NFT를 결합해서 묘지에서 하나를 부활시키세요! 사랑이 공중에 떠다닙니다! 💕",
+      "button": "NFT 교배",
+      "feeNotice": "OpenSea 또는 Magic Eden의 현재 NFT 가격의 20%",
+      "cooldown": "⏳ 쿨다운:",
+      "needTwoNfts": "교배를 위해 정확히 2개의 NFT를 선택해야 합니다",
+      "waitingForWallet": "지갑 확인 대기 중...",
+      "processingBreeding": "교배 처리 중...",
+      "graveyardCooldown": "묘지 쿨다운 활성화",
+      "graveyardCooldownDesc": "최소 하나의 소각된 큐브가 쿨다운을 완료할 때까지 기다리세요",
+      "graveyardReady": "묘지가 교배 준비 완료",
+      "graveyardEmpty": "묘지에 소각된 큐브가 없습니다",
+      "timeUntilReady": "준비될 때까지 시간:",
+      "selectNft": "NFT 선택",
+      "selectedNft": "선택된 NFT",
+      "breeding": "교배 중...",
+      "breedNfts": "NFT 교배",
+      "returnToHome": "홈으로 돌아가기",
+      "connectWallet": "지갑 연결",
+      "connectWalletDesc": "NFT를 보고 교배하려면 지갑을 연결하세요",
+      "connectWalletButton": "지갑 연결",
+      "errorLoadingNfts": "NFT 로딩 오류",
+      "loadingNfts": "NFT 로딩 중...",
+      "loadingNftsDesc": "CrazyCube 컬렉션을 가져오는 중",
+      "noNftsFound": "NFT를 찾을 수 없음",
+      "noNftsFoundDesc": "교배할 CrazyCube NFT가 없습니다",
+      "goToCollection": "컬렉션으로 이동",
+      "selectNftsForBreeding": "교배를 위해 2개의 NFT 선택",
+      "loadingGraveyardStatus": "묘지 상태 로딩 중...",
+      "insufficientCra": "CRA 부족",
+      "needCraToBreed": "교배하려면 {amount} CRA가 필요합니다",
+      "approveCra": "CRA 승인",
+      "approveCraDesc": "첫 번째 거래: 계약에 CRA 지출 권한 부여",
+      "approvalConfirmed": "승인 확인됨",
+      "craAllowanceSet": "CRA 한도 설정됨",
+      "confirmBreeding": "교배 확인",
+      "signBreedingTransaction": "교배 거래 서명",
+      "breedingCanceled": "교배 취소됨",
+      "transactionRejected": "거래 거부됨",
+      "breedingSuccessful": "교배 성공! 💕",
+      "txConfirmed": "거래 확인됨: {hash}...",
+      "transactionError": "거래 오류",
+      "inactiveNftSelected": "비활성 NFT 선택됨",
+      "nftNoStarsLeft": "NFT #{id}에 남은 별이 없어 교배에 사용할 수 없습니다.",
+      "maximumSelectionReached": "최대 선택 수에 도달함",
+      "canOnlySelectTwoNfts": "교배를 위해 2개의 NFT만 선택할 수 있습니다",
+      "invalidSelection": "잘못된 선택",
+      "mustSelectExactlyTwoNfts": "교배를 위해 정확히 2개의 NFT를 선택해야 합니다",
+      "walletNotConnected": "지갑이 연결되지 않음",
+      "pleaseConnectWalletFirst": "먼저 지갑을 연결하세요",
+      "selectedNftsNoStars": "선택된 NFT에 남은 별이 없습니다! 별이 있는 활성 NFT를 선택하세요.",
+      "cannotBreedSelectedNfts": "선택된 NFT를 교배할 수 없습니다. 요구사항을 확인하세요.",
+      "guide": {
+        "title": "🪄 교배 가이드",
+        "intro": "OpenSea 또는 Magic Eden의 현재 가격의 20%에 해당하는 CRA 수수료를 지불하여 새로운 큐브를 교배할 수 있습니다.",
+        "fee": "수수료는 최신 시장가에 따라 자동 계산되며 영구적으로 소각됩니다.",
+        "requirement": "교배를 위해 최소 1 ⭐를 가진 NFT 2개를 선택하세요.",
+        "rarity": "별 등급: 1 ⭐ — 일반, 2 ⭐ — 희귀, 3 ⭐ — 레어, 4 ⭐ — 에픽, 5 ⭐ — 레전더리, 6 ⭐ — 미식.",
+        "penalty": "별이 잃어집니다!",
+        "step1": "1. 20% 수수료를 위한 CRA 지출 허용.",
+        "step2": "2. 교배 트랜잭션 확인 — 새로운 큐브가 생성되고 CRA가 소각됩니다.",
+        "note": "컬렉션은 5,000개 큐브로 제한됩니다; CRA는 복구 가능성 없이 데드지갑으로 소각됩니다."
+      }
+    }
+  },
+  "footer": {
+    "copyright": "© 2025 CrazyCube — 큐브가 울고 웃는 곳!",
+    "crashMessage": "사이트가 다운되면 큐브가 피자를 사러 간 거예요"
+  },
+  "construction": {
+    "title": "공사 중",
+    "message": "이 섹션은 아직 개발 중입니다. 곧 여기에 많은 흥미로운 것들이 있을 거예요!",
+    "returnHome": "집으로 돌아가기",
+    "phrases": [
+      "여기서 일하고 있어요! 방해하지 마세요!",
+      "곧 될 거예요, 헬멧 쓰고 있어요!",
+      "공사 진행 중!",
+      "큐브가 공사 중이니 나중에 오세요!",
+      "여기 아름다울 거예요, 약속해요!",
+      "어머, 일찍 오셨네요! 아직 안 끝났어요!",
+      "큐브가 건설하고, 칠하고, 피곤해요..."
+    ]
+  },
+  "wallet": {
+    "connect": "연결",
+    "connecting": "연결 중…",
+    "copyAddress": "주소 복사",
+    "copied": "복사됨!",
+    "openExplorer": "탐색기에서 열기",
+    "disconnect": "지갑 연결 해제",
+    "balance": "잔액:"
+  },
+  "cubeAnimation": {
+    "loading": "로딩 중...",
+    "loadingMessage": "앗, 사이트가 멈췄어요! 잠시만요, 우리가 좀 게을러요 🦥",
+    "speechBubbles": [
+      "서 있기 지겨워! 🥱",
+      "어라, 모두 어디 갔지?! 😱",
+      "나도 가! 👋",
+      "피자 사러 가! 🍕",
+      "매니큐어 시간! 💅"
+    ],
+    "partyBubble": "야호! 모두 갔다! 파티 시간! 🎵🎉",
+    "whereIsEveryone": "어라, 모두 어디 갔지?! 😱",
+    "waitingForMusicPhrases": [
+      "음악 좀 틀어줘! 🎵",
+      "음악 없으니 심심해... 😴",
+      "춤추고 싶어! 음악이 필요해! 💃",
+      "누가 버튼 좀! 👆"
+    ],
+    "partyPhrases": [
+      "밤새 춤춰! 🕺",
+      "파티가 막 시작됐어! 🎉",
+      "누가 큐브가 파티 못 한다고 했어? 🎵",
+      "음악 크게! 🔊",
+      "이 파티의 왕은 나야! 👑",
+      "나보다 잘 추는 사람은 없어! 💃",
+      "이게 내 최애 트랙이야! 🎧",
+      "DJ, 볼륨 올려! 🎚️",
+      "큐브들이 여기 있어! 🏠",
+      "새벽까지 파티! 🌅"
+    ],
+    "musicOn": "음악 끄기",
+    "musicOff": "음악 켜기"
+  },
+  "social": {
+    "telegram": "텔레그램",
+    "discord": "디스코드",
+    "followUs": "팔로우하기"
+  },
+  "tabs": {
+    "breed": "교배",
+    "bridge": "브릿지",
+    "burn": "소각",
+    "claim": "보상",
+    "stats": "통계",
+    "graveyard": "묘지",
+    "ping": "핑"
+  },
+  "tokenInfo": {
+    "priceUSD": "USD 가격",
+    "marketCap": "시가총액",
+    "volume24h": "24시간 거래량",
+    "totalBurns": "총 소각",
+    "avg": "평균",
+    "totalSupply": "총 공급량",
+    "circulating": "유통량",
+    "burned": "소각됨"
+  },
+  "common": {
+    "retry": "다시 시도",
+    "loading": "로딩 중..."
+  },
+  "market": {
+    "loading": "시장 데이터 로딩 중...",
+    "failed": "시장 데이터 로딩 실패",
+    "header": "시장 가격",
+    "subtitle": "실시간 NFT와 토큰",
+    "error": "오류",
+    "live": "라이브",
+    "floorPrice": "최저가",
+    "buyNft": "MagicEden에서 NFT 구매",
+    "gameToken": "게임 토큰",
+    "baseCurrency": "기본 통화",
+    "tradeDex": "Camelot DEX에서 거래",
+    "additional": "추가 정보",
+    "change1h": "1시간 변화",
+    "change24h": "24시간 변화",
+    "volume24h": "24시간 거래량",
+    "marketCap": "시가총액"
+  },
+  "rewards": {
+    "loading": {
+      "title": "보상 검색 중…"
+    },
+    "accumulated": "누적:",
+    "toPool": "풀로",
+    "burned": "소각됨",
+    "toClaim": "청구 예정",
+    "availableIn": "사용 가능:",
+    "processing": "처리 중...",
+    "claim": "보상 청구",
+    "claimed": "보상 청구됨"
+  },
+  "info": {
+    "nftInspector": "⏱️ NFT 쿨다운 인스펙터",
+    "lockedCra": "잠긴 CRA",
+    "enterNftId": "확인할 NFT ID 입력",
+    "connectWallet": "NFT 확인을 위해 지갑 연결",
+    "connectWalletNfts": "NFT를 보려면 지갑을 연결하세요",
+    "noNfts": "CrazyCube NFT가 없습니다",
+    "yourNfts": "당신의 NFT",
+    "live": "살아있음",
+    "inGraveyard": "묘지에",
+    "activeNfts": "활성 NFT",
+    "nftsInGraveyard": "묘지의 NFT",
+    "noStars": "별 없음",
+    "totalCraLocked": "NFT에 잠긴 총 CRA",
+    "nftCollection": "NFT 컬렉션",
+    "totalNfts": "총 NFT",
+    "craSupply": "CRA 공급량",
+    "rarity": "희귀도",
+    "stars": "별",
+    "status": "상태",
+    "graveyard": "묘지",
+    "active": "활성",
+    "locked": "잠김",
+    "timeLeft": "남은 시간",
+    "guide": {
+      "title": "CrazyCube 플레이 방법",
+      "subtitle": "게임 메커니즘 완전 가이드"
+    },
+    "tabs": {
+      "overview": "개요",
+      "craToken": "CRA 토큰",
+      "contract": "계약",
+      "contractData": "계약 데이터",
+      "liveAnalytics": "실시간 분석"
+    },
+    "features": {
+      "title": "⚡ 독특한 게임 특징",
+      "accumulate": {
+        "title": "누적된 코인은 소각되지 않음",
+        "desc": "당신의 CRA 토큰은 잠기고 누적되며, 영원히 소각되지 않습니다!"
+      },
+      "future": {
+        "title": "탈중앙화 미래",
+        "desc": "디버깅 후(1-2개월) 팀은 관리자 권한을 비활성화하고 자율 에이전트에게 제어권을 이전합니다"
+      },
+      "autonomy": {
+        "title": "완전한 자율성",
+        "desc": "NFT 컬렉션은 완전히 탈중앙화된 시장 거버넌스로 전환됩니다"
+      }
+    },
+    "actions": {
+      "title": "📊 게임 액션과 타이머",
+      "timeLabel": "시간:",
+      "burn": {
+        "title": "NFT 소각",
+        "time": "12/24/48 시간",
+        "desc": "NFT를 소각하고 보상을 위해 CRA 토큰을 잠급니다"
+      },
+      "graveyard": {
+        "title": "묘지",
+        "desc": "소각된 NFT는 48시간 쿨다운으로 묘지에 갑니다"
+      },
+      "breed": {
+        "title": "교배",
+        "desc": "묘지에서 새로운 NFT 생성",
+        "note": "교배 후 NFT는 액션에 참여할 수 없습니다"
+      },
+      "ping": {
+        "title": "핑",
+        "desc": "보상을 위해 NFT 활성화",
+        "time": "7일 간격",
+        "note": "NFT는 누적되고 소각되지 않습니다!"
+      },
+      "rewards": {
+        "title": "풀 보상",
+        "desc": "보상 풀에서 CRA 토큰 받기",
+        "time": "30일 간격"
+      },
+      "other": {
+        "title": "기타 액션",
+        "desc": "다양한 게임 메커니즘",
+        "time": "24시간 쿨다운"
+      },
+      "cooldown48": "48시간 쿨다운"
+    },
+    "roadmap": {
+      "title": "🛣️ 탈중앙화로의 길",
+      "phase1": {
+        "title": "1단계: 디버깅",
+        "desc": "모든 게임 메커니즘의 1-2개월 테스트 및 최적화"
+      },
+      "phase2": {
+        "title": "2단계: 자율성",
+        "desc": "자율 에이전트 연결 및 관리자 권한 제거"
+      },
+      "phase3": {
+        "title": "3단계: 자유",
+        "desc": "NFT 컬렉션과 게임 계약이 완전히 탈중앙화되고, CRA 토큰이 자율적이 됩니다"
+      },
+      "callout": "🚀 CrazyCube - 완전한 탈중앙화 계획을 가진 첫 번째 NFT 컬렉션!"
+    }
+  },
+  "status": {
+    "ready": "준비됨",
+    "readyToClaim": "청구 준비됨",
+    "waiting": "준비되지 않음",
+    "processing": "처리 중",
+    "success": "성공",
+    "failed": "실패",
+    "claim": "청구",
+    "claimed": "청구됨",
+    "alreadyBurned": "이미 소각됨",
+    "alreadyInGraveyard": "이미 묘지에",
+    "noStarsLeft": "별이 남지 않음",
+    "activated": "활성화됨",
+    "notActivated": "비활성화됨",
+    "cantPing": "핑할 수 없음",
+    "rewardReady": "보상 준비됨",
+    "readyForBreeding": "교배 준비됨",
+    "claimReady": "청구 준비됨",
+    "locked": "잠김",
+    "claimable": "청구 가능"
+  },
+  "pages": {
+    "breed": {
+      "title": "큐브 교배",
+      "subtitle": "두 부모로부터 새로운 큐브 생성",
+      "selectParents": "두 부모 선택",
+      "noNftsAvailable": "교배에 사용 가능한 NFT 없음",
+      "needTwoParents": "두 부모를 선택해야 합니다",
+      "breedingFee": "교배 수수료",
+      "breedingSuccess": "교배 성공!",
+      "breedingFailed": "교배 실패",
+      "howItWorks": "작동 방식",
+      "breedingGuide": "교배 가이드",
+      "selectTwoNfts": "최소 1개 별을 가진 NFT 2개 선택",
+      "payFee": "시장 가격의 20% 수수료 지불",
+      "getNewCube": "컬렉션에서 새로운 큐브 얻기"
+    },
+    "burn": {
+      "title": "큐브 소각",
+      "subtitle": "잠긴 CRA를 얻기 위해 NFT 소각",
+      "selectToBurn": "소각할 NFT 선택",
+      "burnFee": "소각 수수료",
+      "burnSuccess": "소각 성공!",
+      "burnFailed": "소각 실패",
+      "confirmBurn": "소각 확인",
+      "burnWarning": "경고: 소각은 되돌릴 수 없습니다!",
+      "nftWillBeDestroyed": "NFT가 영원히 파괴됩니다",
+      "craWillBeTransferred": "CRA가 지갑으로 이전됩니다"
+    },
+    "ping": {
+      "title": "큐브 핑",
+      "subtitle": "CRA를 얻기 위해 3분마다 큐브 핑",
+      "pingYourCubes": "큐브들을 핑하세요",
+      "howPingWorks": "핑 작동 방식",
+      "pingInterval": "핑 간격",
+      "betweenPings": "핑 사이",
+      "pingableNfts": "핑 준비된 NFT",
+      "noPingableNfts": "핑 준비된 NFT 없음",
+      "nftsNeedActivation": "핑하려면 NFT가 활성화되어야 하고 묘지에 있지 않아야 합니다",
+      "pingInitiated": "핑 시작됨!",
+      "pingTransaction": "NFT용 핑 트랜잭션 전송됨",
+      "earnCraBasedOnRarity": "희귀도에 따라 CRA를 얻을 것입니다!",
+      "pingSuccessful": "핑 성공!",
+      "nftPinged": "NFT가 핑되었고 CRA를 얻었습니다!"
+    },
+    "claim": {
+      "title": "보상 청구",
+      "subtitle": "획득한 CRA 토큰 청구",
+      "searchingRewards": "보상 검색 중",
+      "scanningBlockchain": "블록체인과 묘지 스캔 중, 몇 초 걸릴 수 있습니다",
+      "noRewards": "보상을 찾을 수 없음",
+      "noRewardsDescription": "아직 청구할 수 있는 보상이 없습니다"
+    },
+    "graveyard": {
+      "title": "큐브 묘지",
+      "subtitle": "소각된 NFT의 안식처",
+      "burnedCubes": "소각된 큐브",
+      "restInPeace": "평안히 쉬세요",
+      "someStillWhisper": "일부는 재에서 여전히 속삭입니다",
+      "totalBurned": "총 소각됨",
+      "viewBurnedNft": "소각된 NFT 보기"
+    },
+    "stats": {
+      "title": "게임 통계",
+      "subtitle": "실시간 게임 상태 데이터",
+      "totalNfts": "총 NFT",
+      "activeNfts": "활성 NFT",
+      "burnedNfts": "소각된 NFT",
+      "totalCra": "총 CRA",
+      "lockedCra": "잠긴 CRA",
+      "burnedCra": "소각된 CRA",
+      "gameActivity": "게임 활동",
+      "recentTransactions": "최근 트랜잭션"
+    },
+    "info": {
+      "title": "정보",
+      "subtitle": "NFT와 게임에 대한 자세한 정보",
+      "overview": "개요",
+      "yourCollection": "컬렉션",
+      "gameRules": "게임 규칙",
+      "tokenomics": "토크노믹스",
+      "connectWalletNfts": "NFT를 보려면 지갑을 연결하세요.",
+      "noNfts": "CrazyCube NFT를 소유하고 있지 않습니다.",
+      "yourNfts": "당신의 NFT",
+      "live": "활성",
+      "inGraveyard": "무덤에",
+      "activeNfts": "활성 NFT",
+      "nftsInGraveyard": "무덤의 NFT",
+      "noStars": "별 없음",
+      "lockedCra": "잠긴 CRA",
+      "totalCraLocked": "NFT에 잠긴 총 CRA",
+      "craLockedWarning": "NFT 내부에 잠긴 CRA는 소각되지 않으며 NFT가 전송, 판매 또는 어떤 방식으로든 이동할 때 NFT와 함께 이동합니다. 이들은 NFT 자체에 영구적으로 속합니다. 이 토큰들은 오직",
+      "craLockedWarningBurn": "소각"
+    }
+  },
+  "components": {
+    "buttons": {
+      "connect": "연결",
+      "disconnect": "연결 해제",
+      "approve": "승인",
+      "confirm": "확인",
+      "cancel": "취소",
+      "retry": "다시 시도",
+      "close": "닫기",
+      "back": "뒤로",
+      "next": "다음",
+      "save": "저장",
+      "load": "로드",
+      "refresh": "새로고침"
+    },
+    "messages": {
+      "loading": "로딩 중...",
+      "connecting": "연결 중...",
+      "processing": "처리 중...",
+      "success": "성공!",
+      "error": "오류",
+      "warning": "경고",
+      "info": "정보",
+      "noData": "데이터 없음",
+      "noResults": "결과 없음",
+      "tryAgain": "다시 시도",
+      "somethingWentWrong": "문제가 발생했습니다",
+      "pleaseWait": "기다려 주세요",
+      "transactionPending": "트랜잭션 대기 중",
+      "transactionConfirmed": "트랜잭션 확인됨",
+      "transactionFailed": "트랜잭션 실패"
+    },
+    "forms": {
+      "required": "필수 필드",
+      "invalid": "잘못된 값",
+      "tooShort": "너무 짧음",
+      "tooLong": "너무 긺",
+      "enterAmount": "금액 입력",
+      "selectOption": "옵션 선택",
+      "searchPlaceholder": "검색...",
+      "noOptionsAvailable": "사용 가능한 옵션 없음"
+    },
+    "navigation": {
+      "home": "홈",
+      "back": "뒤로",
+      "forward": "앞으로",
+      "menu": "메뉴",
+      "settings": "설정",
+      "help": "도움말",
+      "about": "정보"
+    }
+  },
+  "rarity": {
+    "common": "일반",
+    "uncommon": "희귀",
+    "rare": "레어",
+    "epic": "에픽",
+    "legendary": "레전더리",
+    "mythic": "미식",
+    "unknown": "알 수 없음"
+  },
+  "cube": "큐브",
+  "glueCube": {
+    "phrases": [
+      "지금 다 고쳐드릴게요!",
+      "앗... 제 실수네요!",
+      "걱정 마세요, 고쳐드릴게요!"
+    ]
+  },
+  "cubeObservers": {
+    "idlePhrases": [
+      "여기서 뭐해요?",
+      "누가 시끄럽게 해요?",
+      "오-오-오...",
+      "안 볼게요!",
+      "내 잠을 방해하지 마세요!"
+    ],
+    "successPhrases": [
+      "새 큐브를 축하해요!",
+      "만세, 새로운 큐브 아기!",
+      "환영해요, 꼬마야!"
+    ]
+  },
+  "shyCubes": {
+    "bubbles": [
+      "오-오-오!",
+      "여기서 무슨 일이야?",
+      "누가 시끄럽게 해요?",
+      "우린 아무것도 못 봤어요!",
+      "보지 마세요!"
+    ]
+  }
+}

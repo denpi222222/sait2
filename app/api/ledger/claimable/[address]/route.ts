@@ -1,0 +1,37 @@
+import { NextResponse } from 'next/server'
+import fs from 'fs/promises'
+import path from 'path'
+import { z } from 'zod'
+
+export const dynamic = 'force-dynamic'
+
+const LEDGER_PATH = path.join(process.cwd(), 'data', 'ledger.json')
+
+export async function GET (_req: Request, { params }: { params: { address: string } }) {
+  const address = params.address?.toLowerCase()
+  if (!address) return NextResponse.json({ error: 'address missing' }, { status: 400 })
+
+  const addrSchema = z.string().regex(/^0x[a-fA-F0-9]{40}$/)
+  if (!addrSchema.safeParse(address).success) {
+    return NextResponse.json({ error: 'invalid address' }, { status: 400 })
+  }
+
+  try {
+    const raw = await fs.readFile(LEDGER_PATH, 'utf8')
+    const data = JSON.parse(raw) as { tokens: Record<string, { status: string; player: string; waitHours: number; burnTime: number }> }
+    const now = Math.floor(Date.now() / 1000)
+
+    const pending = Object.entries(data.tokens)
+      .filter(([, v]) => v.status === 'BURNED' && v.player.toLowerCase() === address)
+      .map(([tokenId, v]) => {
+        const unlockTs = v.burnTime + v.waitHours * 3600
+        const timeLeft = Math.max(0, unlockTs - now)
+        return { tokenId, waitHours: v.waitHours, burnTime: v.burnTime, canClaim: timeLeft === 0, timeLeft }
+      })
+
+    return NextResponse.json({ pending }, { headers: { 'Cache-Control': 'public, max-age=30, stale-while-revalidate=60' } })
+  } catch (e: any) {
+    console.error('/api/ledger/claimable error', e)
+    return NextResponse.json({ error: e?.message || 'internal error' }, { status: 500 })
+  }
+} 

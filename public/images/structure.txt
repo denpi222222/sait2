@@ -1,0 +1,12 @@
+/public/images/
+  - cra-token.png         (логотип CRA токена)
+  - logo.png              (основной логотип CrazyCube)
+  - blue-cube.png         (синий грустный куб с пиццей)
+  - purple-cowboy.png     (фиолетовый куб-ковбой)
+  - pink-cube.png         (розовый куб с ресницами)
+  - green-cool.png        (зеленый крутой куб)
+  - pink-party.png        (розовый куб для вечеринки)
+  - worm-hat.png          (куб с шляпой и червяком)
+  - ice-cream.png         (куб с мороженым)
+  - boombox.png           (бумбокс для анимации)
+  - background.png        (фоновое изображение, если нужно)

@@ -1,0 +1,325 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { 
+  Clock, 
+  Zap, 
+  Heart, 
+  Star, 
+  Skull, 
+  Timer, 
+  Info,
+  Search,
+  RefreshCw
+} from 'lucide-react';
+import { motion } from 'framer-motion';
+import { useCrazyCubeGame } from '@/hooks/useCrazyCubeGame';
+import { useTranslation } from 'react-i18next';
+
+interface NFTCooldownData {
+  tokenId: string;
+  rarity: number;
+  initialStars: number;
+  currentStars: number;
+  isActivated: boolean;
+  isInGraveyard: boolean;
+  lockedCRA: string;
+  lastPingTime: number;
+  lastBreedTime: number;
+  canPing: boolean;
+  canBreed: boolean;
+  pingCooldownLeft: number;
+  breedCooldownLeft: number;
+  expectedReward: string;
+  burnLockedAmount?: string;
+  burnTimeLeft?: number;
+  canClaim?: boolean;
+}
+
+export default function NFTCooldownInspector() {
+  const { t } = useTranslation();
+  const [tokenId, setTokenId] = useState('');
+  const [nftData, setNftData] = useState<NFTCooldownData | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  
+  const { 
+    getNFTGameData, 
+    getBurnRecord, 
+    pingInterval, 
+    breedCooldown,
+    isConnected 
+  } = useCrazyCubeGame();
+
+  const inspectNFT = async () => {
+    if (!tokenId.trim() || !isConnected) return;
+    
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const gameData = await getNFTGameData(tokenId);
+      if (!gameData) {
+        setError('NFT not found or not activated');
+        return;
+      }
+
+      const now = Math.floor(Date.now() / 1000);
+      const pingCooldownLeft = Math.max(0, pingInterval - (now - gameData.lastPingTime));
+      const breedCooldownLeft = Math.max(0, breedCooldown - (now - gameData.lastBreedTime));
+      
+      // Calculate expected reward
+      const baseReward = 1931412793049873561040n;
+      const rarityBonuses = [0, 0, 5, 10, 20, 35, 50];
+      const bonus = rarityBonuses[gameData.rarity] || 0;
+      const expectedReward = baseReward + (baseReward * BigInt(bonus) / 100n);
+
+      const burn = await getBurnRecord(tokenId);
+
+      const cooldownData: NFTCooldownData = {
+        tokenId: gameData.tokenId,
+        rarity: gameData.rarity,
+        initialStars: gameData.initialStars,
+        currentStars: gameData.currentStars,
+        isActivated: gameData.isActivated,
+        isInGraveyard: gameData.isInGraveyard,
+        lockedCRA: gameData.lockedCRA,
+        lastPingTime: gameData.lastPingTime,
+        lastBreedTime: gameData.lastBreedTime,
+        canPing: pingCooldownLeft === 0,
+        canBreed: breedCooldownLeft === 0,
+        pingCooldownLeft,
+        breedCooldownLeft,
+        expectedReward: (Number(expectedReward) / 1e18).toFixed(0),
+        burnLockedAmount: burn ? (Number(burn.lockedAmount)/1e18).toFixed(2) : undefined,
+        burnTimeLeft: burn ? burn.timeLeft : undefined,
+        canClaim: burn ? burn.canClaim : undefined,
+      };
+
+      setNftData(cooldownData);
+      
+    } catch (err) {
+      setError('Error fetching NFT data');
+      console.error('NFT inspection error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const formatTime = (seconds: number) => {
+    if (seconds <= 0) return t('status.ready', 'Ready');
+    
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    
+    if (hours > 0) return `${hours}ч ${minutes}м ${secs}с`;
+    if (minutes > 0) return `${minutes}м ${secs}с`;
+    return `${secs}с`;
+  };
+
+  const formatTimestamp = (timestamp: number) => {
+    if (timestamp === 0) return 'Never';
+    return new Date(timestamp * 1000).toLocaleString('en-US');
+  };
+
+  const getRarityColor = (rarity: number) => {
+    const colors = {
+      1: 'bg-gray-500',
+      2: 'bg-green-500',
+      3: 'bg-blue-500',
+      4: 'bg-purple-500',
+      5: 'bg-orange-500',
+      6: 'bg-red-500'
+    };
+    return colors[rarity as keyof typeof colors] || 'bg-gray-500';
+  };
+
+  const getRarityName = (rarity: number) => {
+    const names = {
+      1: t('rarity.common', 'Common'),
+      2: t('rarity.uncommon', 'Uncommon'), 
+      3: t('rarity.rare', 'Rare'),
+      4: t('rarity.epic', 'Epic'),
+      5: t('rarity.legendary', 'Legendary'),
+      6: t('rarity.mythic', 'Mythic')
+    };
+    return names[rarity as keyof typeof names] || t('rarity.unknown', 'Unknown');
+  };
+
+  // Auto-refresh every 3 seconds for real-time countdown
+  useEffect(() => {
+    if (!nftData) return;
+    
+    const interval = setInterval(() => {
+      const now = Math.floor(Date.now() / 1000);
+      const pingCooldownLeft = Math.max(0, pingInterval - (now - nftData.lastPingTime));
+      const breedCooldownLeft = Math.max(0, breedCooldown - (now - nftData.lastBreedTime));
+      
+      setNftData(prev => prev ? {
+        ...prev,
+        pingCooldownLeft,
+        breedCooldownLeft,
+        canPing: pingCooldownLeft === 0,
+        canBreed: breedCooldownLeft === 0
+      } : null);
+    }, 3000); // Изменено с 1000 на 3000 (3 секунды)
+
+    return () => clearInterval(interval);
+  }, [nftData, pingInterval, breedCooldown]);
+
+  return (
+    <Card className="w-full p-4 bg-slate-800/50 backdrop-blur-sm border-slate-700">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-bold text-white flex items-center">
+          <Clock className="h-5 w-5 mr-2 text-blue-400" />
+          {t('info.nftInspector', 'NFT Cooldown Inspector')}
+        </h3>
+      </div>
+
+      {/* Search Input */}
+      <div className="flex gap-2 mb-4">
+        <Input
+          type="number"
+          placeholder="Введите ID NFT"
+          value={tokenId}
+          onChange={(e) => setTokenId(e.target.value)}
+          className="bg-slate-900/50 border-slate-600 text-white placeholder:text-slate-400 h-9"
+          onKeyPress={(e) => e.key === 'Enter' && inspectNFT()}
+        />
+        <Button 
+          onClick={inspectNFT}
+          disabled={loading || !isConnected || !tokenId.trim()}
+          className="bg-blue-600 hover:bg-blue-700 h-9 px-3"
+        >
+          {loading ? (
+            <RefreshCw className="h-4 w-4 animate-spin" />
+          ) : (
+            <Search className="h-4 w-4" />
+          )}
+        </Button>
+      </div>
+
+      {/* Connection Warning */}
+      {!isConnected && (
+        <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-lg p-3 mb-4 text-sm">
+          <div className="flex items-center">
+            <Info className="h-5 w-5 text-yellow-400 mr-2" />
+            <span className="text-yellow-300">{t('info.connectWallet', 'Connect wallet to inspect NFT')}</span>
+          </div>
+        </div>
+      )}
+
+      {/* Error Display */}
+      {error && (
+        <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-3 mb-4">
+          <p className="text-red-300 text-sm">{error}</p>
+        </div>
+      )}
+
+      {/* NFT Data Display */}
+      {nftData && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="space-y-3"
+        >
+          {/* Basic Info */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
+            <div className="bg-slate-900/50 rounded-lg p-2">
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-slate-400 text-xs">NFT ID</span>
+                <Star className="h-3 w-3 text-yellow-400" />
+              </div>
+              <p className="text-lg font-bold text-white">#{nftData.tokenId}</p>
+            </div>
+            
+            <div className="bg-slate-900/50 rounded-lg p-2">
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-slate-400 text-xs">{t('info.rarity', 'Rarity')}</span>
+                <div className={`w-2 h-2 rounded-full ${getRarityColor(nftData.rarity)}`}></div>
+              </div>
+              <p className="text-base font-bold text-white">{getRarityName(nftData.rarity)}</p>
+            </div>
+
+            <div className="bg-slate-900/50 rounded-lg p-2">
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-slate-400 text-xs">{t('info.stars', 'Stars')}</span>
+                <span className="text-yellow-400 font-bold text-sm">{nftData.currentStars}/{nftData.initialStars}</span>
+              </div>
+              <div className="flex space-x-1">
+                {Array.from({ length: nftData.initialStars }).map((_, i) => (
+                  <Star key={i} className={`h-3 w-3 ${i < nftData.currentStars ? 'text-yellow-400 fill-yellow-400' : 'text-slate-600'}`} />
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-slate-900/50 rounded-lg p-2">
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-slate-400 text-xs">{t('info.status', 'Status')}</span>
+                {nftData.isInGraveyard ? <Skull className="h-3 w-3 text-red-400" /> : <Zap className="h-3 w-3 text-green-400" />}
+              </div>
+              <p className={`text-base font-bold ${nftData.isInGraveyard ? 'text-red-400' : 'text-green-400'}`}>{nftData.isInGraveyard ? t('info.graveyard', 'Graveyard') : t('info.active', 'Active')}</p>
+            </div>
+
+             <div className="bg-slate-900/50 rounded-lg p-2">
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-slate-400 text-xs">{t('info.lockedCra', 'Locked CRA')}</span>
+              </div>
+              <p className="text-base font-bold text-white">{nftData.lockedCRA}</p>
+            </div>
+          </div>
+
+          {/* Cooldown Information */}
+          {!nftData.isInGraveyard && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-blue-900/20 rounded-lg p-4 border border-blue-500/30">
+                <div className="flex items-center justify-between mb-1">
+                  <h4 className="text-sm font-semibold text-blue-300 flex items-center"><Zap className="h-4 w-4 mr-1" />{t('ping.title', 'Ping')}</h4>
+                  <Badge variant={nftData.canPing ? "default" : "secondary"} className="h-5 text-xs px-1.5">{nftData.canPing ? t('status.ready', 'Ready') : t('status.waiting', 'Waiting')}</Badge>
+                </div>
+                <p className="text-lg font-mono text-white text-center">{formatTime(nftData.pingCooldownLeft)}</p>
+              </div>
+
+              <div className="bg-green-900/20 rounded-lg p-4 border border-green-500/30">
+                <div className="flex items-center justify-between mb-1">
+                  <h4 className="text-sm font-semibold text-green-300 flex items-center"><Heart className="h-4 w-4 mr-1" />{t('breed.title', 'Breed')}</h4>
+                  <Badge variant={nftData.canBreed ? "default" : "secondary"} className="h-5 text-xs px-1.5">{nftData.canBreed ? t('status.ready', 'Ready') : t('status.waiting', 'Waiting')}</Badge>
+                </div>
+                <p className="text-lg font-mono text-white text-center">{formatTime(nftData.breedCooldownLeft)}</p>
+              </div>
+            </div>
+          )}
+
+          {/* Graveyard & Burn Info */}
+          {nftData.isInGraveyard && (
+            <div className="bg-red-900/20 rounded-lg p-4 border border-red-500/30">
+                <div className="flex items-center justify-between mb-1">
+                    <h4 className="text-sm font-semibold text-red-300 flex items-center"><Skull className="h-4 w-4 mr-1" />{t('graveyard.title', 'Graveyard')}</h4>
+                    {nftData.burnLockedAmount && <Badge variant={nftData.canClaim ? 'default' : 'secondary'} className="h-5 text-xs px-1.5">{nftData.canClaim ? t('status.claimable', 'Claimable') : t('status.locked', 'Locked')}</Badge>}
+                </div>
+                {nftData.burnLockedAmount && (
+                    <div className="text-xs text-slate-300 space-y-1">
+                        <div className="flex justify-between"><span>{t('info.locked', 'Locked')}:</span> <span className="font-mono">{nftData.burnLockedAmount} CRA</span></div>
+                        <div className="flex justify-between"><span>{t('info.timeLeft', 'Time left')}:</span> <span className={`font-mono ${nftData.canClaim ? 'text-green-400' : 'text-orange-400'}`}>{formatTime(nftData.burnTimeLeft || 0)}</span></div>
+                    </div>
+                )}
+            </div>
+          )}
+        </motion.div>
+      )}
+
+      {/* Compact placeholder when no data */}
+      {!nftData && !error && (
+        <div className="text-center py-8">
+          <Timer className="h-8 w-8 text-slate-500 mx-auto mb-2" />
+          <p className="text-slate-400 text-sm">{t('info.enterNftId', 'Enter NFT ID to inspect')}</p>
+        </div>
+      )}
+    </Card>
+  );
+} 

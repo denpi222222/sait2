@@ -1,0 +1,583 @@
+{
+  "home": {
+    "title": "CrazyCube",
+    "subtitle": "方块们的欢笑与眼泪!",
+    "balance": "余额:",
+    "connectWallet": "连接 MetaMask",
+    "walletNotDetected": "未检测到 MetaMask。请安装 MetaMask"
+  },
+  "sections": {
+    "bridge": {
+      "title": "跨链桥（召回方块！）",
+      "description": "方块从墓地归来 — 随机 NFT 跳出并高喊\"我自由了！\"",
+      "button": "桥接 NFT",
+      "guide": {
+        "title": "🪄 复活指南",
+        "intro": "通过支付相当于 OpenSea 或 Magic Eden 当前价格 20% 的 CRA 费用，可以让方块从墓地返回。",
+        "fee": "费用根据最新市场价格自动计算并永久销毁。",
+        "requirement": "要复活，请选择 2 个至少有 1 颗星的 NFT。",
+        "rarity": "星级评定：1 ⭐ — 普通，2 ⭐ — 罕见，3 ⭐ — 稀有，4 ⭐ — 史诗，5 ⭐ — 神话。",
+        "penalty": "成功复活后，每个选中的 NFT 失去 1 颗星。",
+        "step1": "1. 批准花费 20% 的 CRA 费用。",
+        "step2": "2. 确认桥接交易 — NFT 立即返回您的钱包。",
+        "note": "只有 5,000 个方块存在，数量永远不会改变。被销毁的 CRA 会进入死钱包；没有人能恢复它。"
+      }
+    },
+    "burn": {
+      "title": "销毁 NFT（火烤方块！）",
+      "description": "销毁 NFT 获得 CRA 代币！火热烤架上方块尖叫着飞舞：\"告诉妈妈我爱她！\"",
+      "button": "销毁 NFT",
+      "feeBox": {
+        "title": "🔥 销毁费用与步骤",
+        "line1": "• 销毁费用是方块内锁定 CRA 的 <1>5%</1>。",
+        "line2": "• 销毁需要 <1>三次确认</1>：",
+        "step1": "1. 给合约移动您的 NFT 的权限。",
+        "step2": "2. 允许花费锁定币的 5% CRA。",
+        "step3": "3. 确认最终交易 — 方块被销毁，CRA 归您。",
+        "note": "开始前确保钱包里有足够的 CRA 支付费用。",
+        "guide": {
+          "title": "🔥 销毁指南",
+          "intro": "销毁前，必须进行 ping（每 7 天一次）以解锁挖掘的 CRA。",
+          "loss": "销毁后，NFT 永久发送到墓地。CRA 可以在奖励部分领取。",
+          "step1": "1. 给合约移动您的 NFT 的权限。",
+          "step2": "2. 允许花费锁定币的 5% CRA。",
+          "step3": "3. 确认最终交易 — 方块被销毁，CRA 归您。",
+          "timing": "CRA 在选定延迟（12h / 24h / 48h）后到达。在此期间方块变灰（冷却）。",
+          "note": "例子：锁定 10,000 CRA → 费用 500 CRA（5%）。延迟越长 = 池份额越小。",
+          "pingLock": "ping 时，CRA 不会进入钱包 — 币保持锁定在 NFT 内。只能通过销毁取出。",
+          "bridgeNote": "在\"桥接\"部分复活墓地的 NFT。方块数量限制为 5000 且永不改变。每次行动销毁的 CRA 永远进入死钱包 — 没人能取回。"
+        }
+      }
+    },
+    "claim": {
+      "title": "领取奖励（我的 CRA 在哪？）",
+      "description": "一只大眼睛哭泣的方块喊道：\"领取我，拿走你的 CRA！\"",
+      "button": "领取奖励",
+      "processing": "处理中...",
+      "claimReward": "领取奖励",
+      "waitingForWallet": "等待钱包确认...",
+      "processingClaim": "处理领取中..."
+    },
+    "stats": {
+      "title": "统计（眼泪与痛苦计数器）",
+      "description": "显示有多少 NFT 被销毁、从墓地返回以及池中有多少 CRA",
+      "button": "查看统计"
+    },
+    "ping": {
+      "title": "Ping 方块（保持它们活着）",
+      "description": "向您的方块发送心跳，这样它们就不会漂向虚空。",
+      "button": "Ping",
+      "readyToPing": "准备 Ping",
+      "cooldown": "冷却：",
+      "waitingForWallet": "等待钱包确认...",
+      "processingPing": "处理 ping 中..."
+    },
+    "graveyard": {
+      "title": "墓地",
+      "description": "看看您被销毁的方块，哀悼它们并领取 CRA 奖励。",
+      "button": "前往墓地",
+      "phrases": [
+        "这里为什么这么黑… ☠️",
+        "我很冷… 🥶",
+        "那是光吗？ 💀",
+        "我不后悔！ 🔥",
+        "尘归尘…",
+        "告诉妈妈我很好！",
+        "这里很舒适… 也许？"
+      ]
+    },
+    "breed": {
+      "title": "繁殖 NFT（立方恋爱！）",
+      "description": "结合两个 NFT 从墓地复活一个！爱在空中飘荡！ 💕",
+      "button": "繁殖 NFT",
+      "feeNotice": "OpenSea 或 Magic Eden 当前 NFT 价格的 20%",
+      "cooldown": "⏳ 冷却：",
+      "needTwoNfts": "需要选择恰好 2 个 NFT 进行繁殖",
+      "waitingForWallet": "等待钱包确认...",
+      "processingBreeding": "处理繁殖中...",
+      "graveyardCooldown": "墓地冷却激活",
+      "graveyardCooldownDesc": "等待至少一个被销毁的方块完成冷却",
+      "graveyardReady": "墓地已准备好进行繁殖",
+      "graveyardEmpty": "墓地中没有被销毁的方块",
+      "timeUntilReady": "准备就绪时间：",
+      "selectNft": "选择 NFT",
+      "selectedNft": "已选择的 NFT",
+      "breeding": "繁殖中...",
+      "breedNfts": "繁殖 NFT",
+      "returnToHome": "返回首页",
+      "connectWallet": "连接钱包",
+      "connectWalletDesc": "请连接钱包以查看和繁殖您的 NFT",
+      "connectWalletButton": "连接钱包",
+      "errorLoadingNfts": "加载 NFT 时出错",
+      "loadingNfts": "正在加载 NFT...",
+      "loadingNftsDesc": "获取您的 CrazyCube 收藏",
+      "noNftsFound": "未找到 NFT",
+      "noNftsFoundDesc": "您没有任何 CrazyCube NFT 可以繁殖",
+      "goToCollection": "前往收藏",
+      "selectNftsForBreeding": "选择 2 个 NFT 进行繁殖",
+      "loadingGraveyardStatus": "正在加载墓地状态...",
+      "insufficientCra": "CRA 不足",
+      "needCraToBreed": "需要 {amount} CRA 进行繁殖",
+      "approveCra": "批准 CRA",
+      "approveCraDesc": "第一笔交易：给合约权限花费 CRA",
+      "approvalConfirmed": "批准已确认",
+      "craAllowanceSet": "CRA 限额已设置",
+      "confirmBreeding": "确认繁殖",
+      "signBreedingTransaction": "签署繁殖交易",
+      "breedingCanceled": "繁殖已取消",
+      "transactionRejected": "交易被拒绝",
+      "breedingSuccessful": "繁殖成功！💕",
+      "txConfirmed": "交易已确认：{hash}...",
+      "transactionError": "交易错误",
+      "inactiveNftSelected": "选择了非活跃的 NFT",
+      "nftNoStarsLeft": "NFT #{id} 没有剩余星级，无法用于繁殖。",
+      "maximumSelectionReached": "已达到最大选择数量",
+      "canOnlySelectTwoNfts": "您只能选择 2 个 NFT 进行繁殖",
+      "invalidSelection": "选择无效",
+      "mustSelectExactlyTwoNfts": "您必须恰好选择 2 个 NFT 进行繁殖",
+      "walletNotConnected": "钱包未连接",
+      "pleaseConnectWalletFirst": "请先连接钱包",
+      "selectedNftsNoStars": "选中的 NFT 没有剩余星级！选择有星级的活跃 NFT。",
+      "cannotBreedSelectedNfts": "无法繁殖选中的 NFT。检查要求。",
+      "guide": {
+        "title": "🪄 繁殖指南",
+        "intro": "您可以通过支付相当于 OpenSea 或 Magic Eden 当前价格 20% 的 CRA 费用来繁殖新方块。",
+        "fee": "费用根据最新市场价格自动计算并永久销毁。",
+        "requirement": "选择任何 2 个至少有 1 ⭐ 的 NFT 进行繁殖。",
+        "rarity": "星级评定：1 ⭐ — 普通，2 ⭐ — 罕见，3 ⭐ — 稀有，4 ⭐ — 史诗，5 ⭐ — 传奇，6 ⭐ — 神话。",
+        "penalty": "星级将丢失！",
+        "step1": "1. 允许花费 20% 费用的 CRA。",
+        "step2": "2. 确认繁殖交易 — 创建新方块，销毁 CRA。",
+        "note": "收藏限制为 5,000 个方块；CRA 销毁到死钱包无法恢复。"
+      }
+    }
+  },
+  "footer": {
+    "copyright": "© 2025 CrazyCube — 方块的欢笑与眼泪!",
+    "crashMessage": "如果网站崩溃，方块去买披萨了"
+  },
+  "construction": {
+    "title": "建设中",
+    "message": "该部分仍在开发中。很快这里会有很多有趣的东西！",
+    "returnHome": "返回首页",
+    "phrases": [
+      "我在这里工作！别打扰！",
+      "即将推出，我戴着安全帽！",
+      "施工进行中！",
+      "方块在施工现场，稍后回来！",
+      "这里会很美，我保证！",
+      "哎呀，你来早了！我们还没完成！",
+      "方块建造，油漆，累了..."
+    ]
+  },
+  "wallet": {
+    "connect": "连接",
+    "connecting": "连接中…",
+    "copyAddress": "复制地址",
+    "copied": "已复制！",
+    "openExplorer": "在浏览器中打开",
+    "disconnect": "断开钱包",
+    "balance": "余额："
+  },
+  "cubeAnimation": {
+    "loading": "加载中...",
+    "loadingMessage": "哦不，网站卡住了！等等，我们只是有点懒 🦥",
+    "speechBubbles": [
+      "站累了！ 🥱",
+      "嘿，大家去哪了？！ 😱",
+      "我也走！ 👋",
+      "去买披萨！ 🍕",
+      "美甲时间！ 💅"
+    ],
+    "partyBubble": "耶！大家都走了！派对时间！ 🎵🎉",
+    "whereIsEveryone": "嘿，大家去哪了？！ 😱",
+    "waitingForMusicPhrases": [
+      "嘿，开音乐！ 🎵",
+      "没音乐好无聊... 😴",
+      "想跳舞！需要音乐！ 💃",
+      "谁来按按钮！ 👆"
+    ],
+    "partyPhrases": [
+      "整夜狂欢！ 🕺",
+      "派对才刚开始！ 🎉",
+      "谁说方块不能派对？ 🎵",
+      "开大音乐！ 🔊",
+      "我是这场派对的王！ 👑",
+      "没人比我跳得好！ 💃",
+      "这是我最爱的歌！ 🎧",
+      "DJ，开大点！ 🎚️",
+      "方块在这里！ 🏠",
+      "派对到天亮！ 🌅"
+    ],
+    "musicOn": "关闭音乐",
+    "musicOff": "开启音乐"
+  },
+  "social": {
+    "telegram": "Telegram",
+    "discord": "Discord",
+    "followUs": "关注我们"
+  },
+  "tabs": {
+    "breed": "繁殖",
+    "bridge": "桥接",
+    "burn": "销毁",
+    "claim": "奖励",
+    "stats": "统计",
+    "graveyard": "墓地",
+    "ping": "Ping"
+  },
+  "tokenInfo": {
+    "priceUSD": "美元价格",
+    "marketCap": "市值",
+    "volume24h": "24小时成交量",
+    "totalBurns": "总销毁量",
+    "avg": "平均",
+    "totalSupply": "总供应量",
+    "circulating": "流通量",
+    "burned": "已销毁"
+  },
+  "common": {
+    "retry": "重试",
+    "loading": "加载中..."
+  },
+  "market": {
+    "loading": "加载市场数据...",
+    "failed": "加载市场数据失败",
+    "header": "市场价格",
+    "subtitle": "实时 NFT 和代币",
+    "error": "错误",
+    "live": "实时",
+    "floorPrice": "地板价",
+    "buyNft": "在 MagicEden 购买 NFT",
+    "gameToken": "游戏代币",
+    "baseCurrency": "基础货币",
+    "tradeDex": "在 Camelot DEX 交易",
+    "additional": "附加信息",
+    "change1h": "1小时变化",
+    "change24h": "24小时变化",
+    "volume24h": "24小时成交量",
+    "marketCap": "市值"
+  },
+  "rewards": {
+    "loading": {
+      "title": "搜索您的奖励…"
+    },
+    "accumulated": "累积：",
+    "toPool": "到池子",
+    "burned": "已销毁",
+    "toClaim": "待领取",
+    "availableIn": "可用时间：",
+    "processing": "处理中...",
+    "claim": "领取奖励",
+    "claimed": "奖励已领取"
+  },
+  "info": {
+    "nftInspector": "⏱️ NFT 冷却检查器",
+    "lockedCra": "锁定的 CRA",
+    "enterNftId": "输入 NFT ID 进行检查",
+    "connectWallet": "连接钱包以检查 NFT",
+    "connectWalletNfts": "连接钱包查看您的 NFT",
+    "noNfts": "您没有 CrazyCube NFT",
+    "yourNfts": "您的 NFT",
+    "live": "活着",
+    "inGraveyard": "在墓地",
+    "activeNfts": "活跃 NFT",
+    "nftsInGraveyard": "墓地中的 NFT",
+    "noStars": "无星级",
+    "totalCraLocked": "您的 NFT 中锁定的总 CRA",
+    "nftCollection": "NFT 收藏",
+    "totalNfts": "总 NFT 数",
+    "craSupply": "CRA 供应量",
+    "rarity": "稀有度",
+    "stars": "星级",
+    "status": "状态",
+    "graveyard": "墓地",
+    "active": "活跃",
+    "locked": "锁定",
+    "timeLeft": "剩余时间",
+    "guide": {
+      "title": "如何玩 CrazyCube",
+      "subtitle": "游戏机制完整指南"
+    },
+    "tabs": {
+      "overview": "概览",
+      "craToken": "CRA 代币",
+      "contract": "合约",
+      "contractData": "合约数据",
+      "liveAnalytics": "实时分析"
+    },
+    "features": {
+      "title": "⚡ 独特游戏特性",
+      "accumulate": {
+        "title": "累积的币不会销毁",
+        "desc": "您的 CRA 代币被锁定并累积，它们不会永远销毁！"
+      },
+      "future": {
+        "title": "去中心化未来",
+        "desc": "调试后（1-2个月）团队将禁用管理员权限并将控制权转移给自主代理"
+      },
+      "autonomy": {
+        "title": "完全自治",
+        "desc": "NFT 收藏将过渡到完全去中心化的市场治理"
+      }
+    },
+    "actions": {
+      "title": "📊 游戏动作和计时器",
+      "timeLabel": "时间：",
+      "burn": {
+        "title": "销毁 NFT",
+        "time": "12/24/48 小时",
+        "desc": "销毁 NFT 并锁定 CRA 代币获得奖励"
+      },
+      "graveyard": {
+        "title": "墓地",
+        "desc": "被销毁的 NFT 进入墓地，48小时冷却"
+      },
+      "breed": {
+        "title": "繁殖",
+        "desc": "从墓地创建新的 NFT",
+        "note": "繁殖后 NFT 无法参与行动"
+      },
+      "ping": {
+        "title": "Ping",
+        "desc": "激活 NFT 获得奖励",
+        "time": "7天间隔",
+        "note": "NFT 累积而不销毁！"
+      },
+      "rewards": {
+        "title": "池奖励",
+        "desc": "从奖励池获得 CRA 代币",
+        "time": "30天间隔"
+      },
+      "other": {
+        "title": "其他动作",
+        "desc": "各种游戏机制",
+        "time": "24小时冷却"
+      },
+      "cooldown48": "48小时冷却"
+    },
+    "roadmap": {
+      "title": "🛣️ 去中心化之路",
+      "phase1": {
+        "title": "阶段1：调试",
+        "desc": "1-2个月测试和优化所有游戏机制"
+      },
+      "phase2": {
+        "title": "阶段2：自治",
+        "desc": "连接自主代理并移除管理员权限"
+      },
+      "phase3": {
+        "title": "阶段3：自由",
+        "desc": "NFT 收藏和游戏合约将完全去中心化，CRA 代币变为自治"
+      },
+      "callout": "🚀 CrazyCube - 第一个有完整去中心化计划的 NFT 收藏！"
+    }
+  },
+  "status": {
+    "ready": "准备就绪",
+    "readyToClaim": "准备领取",
+    "waiting": "未准备好",
+    "processing": "处理中",
+    "success": "成功",
+    "failed": "失败",
+    "claim": "领取",
+    "claimed": "已领取",
+    "alreadyBurned": "已销毁",
+    "alreadyInGraveyard": "已在墓地",
+    "noStarsLeft": "无星级剩余",
+    "activated": "已激活",
+    "notActivated": "未激活",
+    "cantPing": "无法 Ping",
+    "rewardReady": "奖励准备好",
+    "readyForBreeding": "准备繁殖",
+    "claimReady": "准备领取",
+    "locked": "锁定",
+    "claimable": "可领取"
+  },
+  "pages": {
+    "breed": {
+      "title": "方块繁殖",
+      "subtitle": "从两个父母创建新方块",
+      "selectParents": "选择两个父母",
+      "noNftsAvailable": "没有可用于繁殖的 NFT",
+      "needTwoParents": "需要选择两个父母",
+      "breedingFee": "繁殖费用",
+      "breedingSuccess": "繁殖成功！",
+      "breedingFailed": "繁殖失败",
+      "howItWorks": "如何运作",
+      "breedingGuide": "繁殖指南",
+      "selectTwoNfts": "选择 2 个至少有 1 颗星的 NFT",
+      "payFee": "支付市场价格 20% 的费用",
+      "getNewCube": "在您的收藏中获得新方块"
+    },
+    "burn": {
+      "title": "方块销毁",
+      "subtitle": "销毁 NFT 获得锁定的 CRA",
+      "selectToBurn": "选择要销毁的 NFT",
+      "burnFee": "销毁费用",
+      "burnSuccess": "销毁成功！",
+      "burnFailed": "销毁失败",
+      "confirmBurn": "确认销毁",
+      "burnWarning": "警告：销毁不可逆！",
+      "nftWillBeDestroyed": "NFT 将永远被销毁",
+      "craWillBeTransferred": "CRA 将转移到您的钱包"
+    },
+    "ping": {
+      "title": "方块 Ping",
+      "subtitle": "每 3 分钟 ping 方块以赚取 CRA",
+      "pingYourCubes": "Ping 您的方块",
+      "howPingWorks": "Ping 如何工作",
+      "pingInterval": "Ping 间隔",
+      "betweenPings": "Ping 之间",
+      "pingableNfts": "准备 Ping 的 NFT",
+      "noPingableNfts": "没有准备 Ping 的 NFT",
+      "nftsNeedActivation": "您的 NFT 必须被激活且不在墓地才能 ping",
+      "pingInitiated": "Ping 已启动！",
+      "pingTransaction": "NFT 的 Ping 交易已发送",
+      "earnCraBasedOnRarity": "您将根据稀有度赚取 CRA！",
+      "pingSuccessful": "Ping 成功！",
+      "nftPinged": "您的 NFT 已被 ping，CRA 已赚取！"
+    },
+    "claim": {
+      "title": "领取奖励",
+      "subtitle": "领取您赚取的 CRA 代币",
+      "searchingRewards": "搜索您的奖励",
+      "scanningBlockchain": "扫描区块链和墓地，这可能需要几秒钟",
+      "noRewards": "未找到奖励",
+      "noRewardsDescription": "您还没有可领取的奖励"
+    },
+    "graveyard": {
+      "title": "方块墓地",
+      "subtitle": "被销毁的 NFT 的安息之地",
+      "burnedCubes": "被销毁的方块",
+      "restInPeace": "安息",
+      "someStillWhisper": "有些仍在灰烬中低语",
+      "totalBurned": "总销毁量",
+      "viewBurnedNft": "查看被销毁的 NFT"
+    },
+    "stats": {
+      "title": "游戏统计",
+      "subtitle": "实时游戏状态数据",
+      "totalNfts": "总 NFT 数",
+      "activeNfts": "活跃 NFT",
+      "burnedNfts": "被销毁的 NFT",
+      "totalCra": "总 CRA",
+      "lockedCra": "锁定的 CRA",
+      "burnedCra": "被销毁的 CRA",
+      "gameActivity": "游戏活动",
+      "recentTransactions": "最近交易"
+    },
+    "info": {
+      "title": "信息",
+      "subtitle": "关于您的 NFT 和游戏的详细信息",
+      "overview": "概览",
+      "yourCollection": "您的收藏",
+      "gameRules": "游戏规则",
+      "tokenomics": "代币经济学",
+      "connectWalletNfts": "连接您的钱包以查看您的NFT。",
+      "noNfts": "您没有拥有任何CrazyCube NFT。",
+      "yourNfts": "您的NFT",
+      "live": "活跃",
+      "inGraveyard": "在墓地",
+      "activeNfts": "活跃NFT",
+      "nftsInGraveyard": "墓地中的NFT",
+      "noStars": "无星级",
+      "lockedCra": "锁定的CRA",
+      "totalCraLocked": "您的NFT中锁定的CRA总数",
+      "craLockedWarning": "NFT内锁定的CRA不会被销毁，当NFT被转移、出售或以任何方式移动时会跟随NFT。它们永久属于NFT本身。您只能通过",
+      "craLockedWarningBurn": "销毁"
+    }
+  },
+  "components": {
+    "buttons": {
+      "connect": "连接",
+      "disconnect": "断开",
+      "approve": "批准",
+      "confirm": "确认",
+      "cancel": "取消",
+      "retry": "重试",
+      "close": "关闭",
+      "back": "返回",
+      "next": "下一步",
+      "save": "保存",
+      "load": "加载",
+      "refresh": "刷新"
+    },
+    "messages": {
+      "loading": "加载中...",
+      "connecting": "连接中...",
+      "processing": "处理中...",
+      "success": "成功！",
+      "error": "错误",
+      "warning": "警告",
+      "info": "信息",
+      "noData": "无数据",
+      "noResults": "未找到结果",
+      "tryAgain": "重试",
+      "somethingWentWrong": "出了点问题",
+      "pleaseWait": "请稍候",
+      "transactionPending": "交易待处理",
+      "transactionConfirmed": "交易已确认",
+      "transactionFailed": "交易失败"
+    },
+    "forms": {
+      "required": "必填字段",
+      "invalid": "无效值",
+      "tooShort": "太短",
+      "tooLong": "太长",
+      "enterAmount": "输入数量",
+      "selectOption": "选择选项",
+      "searchPlaceholder": "搜索...",
+      "noOptionsAvailable": "无可用选项"
+    },
+    "navigation": {
+      "home": "首页",
+      "back": "返回",
+      "forward": "前进",
+      "menu": "菜单",
+      "settings": "设置",
+      "help": "帮助",
+      "about": "关于"
+    }
+  },
+  "rarity": {
+    "common": "普通",
+    "uncommon": "罕见",
+    "rare": "稀有",
+    "epic": "史诗",
+    "legendary": "传奇",
+    "mythic": "神话",
+    "unknown": "未知"
+  },
+  "cube": "方块",
+  "glueCube": {
+    "phrases": [
+      "我现在就修好它！",
+      "哎呀...我的错！",
+      "别担心，我们会修好的！"
+    ]
+  },
+  "cubeObservers": {
+    "idlePhrases": [
+      "你们在这里做什么？",
+      "是谁在吵闹？",
+      "哦哦哦……",
+      "我没看！",
+      "别打扰我睡觉！"
+    ],
+    "successPhrases": [
+      "恭喜你获得新方块！",
+      "万岁，新方块宝宝！",
+      "欢迎，小家伙！"
+    ]
+  },
+  "shyCubes": {
+    "bubbles": [
+      "哦哦哦！",
+      "这里发生了什么？",
+      "是谁在吵闹？",
+      "我们什么都没看到！",
+      "别看！"
+    ]
+  }
+}
