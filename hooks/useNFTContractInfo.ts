@@ -1,4 +1,4 @@
-import { usePublicClient } from 'wagmi'
+import { usePublicClient, useChainId } from 'wagmi'
 import { apeChain } from '../config/chains'
 import { useState, useEffect, useCallback } from 'react'
 import { getRarityLabel, getRarityColor as rarityColor } from "@/lib/rarity"
@@ -55,13 +55,15 @@ export interface NFTContractInfo {
 
 export function useNFTContractInfo(tokenId: string | undefined) {
   const publicClient = usePublicClient()
+  const chainId = useChainId()
+  const isApeChain = chainId === apeChain.id
   const [nftInfo, setNftInfo] = useState<NFTContractInfo | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
   const fetchData = useCallback(async () => {
     const isValidId = tokenId !== undefined && /^\d+$/.test(tokenId)
-    if (!publicClient || !isValidId) {
+    if (!publicClient || !isValidId || !isApeChain) {
       if (isValidId) setIsLoading(true) // Show loading if ID exists but client is not ready yet
       else setIsLoading(false)
       return
@@ -110,7 +112,7 @@ export function useNFTContractInfo(tokenId: string | undefined) {
     } finally {
       setIsLoading(false)
     }
-  }, [tokenId, publicClient])
+  }, [tokenId, publicClient, isApeChain])
 
   useEffect(() => {
     fetchData()

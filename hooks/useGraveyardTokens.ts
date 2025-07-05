@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { usePublicClient } from "wagmi"
+import { usePublicClient, useChainId } from "wagmi"
 import { apeChain } from '../config/chains'
 
 const GAME_ADDR = apeChain.contracts.gameProxy.address
@@ -63,12 +63,14 @@ export function useGraveyardTokens() {
   const [ready, setReady] = useState(false)
   
   const publicClient = usePublicClient()
+  const chainId = useChainId()
+  const isApeChain = chainId === apeChain.id
 
   useEffect(() => {
     let mounted = true
 
     const fetchTokensOnce = async () => {
-      if (!publicClient) {
+      if (!publicClient || !isApeChain) {
         if (mounted) setLoading(false)
         return
       }
@@ -189,7 +191,7 @@ export function useGraveyardTokens() {
       mounted = false
       clearInterval(interval)
     }
-  }, [publicClient])
+  }, [publicClient, isApeChain])
 
   return { tokens, loading, error, ready }
 } 

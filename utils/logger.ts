@@ -57,9 +57,9 @@ export class Logger {
       timestamp,
       level,
       message,
-      data: safeData,
-      file,
-      line,
+      data: safeData ?? "",
+      file: file ?? "",
+      line: line ?? 0,
     }
 
     // Add log to array
@@ -109,7 +109,17 @@ export function setupGlobalErrorHandling(): void {
     }
 
     window.addEventListener("unhandledrejection", (event) => {
-      logger.error("Unhandled Promise rejection", event.reason?.toString())
+      const reasonStr = event.reason?.toString() || ""
+      logger.error("Unhandled Promise rejection", reasonStr)
+
+      // Suppress noisy Ethereum RPC errors that appear when user is on wrong network
+      if (
+        reasonStr.includes("InternalRpcError") ||
+        reasonStr.includes("ContractFunctionExecutionError") ||
+        reasonStr.includes("RpcRequestError")
+      ) {
+        event.preventDefault?.()
+      }
     })
   }
 }

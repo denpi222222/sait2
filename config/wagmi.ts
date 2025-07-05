@@ -1,7 +1,6 @@
 import { createConfig, http, fallback } from "wagmi"
 import { injected } from "wagmi/connectors"
 import { apeChain } from "./chains"
-import { mainnet } from "viem/chains"
 import { createPublicClient } from "viem"
 import { initWagmiClient } from "@/lib/alchemyKey"
 
@@ -21,7 +20,7 @@ initWagmiClient(publicClient)
 
 // Define configuration for Wagmi with fallback transports
 export const config = createConfig({
-  chains: [apeChain, mainnet],
+  chains: [apeChain],
   transports: {
     [apeChain.id]: fallback([
       http(apeChain.rpcUrls.default.http[0]),
@@ -29,7 +28,6 @@ export const config = createConfig({
       http(apeChain.rpcUrls.default.http[2]),
       http(apeChain.rpcUrls.default.http[3]),
     ]),
-    [mainnet.id]: http('https://cloudflare-eth.com'),
   },
   // Disable persistent storage to prevent auto-reconnect across sessions
   storage: null,

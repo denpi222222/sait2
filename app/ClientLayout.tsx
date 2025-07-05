@@ -86,7 +86,10 @@ export default function ClientLayout({
           message.includes('Cannot read properties of undefined (reading \'global\')') ||
           message.includes('provider - this is likely due to another Ethereum wallet extension') ||
           message.includes('Unchecked runtime.lastError') ||
-          message.includes('Could not establish connection')
+          message.includes('Could not establish connection') ||
+          message.includes('InternalRpcError') ||
+          message.includes('ContractFunctionExecutionError') ||
+          message.includes('RpcRequestError')
         ) {
           return // Suppress these errors
         }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { usePublicClient } from "wagmi"
+import { usePublicClient, useChainId } from "wagmi"
 import { apeChain } from "@/config/chains"
 
 const GAME_ADDR = apeChain.contracts.gameProxy.address as `0x${string}`
@@ -91,12 +91,14 @@ export function useGraveyardReadiness(): GraveyardReadiness {
   const [error, setError] = useState<string | null>(null)
   
   const publicClient = usePublicClient()
+  const chainId = useChainId()
+  const isApeChain = chainId === apeChain.id
 
   useEffect(() => {
     let mounted = true
 
     const checkGraveyardReadiness = async () => {
-      if (!publicClient) {
+      if (!publicClient || !isApeChain) {
         if (mounted) {
           setLoading(false)
           setError("No blockchain connection")
@@ -207,7 +209,7 @@ export function useGraveyardReadiness(): GraveyardReadiness {
       mounted = false
       clearInterval(interval)
     }
-  }, [publicClient])
+  }, [publicClient, isApeChain])
 
   return {
     isReady,
