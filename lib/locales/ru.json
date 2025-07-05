@@ -16,8 +16,8 @@
         "intro": "Вернуть куб с кладбища можно, заплатив комиссию в CRA, равную 20 % его текущей цены на OpenSea или Magic Eden.",
         "fee": "Комиссия рассчитывается автоматически по последней рыночной цене и сжигается навсегда.",
         "requirement": "Для воскресения выберите 2 NFT, у которых есть хотя бы 1 звезда.",
-        "rarity": "Рейтинг звёзд: 1 ⭐ — Common, 2 ⭐ — Uncommon, 3 ⭐ — Rare, 4 ⭐ — Epic, 5 ⭐ — Mythic.",
-        "penalty": "Звезда будет потеряна!",
+        "rarity": "Рейтинг звёзд: 1 ⭐ — Common, 2 ⭐ — Uncommon, 3 ⭐ — Rare, 4 ⭐ — Epic, 5 ⭐ — Legendary, 6 ⭐ — Mythic.",
+        "penalty": "После успешного воскрешения каждый из выбранных NFT теряет 1 звезду.",
         "step1": "1. Одобрить списание CRA для комиссии 20 %.",
         "step2": "2. Подтвердить транзакцию Bridge — NFT мгновенно возвращается в ваш кошелёк.",
         "note": "Всего существует лишь 5 000 кубов, их число никогда не изменится. Сожжённый CRA отправляется в dead-wallet; никто не сможет его восстановить."
@@ -171,13 +171,24 @@
     ]
   },
   "wallet": {
-    "connect": "Подключить",
+    "connect": "Подключить кошелёк",
     "connecting": "Подключение…",
     "copyAddress": "Копировать адрес",
     "copied": "Скопировано!",
-    "openExplorer": "Открыть в обозревателе",
+    "openExplorer": "Открыть в проводнике",
     "disconnect": "Отключить кошелёк",
-    "balance": "Баланс:"
+    "balance": "Баланс:",
+    "notConnected": "Кошелёк не подключён",
+    "connectFirst": "Сначала подключите кошелёк",
+    "connected": "Подключён"
+  },
+  "userNFTs": {
+    "title": "Ваши NFT",
+    "connectToView": "Подключите кошелёк, чтобы увидеть ваши CrazyCube NFT",
+    "errorLoading": "Ошибка загрузки NFT",
+    "noNFTs": "У вас пока нет CrazyCube NFT",
+    "yourCrazyCubeNFTs": "Ваши CrazyCube NFT",
+    "showing": "Показано {{count}} из {{total}} NFT"
   },
   "cubeAnimation": {
     "loading": "Загрузка...",
@@ -215,7 +226,28 @@
   "social": {
     "telegram": "Телеграм",
     "discord": "Дискорд",
-    "followUs": "Подписывайтесь"
+    "followUs": "Подписывайтесь",
+    "megaGiveaway": "МЕГА РОЗЫГРЫШ!",
+    "supportAndWin": "Поддержи нас и ВЫИГРАЙ NFT + CRA токены!",
+    "prizePool": "ПРИЗОВОЙ ФОНД:",
+    "exclusiveNFTs": "Эксклюзивные NFT",
+    "craTokens": "CRA токены (различные суммы)",
+    "discordRoles": "Специальные роли в Discord",
+    "bonusSurprises": "Бонусы и сюрпризы",
+    "joinTelegram": "Войти в Телеграм",
+    "joinDiscord": "Войти в Дискорд",
+    "twitterActions": "Twitter действия:",
+    "followTwitter": "Подписаться на @crazy___cube",
+    "viewPost": "Посмотреть пост",
+    "like": "Лайк",
+    "retweet": "Ретвит",
+    "allDone": "Я ВСЁ СДЕЛАЛ!",
+    "later": "Позже",
+    "participateNow": "УЧАСТВУЙ СЕЙЧАС!",
+    "weeklyGiveaway": "Розыгрыш каждую неделю среди активных участников!",
+    "github": "GitHub",
+    "share": "Поделиться",
+    "shareTitle": "CrazyCube - Где кубы плачут и шутят!"
   },
   "tabs": {
     "breed": "Разведение",
@@ -226,6 +258,37 @@
     "graveyard": "Кладбище",
     "ping": "Пинг"
   },
+  "navigation": {
+    "home": "Главная",
+    "breed": "Разведение",
+    "bridge": "Бридж",
+    "burn": "Сжечь",
+    "claim": "Забрать",
+    "graveyard": "Кладбище",
+    "ping": "Пинг",
+    "stats": "Статистика"
+  },
+  "ping": {
+    "title": "Пинг NFT",
+    "description": "Пингуй свои NFT каждые 3 минуты, чтобы зарабатывать CRA токены! Пинг раз в 3 минуты или раз в 15 дней, накопление до 15 дней.",
+    "connectWallet": "Подключите кошелёк, чтобы увидеть ваши кубы",
+    "noNFTs": "CrazyCube NFT не найдены.",
+    "loadingNFTs": "Загрузка NFT...",
+    "pingAll": "Пинговать все",
+    "pingSelected": "Пинговать выбранные",
+    "selectAll": "Выбрать все",
+    "deselectAll": "Снять выделение",
+    "selected": "Выбрано",
+    "nfts": "NFT",
+    "lastPing": "Последний пинг",
+    "nextPing": "Следующий пинг",
+    "available": "Доступно",
+    "cooldown": "Кулдаун",
+    "pingSuccess": "Пинг успешен!",
+    "pingError": "Ошибка пинга:",
+    "transactionPending": "Транзакция в ожидании...",
+    "selectNFTs": "Выберите NFT для пинга"
+  },
   "tokenInfo": {
     "priceUSD": "Цена USD",
     "marketCap": "Рыночная капитализация",
@@ -234,11 +297,16 @@
     "avg": "Средн.",
     "totalSupply": "Общее предложение",
     "circulating": "В обращении",
-    "burned": "Сожжено"
+    "burned": "Сожжено",
+    "overview": "Обзор токена CRA",
+    "holders": "Держатели",
+    "comingSoon": "метрика скоро появится"
   },
   "common": {
     "retry": "Повторить",
-    "loading": "Загрузка..."
+    "loading": "Загрузка...",
+    "loadingNFTs": "Загрузка NFT...",
+    "total": "всего"
   },
   "market": {
     "loading": "Загрузка рыночных данных...",
@@ -357,29 +425,36 @@
       "cooldown48": "48ч кулдаун"
     },
     "roadmap": {
-      "title": "🛣️ Путь к децентрализации",
+      "title": "Путь к децентрализации",
       "phase1": {
         "title": "Фаза 1: Отладка",
         "desc": "1-2 месяца тестирования и оптимизации всех игровых механик"
       },
       "phase2": {
         "title": "Фаза 2: Автономия",
-        "desc": "Подключение автономного агента и удаление прав администратора"
+        "desc": "Подключение автономного агента и отключение админ прав"
       },
       "phase3": {
         "title": "Фаза 3: Свобода",
-        "desc": "NFT коллекция и игровой контракт будут полностью децентрализованы, CRA токен станет автономным"
+        "desc": "Полностью децентрализованное управление только рынком"
       },
-      "callout": "🚀 CrazyCube - первая NFT коллекция с полным планом децентрализации!"
+      "tagline": "🚀 CrazyCube - первая NFT коллекция с планом полной децентрализации!"
     }
+  },
+  "distribution": {
+    "activeVsGraveyard": "Активные vs В кладбище по редкости",
+    "rarity": "Редкость",
+    "byRarity": "По редкости",
+    "byStatus": "По статусу",
+    "nfts": "NFT"
   },
   "status": {
     "ready": "Готов",
     "readyToClaim": "Готов к получению",
     "waiting": "Не готов",
     "processing": "Обработка",
-    "success": "Успешно",
-    "failed": "Ошибка",
+    "success": "Успех",
+    "failed": "Неудача",
     "claim": "Получить",
     "claimed": "Получено",
     "alreadyBurned": "Уже сожжён",
@@ -391,10 +466,15 @@
     "rewardReady": "Награда готова",
     "readyForBreeding": "Готов к разведению",
     "claimReady": "Готов к получению",
-    "ready": "Готов",
-    "waiting": "Ожидание",
+    "locked": "Заблокирован",
     "claimable": "Можно получить",
-    "locked": "Заблокировано"
+    "burnable": "Можно сжечь",
+    "done": "Готово!",
+    "graveyard": "Кладбище",
+    "alive": "Живой",
+    "dying": "Умирающий",
+    "notClaimed": "Нет",
+    "confirming": "Подтверждение..."
   },
   "pages": {
     "breed": {
@@ -581,5 +661,15 @@
       "Мы ничего не видели!",
       "Не смотри!"
     ]
+  },
+  "graveyard": {
+    "claimedReward": "Награда получена",
+    "claimError": "Ошибка получения награды"
+  },
+  "contractInteraction": {
+    "error": "Ошибка",
+    "enterTokenId": "Введите ID токена",
+    "enterTokenIdAndHours": "Введите ID токена и часы ожидания",
+    "enterBothParents": "Введите ID обоих родительских токенов"
   }
 }

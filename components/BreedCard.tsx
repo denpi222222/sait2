@@ -87,18 +87,6 @@ export default function BreedCard({ nft, index, selected, selectedOrder, disable
     return `${h ? h + 'h ' : ''}${m ? m + 'm ' : ''}${!h && !m ? s + 's' : ''}`.trim()
   }
 
-  // show "1 ⭐" popup when selected first time
-  const [impact, setImpact] = useState(false)
-  const prevSel = useRef(selected)
-
-  useEffect(() => {
-    if (selected && !prevSel.current) {
-      setImpact(true)
-      setTimeout(() => setImpact(false), 5000)
-    }
-    prevSel.current = selected
-  }, [selected])
-
   const ringClass = selectedOrder === 1
     ? "ring-4 ring-pink-500/70 animate-pulse"
     : selectedOrder === 2
@@ -144,8 +132,8 @@ export default function BreedCard({ nft, index, selected, selectedOrder, disable
               className="absolute inset-0 rounded-lg pointer-events-none"
             />
           )}
-          {/* impact popup */}
-          {impact && (
+          {/* star penalty overlay */}
+          {selected && (
             <motion.div
               initial={{ opacity: 0, scale: 0.6, y: 20 }}
               animate={{ 

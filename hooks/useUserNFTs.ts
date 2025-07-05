@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
+import { resolveIpfsUrl } from '@/lib/ipfs';
 import { alchemyFetch } from '@/lib/alchemyFetch';
 
 export interface AlchemyNFT {
@@ -57,11 +58,11 @@ export interface UseUserNFTsReturn {
 }
 
 const CONTRACT_ADDRESSES = [
-  "0x606a47707d5aEdaE9f616A6f1853fE3075bA740B", // NFT contract address (40 символов)
-  // Добавьте другие адреса контрактов если нужно
+  "0x606a47707d5aEdaE9f616A6f1853fE3075bA740B", // NFT contract address (40 characters)
+  // Add other contract addresses if needed
 ];
 
-// Вспомогательные функции для работы с tokenId
+// Helper functions for working with tokenId
 // Convert a tokenId that may be in hex (padded 0x… or raw hex) OR already decimal
 // to its plain decimal string form.
 export const hexToDecimal = (value: string): string => {
@@ -81,7 +82,7 @@ export const decimalToHex = (decimal: string): string => {
   return '0x' + parseInt(decimal, 10).toString(16).padStart(64, '0');
 };
 
-// Функция для получения tokenId в десятичном формате
+// Function to get tokenId in decimal format
 export const getTokenIdAsDecimal = (nft: AlchemyNFT): string => {
   // 1) Try to extract ID from name/title (e.g. "CrazyCube #3430")
   const nameField = nft.metadata?.name || nft.title || "";
@@ -100,36 +101,24 @@ export const getTokenIdAsDecimal = (nft: AlchemyNFT): string => {
   return "";
 };
 
-// Функция для получения изображения NFT
+// Function to get NFT image
 export const getNFTImage = (nft: AlchemyNFT): string => {
   let imageUrl = '';
   
-  // Проверяем media массив
+  // Check media array
   if (nft.media && nft.media.length > 0) {
     imageUrl = nft.media[0].gateway || nft.media[0].raw;
   }
   
-  // Если нет в media, проверяем metadata
+  // If not in media, check metadata
   if (!imageUrl && nft.metadata?.image) {
     imageUrl = nft.metadata.image;
   }
   
-  // Конвертируем IPFS URL в HTTP URL через стабильный gateway
-  if (imageUrl.startsWith('ipfs://')) {
-    const ipfsHash = imageUrl.replace('ipfs://', '');
-    const gateways = [
-      'https://gateway.pinata.cloud/ipfs/',
-      'https://cloudflare-ipfs.com/ipfs/',
-      'https://ipfs.io/ipfs/'
-    ];
-    imageUrl = `${gateways[0]}${ipfsHash}`;
-    // На клиенте можно попробовать подменить gateway при ошибке изображения (onError), но это за пределами хука
-  }
-  
-  return imageUrl;
+  return resolveIpfsUrl(imageUrl);
 };
 
-// Функция для получения имени NFT
+// Function to get NFT name
 export const getNFTName = (nft: AlchemyNFT): string => {
   return nft.title || nft.metadata?.name || `Token #${getTokenIdAsDecimal(nft)}`;
 };
@@ -148,7 +137,7 @@ export function useUserNFTs(): UseUserNFTsReturn {
     setError(null);
 
     try {
-      // Собираем query string вручную, чтобы оставить 'contractAddresses[]' без URL-encode.
+      // Build query string manually to keep 'contractAddresses[]' without URL-encode.
       const parts: string[] = [
         `owner=${address}`,
         'withMetadata=true',
@@ -161,7 +150,7 @@ export function useUserNFTs(): UseUserNFTsReturn {
       
       console.log('Fetching NFTs from Alchemy with rotation support:', queryPath);
 
-      // Используем alchemyFetch с автоматической ротацией ключей и retry логикой
+      // Use alchemyFetch with automatic key rotation and retry logic
       const response = await alchemyFetch('nft', queryPath, {
         method: 'GET',
         headers: {

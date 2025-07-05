@@ -171,13 +171,24 @@
     ]
   },
   "wallet": {
-    "connect": "Bağlan",
+    "connect": "Cüzdan Bağla",
     "connecting": "Bağlanıyor…",
     "copyAddress": "Adresi Kopyala",
     "copied": "Kopyalandı!",
     "openExplorer": "Explorer'da Aç",
     "disconnect": "Cüzdanı Ayır",
-    "balance": "Bakiye:"
+    "balance": "Bakiye:",
+    "notConnected": "Cüzdan bağlı değil",
+    "connectFirst": "Önce cüzdan bağlayın",
+    "connected": "Bağlandı"
+  },
+  "userNFTs": {
+    "title": "NFT'leriniz",
+    "connectToView": "CrazyCube NFT'lerinizi görmek için cüzdan bağlayın",
+    "errorLoading": "NFT'ler yüklenirken hata",
+    "noNFTs": "Henüz CrazyCube NFT'niz yok",
+    "yourCrazyCubeNFTs": "CrazyCube NFT'leriniz",
+    "showing": "{{total}} adet NFT'den {{count}} tanesi gösteriliyor"
   },
   "cubeAnimation": {
     "loading": "Yükleniyor...",
@@ -215,7 +226,25 @@
   "social": {
     "telegram": "Telegram",
     "discord": "Discord",
-    "followUs": "Takip Et"
+    "followUs": "Takip Et",
+    "megaGiveaway": "MEGA ÇEKİLİŞ!",
+    "supportAndWin": "Bizi destekle ve NFT + CRA token kazan!",
+    "prizePool": "ÖDÜL HAVUZU:",
+    "exclusiveNFTs": "Özel NFT'ler",
+    "craTokens": "CRA tokenları (çeşitli miktarlarda)",
+    "discordRoles": "Özel Discord rolleri",
+    "bonusSurprises": "Bonuslar ve sürprizler",
+    "joinTelegram": "Telegram'a Katıl",
+    "joinDiscord": "Discord'a Katıl",
+    "twitterActions": "Twitter işlemleri:",
+    "followTwitter": "@crazy___cube'ü Takip Et",
+    "viewPost": "Gönderiyi gör",
+    "like": "Beğen",
+    "retweet": "Retweet",
+    "allDone": "HEPSİNİ YAPTIM!",
+    "later": "Sonra",
+    "participateNow": "ŞİMDİ KATIL!",
+    "weeklyGiveaway": "Aktif katılımcılar arasında her hafta çekiliş!"
   },
   "tabs": {
     "breed": "Çiftleştir",
@@ -225,6 +254,37 @@
     "stats": "İstatistikler",
     "graveyard": "Mezarlık",
     "ping": "Ping"
+  },
+  "navigation": {
+    "home": "Ana Sayfa",
+    "breed": "Üretim",
+    "bridge": "Köprü",
+    "burn": "Yakma",
+    "claim": "Talep Et",
+    "graveyard": "Mezarlık",
+    "ping": "Ping",
+    "stats": "İstatistikler"
+  },
+  "ping": {
+    "title": "NFT Ping",
+    "description": "CRA token kazanmak için NFT'lerinizi her 3 dakikada bir ping atın! Her 3 dakikada bir veya her 15 günde bir ping, 15 güne kadar birikim.",
+    "connectWallet": "Küplerinizi görmek için cüzdan bağlayın",
+    "noNFTs": "CrazyCube NFT bulunamadı.",
+    "loadingNFTs": "NFT'ler yükleniyor...",
+    "pingAll": "Tümünü Ping At",
+    "pingSelected": "Seçilenleri Ping At",
+    "selectAll": "Tümünü Seç",
+    "deselectAll": "Hiçbirini Seçme",
+    "selected": "Seçili",
+    "nfts": "NFT",
+    "lastPing": "Son Ping",
+    "nextPing": "Sonraki Ping",
+    "available": "Uygun",
+    "cooldown": "Bekleme Süresi",
+    "pingSuccess": "Ping başarılı!",
+    "pingError": "Ping hatası:",
+    "transactionPending": "İşlem bekleniyor...",
+    "selectNFTs": "Ping atılacak NFT'leri seçin"
   },
   "tokenInfo": {
     "priceUSD": "USD Fiyatı",
@@ -238,7 +298,9 @@
   },
   "common": {
     "retry": "Tekrar Dene",
-    "loading": "Yükleniyor..."
+    "loading": "Yükleniyor...",
+    "loadingNFTs": "NFT'ler yükleniyor...",
+    "total": "Toplam"
   },
   "market": {
     "loading": "Pazar verileri yükleniyor...",
@@ -387,12 +449,22 @@
     "noStarsLeft": "Yıldız Kalmadı",
     "activated": "Etkinleştirildi",
     "notActivated": "Etkinleştirilmedi",
-    "cantPing": "Ping Atılamaz",
+    "cantPing": "Ping Yapılamaz",
     "rewardReady": "Ödül Hazır",
-    "readyForBreeding": "Çiftleştirmeye Hazır",
+    "readyForBreeding": "Üreme İçin Hazır",
     "claimReady": "Talep Etmeye Hazır",
     "locked": "Kilitli",
-    "claimable": "Talep Edilebilir"
+    "claimable": "Talep Edilebilir",
+    "burnable": "Yakılabilir",
+    "done": "Bitti!",
+    "graveyard": "Mezarlık",
+    "alive": "Canlı",
+    "dying": "Ölüyor",
+    "notClaimed": "Hayır",
+    "confirming": "Onaylanıyor..."
+  },
+  "nft": {
+    "burnable": "Yakılabilir"
   },
   "pages": {
     "breed": {

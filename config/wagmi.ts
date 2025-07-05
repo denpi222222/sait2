@@ -1,30 +1,40 @@
-import { createConfig, http } from "wagmi"
+import { createConfig, http, fallback } from "wagmi"
 import { injected } from "wagmi/connectors"
 import { apeChain } from "./chains"
 import { mainnet } from "viem/chains"
 import { createPublicClient } from "viem"
 import { initWagmiClient } from "@/lib/alchemyKey"
 
-// Create public client for emergency fallback
+// Create public client with fallback transports
 const publicClient = createPublicClient({
   chain: apeChain,
-  transport: http(apeChain.rpcUrls.default.http[0]),
+  transport: fallback([
+    http(apeChain.rpcUrls.default.http[0]),
+    http(apeChain.rpcUrls.default.http[1]),
+    http(apeChain.rpcUrls.default.http[2]),
+    http(apeChain.rpcUrls.default.http[3]),
+  ]),
 })
 
 // Initialize the multi-tier system with wagmi client
 initWagmiClient(publicClient)
 
-// Определяем конфигурацию для Wagmi
+// Define configuration for Wagmi with fallback transports
 export const config = createConfig({
   chains: [apeChain, mainnet],
   transports: {
-    [apeChain.id]: http(apeChain.rpcUrls.default.http[0]),
+    [apeChain.id]: fallback([
+      http(apeChain.rpcUrls.default.http[0]),
+      http(apeChain.rpcUrls.default.http[1]),
+      http(apeChain.rpcUrls.default.http[2]),
+      http(apeChain.rpcUrls.default.http[3]),
+    ]),
     [mainnet.id]: http('https://cloudflare-eth.com'),
   },
   // Disable persistent storage to prevent auto-reconnect across sessions
   storage: null,
   connectors: [
-    // Простой injected коннектор для MetaMask и других кошельков
+    // Simple injected connector for MetaMask and other wallets
     injected({
       shimDisconnect: true,
     }),

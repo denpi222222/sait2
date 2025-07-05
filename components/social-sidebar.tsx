@@ -134,7 +134,7 @@ export function SocialSidebar() {
           <Github className="w-5 h-5 text-gray-400" />
         </motion.div>
         <span className="absolute left-full ml-2 top-1/2 -translate-y-1/2 text-gray-300 text-sm font-medium bg-slate-900/90 px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap hidden md:block">
-          GitHub
+          {t("social.github")}
         </span>
       </a>
 
@@ -147,7 +147,7 @@ export function SocialSidebar() {
             if (navigator.share) {
               navigator
                 .share({
-                  title: "CrazyCube - Где кубы плачут и шутят!",
+                  title: t("social.shareTitle"),
                   url: window.location.href,
                 })
                 .catch(console.error)
@@ -161,7 +161,7 @@ export function SocialSidebar() {
           <Share2 className="w-5 h-5 text-pink-400" />
         </motion.div>
         <span className="absolute left-full ml-2 top-1/2 -translate-y-1/2 text-pink-300 text-sm font-medium bg-slate-900/90 px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap hidden md:block">
-          Share
+          {t("social.share")}
         </span>
       </div>
     </motion.div>

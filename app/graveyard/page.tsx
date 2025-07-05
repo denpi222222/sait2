@@ -26,7 +26,7 @@ export default function GraveyardPage() {
 
   useEffect(() => {
     setMounted(true)
-    // Анимируем заголовок с задержкой
+    // Animate title with delay
     const timer = setTimeout(() => {
       setShowTitle(true)
     }, 500)

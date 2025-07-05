@@ -110,10 +110,10 @@ export default function BurnPage() {
               <div className="inline-flex items-center justify-center w-16 h-16 bg-orange-500/20 rounded-full mb-4">
                 <Flame className={`h-8 w-8 ${mounted ? 'text-orange-500' : 'text-gray-500'}`} />
               </div>
-              <h3 className="text-xl font-semibold text-white mb-2">Connect Your Wallet</h3>
-              <p className="text-gray-300 mb-4">Please connect your wallet to view and burn your NFTs</p>
+              <h3 className="text-xl font-semibold text-white mb-2">{t('burn.connectWallet', 'Connect Your Wallet')}</h3>
+              <p className="text-gray-300 mb-4">{t('burn.connectWalletDesc', 'Please connect your wallet to view and burn your NFTs')}</p>
               <Button onClick={handleConnectWallet} className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500">
-                Connect Wallet
+                {t('wallet.connect', 'Connect Wallet')}
               </Button>
             </div>
           ) : isLoadingNFTs && mounted ? (

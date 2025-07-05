@@ -1,5 +1,11 @@
 "use client"
 
+/**
+ * @deprecated This hook is deprecated. Use useGameStats instead for consolidated game statistics.
+ * This hook will be removed in a future version. useGameStats provides the same functionality
+ * with better performance and additional features.
+ */
+
 import { useState, useEffect } from 'react'
 import { usePublicClient } from 'wagmi'
 import { formatEther } from 'viem'
@@ -116,7 +122,9 @@ export const useContractStats = () => {
       ])
 
       const burnedCount = Number(totalTokensBurned as bigint)
-      const activeCount = 5000 - burnedCount
+      // Max NFTs is always 5,000 regardless of breeding (breeding revives from graveyard)
+      const MAX_NFTS = 5000
+      const activeCount = Math.min(MAX_NFTS - burnedCount, MAX_NFTS)
 
       const contractStats: ContractStats = {
         totalCRABurned: formatEther(totalCRABurned as bigint),

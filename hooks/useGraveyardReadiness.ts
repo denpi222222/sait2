@@ -4,7 +4,7 @@ import { apeChain } from "@/config/chains"
 
 const GAME_ADDR = apeChain.contracts.gameProxy.address as `0x${string}`
 
-// ABI для проверки готовности кладбища
+// ABI for checking graveyard readiness
 const GRAVEYARD_ABI = [
   {
     "inputs": [],
@@ -36,6 +36,43 @@ const GRAVEYARD_ABI = [
   }
 ] as const
 
+// Retry logic with exponential backoff
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+
+async function withRetry<T>(
+  fn: () => Promise<T>,
+  maxRetries: number = 3,
+  baseDelay: number = 1000
+): Promise<T> {
+  let lastError: Error | null = null
+  
+  for (let i = 0; i <= maxRetries; i++) {
+    try {
+      return await fn()
+    } catch (error) {
+      lastError = error as Error
+      
+      // Check if it's a network error that we should retry
+      const shouldRetry = error instanceof Error && (
+        error.message.includes('Failed to fetch') ||
+        error.message.includes('Network request failed') ||
+        error.message.includes('HTTP request failed') ||
+        error.message.includes('timeout')
+      )
+      
+      if (i === maxRetries || !shouldRetry) {
+        throw error
+      }
+      
+      const delay = baseDelay * Math.pow(2, i)
+      console.log(`Retrying graveyard check in ${delay}ms (attempt ${i + 1}/${maxRetries})...`)
+      await sleep(delay)
+    }
+  }
+  
+  throw lastError
+}
+
 export interface GraveyardReadiness {
   isReady: boolean
   readyTokens: string[]
@@ -62,7 +99,7 @@ export function useGraveyardReadiness(): GraveyardReadiness {
       if (!publicClient) {
         if (mounted) {
           setLoading(false)
-          setError("No public client")
+          setError("No blockchain connection")
         }
         return
       }
@@ -71,12 +108,14 @@ export function useGraveyardReadiness(): GraveyardReadiness {
         setError(null)
         setLoading(true)
 
-        // Получаем общее количество сожженных NFT
-        const totalBurned = await publicClient.readContract({
-          address: GAME_ADDR,
-          abi: GRAVEYARD_ABI,
-          functionName: "totalBurned"
-        }) as bigint
+        // Get total number of burned NFTs with retry
+        const totalBurned = await withRetry(async () => {
+          return await publicClient.readContract({
+            address: GAME_ADDR,
+            abi: GRAVEYARD_ABI,
+            functionName: "totalBurned"
+          }) as bigint
+        })
 
         const total = Number(totalBurned)
         setTotalTokens(total)
@@ -91,37 +130,42 @@ export function useGraveyardReadiness(): GraveyardReadiness {
           return
         }
 
-        // Проверяем первые 50 токенов на готовность (для производительности)
+        // Check first 50 tokens for readiness (for performance)
         const maxCheck = Math.min(total, 50)
         const now = Math.floor(Date.now() / 1000)
         let readyCount = 0
         let earliestReadyTime: number | null = null
+        const currentReadyTokens: string[] = []
 
         for (let i = 0; i < maxCheck; i++) {
           try {
-            // Получаем tokenId из кладбища
-            const tokenId = await publicClient.readContract({
-              address: GAME_ADDR,
-              abi: GRAVEYARD_ABI,
-              functionName: "graveyardTokens",
-              args: [BigInt(i)]
-            }) as bigint
-
-            if (tokenId > 0n) {
-              // Получаем запись о сжигании
-              const burnRecord = await publicClient.readContract({
+            // Get tokenId from graveyard with retry
+            const tokenId = await withRetry(async () => {
+              return await publicClient.readContract({
                 address: GAME_ADDR,
                 abi: GRAVEYARD_ABI,
-                functionName: "burnRecords",
-                args: [tokenId]
-              }) as any
+                functionName: "graveyardTokens",
+                args: [BigInt(i)]
+              }) as bigint
+            })
+
+            if (tokenId > 0n) {
+              // Get burn record with retry
+              const burnRecord = await withRetry(async () => {
+                return await publicClient.readContract({
+                  address: GAME_ADDR,
+                  abi: GRAVEYARD_ABI,
+                  functionName: "burnRecords",
+                  args: [tokenId]
+                }) as any
+              })
 
               const graveyardReleaseTime = Number(burnRecord.graveyardReleaseTime || burnRecord[3])
               
               if (graveyardReleaseTime <= now) {
                 readyCount++
-                if (readyCount <= 10) { // Ограничиваем количество готовых токенов
-                  setReadyTokens(prev => [...prev, tokenId.toString()])
+                if (readyCount <= 10) { // Limit number of ready tokens
+                  currentReadyTokens.push(tokenId.toString())
                 }
               } else {
                 if (earliestReadyTime === null || graveyardReleaseTime < earliestReadyTime) {
@@ -131,11 +175,13 @@ export function useGraveyardReadiness(): GraveyardReadiness {
             }
           } catch (err) {
             console.warn(`Error checking token at index ${i}:`, err)
+            // Continue with next token instead of failing completely
           }
         }
 
         if (mounted) {
           setIsReady(readyCount > 0)
+          setReadyTokens(currentReadyTokens)
           setTimeUntilReady(earliestReadyTime ? earliestReadyTime - now : null)
           setLoading(false)
         }
@@ -143,7 +189,10 @@ export function useGraveyardReadiness(): GraveyardReadiness {
       } catch (err: any) {
         console.error("Error checking graveyard readiness:", err)
         if (mounted) {
-          setError(err?.message || "Failed to check graveyard")
+          const errorMessage = err?.message?.includes('Failed to fetch') 
+            ? "Network connection failed. Please check your internet connection."
+            : err?.message || "Failed to check graveyard status"
+          setError(errorMessage)
           setLoading(false)
         }
       }
@@ -151,7 +200,7 @@ export function useGraveyardReadiness(): GraveyardReadiness {
 
     checkGraveyardReadiness()
 
-    // Проверяем каждые 30 секунд
+    // Check every 30 seconds
     const interval = setInterval(checkGraveyardReadiness, 30000)
 
     return () => {

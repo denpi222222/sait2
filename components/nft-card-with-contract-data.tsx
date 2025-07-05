@@ -5,6 +5,7 @@ import { useNFTContractInfo } from "@/hooks/useNFTContractInfo"
 import { type AlchemyNFT, getTokenIdAsDecimal, getNFTImage, getNFTName } from "@/hooks/useUserNFTs"
 import Image from "next/image"
 import { formatEther } from "viem"
+import { useTranslation } from "react-i18next"
 
 interface NFTCardProps {
   nft: AlchemyNFT
@@ -32,6 +33,8 @@ export function NFTCard({ nft, isSelected, onSelect, onBurn, isBurning }: NFTCar
 
   const imageUrl = getNFTImage(nft)
   const nftName = getNFTName(nft) || `CrazyCube #${tokenIdDecimal}`
+
+  const { t } = useTranslation()
 
   return (
     <Card 
@@ -136,7 +139,7 @@ export function NFTCard({ nft, isSelected, onSelect, onBurn, isBurning }: NFTCar
               <div className="flex justify-between text-gray-400">
                 <span>Status:</span>
                 <span className={isInGraveyard ? "text-red-400" : currentStars > 0 ? "text-green-400" : "text-yellow-400"}>
-                  {isInGraveyard ? "Graveyard" : currentStars > 0 ? "Alive" : "Dying"}
+                  {isInGraveyard ? t('status.graveyard', 'Graveyard') : currentStars > 0 ? t('status.alive', 'Alive') : t('status.dying', 'Dying')}
                 </span>
               </div>
             </div>

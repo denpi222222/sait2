@@ -77,7 +77,7 @@ export default function UserNftsList() {
           return;
         }
 
-        // Параллельный fetch game-данных
+        // Parallel fetch of game data
         const gameDataList = await Promise.all(
           alchemyNfts.map(n => 
             getNFTGameData(n.tokenId.toString()).catch(() => null)

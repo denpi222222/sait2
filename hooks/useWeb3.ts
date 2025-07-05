@@ -10,18 +10,18 @@ export function useWeb3() {
   const { disconnect } = useDisconnect()
   const [isClient, setIsClient] = useState(false)
 
-  // Проверяем, что мы на клиенте
+  // Check that we're on the client
   useEffect(() => {
     setIsClient(true)
   }, [])
 
-  // Функция для форматирования адреса
+  // Function to format address
   const formatAddress = (addr: string | undefined) => {
     if (!addr) return ""
     return `${addr.slice(0, 6)}...${addr.slice(-4)}`
   }
 
-  // Функция для форматирования суммы
+  // Function to format amount
   const formatAmount = (amount: bigint | undefined, decimals = 18, precision = 2) => {
     if (!amount) return "0"
     const formatted = formatEther(amount)

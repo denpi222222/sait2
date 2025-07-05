@@ -153,20 +153,27 @@ export default function NFTPingCard({ nft, index = 0, onActionComplete }: NFTPin
 
   const handlePing = requireApeChain(async () => {
     if (!isConnected) {
-      toast({ title: 'Wallet not connected', variant: 'destructive' })
+      toast({ 
+        title: t('wallet.notConnected', 'Wallet not connected'), 
+        variant: 'destructive' 
+      })
       return
     }
     if (!pingReady) return
     try {
       setIsProcessing(true)
       await pingNFT(tokenIdDec)
-      toast({ title: `Ping sent for #${tokenIdDec}` })
+      toast({ title: t('ping.sentFor', `Ping sent for #${tokenIdDec}`) })
       // refetch data
       const updated = await getNFTGameData(tokenIdDec)
       setGameData(updated)
       if (onActionComplete) onActionComplete()
     } catch (e:any) {
-      toast({ title: 'Ping error', description: e?.message, variant: 'destructive' })
+      toast({ 
+        title: t('ping.error', 'Ping error'), 
+        description: e?.message, 
+        variant: 'destructive' 
+      })
     } finally {
       setIsProcessing(false)
     }

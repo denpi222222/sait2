@@ -171,13 +171,24 @@
     ]
   },
   "wallet": {
-    "connect": "Conectar",
+    "connect": "Conectar Cartera",
     "connecting": "Conectando…",
     "copyAddress": "Copiar Dirección",
     "copied": "¡Copiado!",
     "openExplorer": "Abrir en Explorador",
-    "disconnect": "Desconectar Billetera",
-    "balance": "Saldo:"
+    "disconnect": "Desconectar Cartera",
+    "balance": "Saldo:",
+    "notConnected": "Cartera no conectada",
+    "connectFirst": "Por favor conecta tu cartera primero",
+    "connected": "Conectado"
+  },
+  "userNFTs": {
+    "title": "Tus NFTs",
+    "connectToView": "Conecta tu billetera para ver tus CrazyCube NFTs",
+    "errorLoading": "Error al cargar NFTs",
+    "noNFTs": "Aún no tienes CrazyCube NFTs",
+    "yourCrazyCubeNFTs": "Tus CrazyCube NFTs",
+    "showing": "Mostrando {{count}} de {{total}} NFTs"
   },
   "cubeAnimation": {
     "loading": "Cargando...",
@@ -215,7 +226,28 @@
   "social": {
     "telegram": "Telegram",
     "discord": "Discord",
-    "followUs": "Síguenos"
+    "followUs": "Síguenos",
+    "megaGiveaway": "¡MEGA SORTEO!",
+    "supportAndWin": "¡Apóyanos y GANA NFT + tokens CRA!",
+    "prizePool": "FONDO DE PREMIOS:",
+    "exclusiveNFTs": "NFTs Exclusivos",
+    "craTokens": "Tokens CRA (varias cantidades)",
+    "discordRoles": "Roles especiales de Discord",
+    "bonusSurprises": "Bonificaciones y sorpresas",
+    "joinTelegram": "Únete a Telegram",
+    "joinDiscord": "Únete a Discord",
+    "twitterActions": "Acciones de Twitter:",
+    "followTwitter": "Seguir @crazy___cube",
+    "viewPost": "Ver publicación",
+    "like": "Me gusta",
+    "retweet": "Retweet",
+    "allDone": "¡LO HICE TODO!",
+    "later": "Más tarde",
+    "participateNow": "¡PARTICIPA AHORA!",
+    "weeklyGiveaway": "¡Sorteo cada semana entre participantes activos!",
+    "github": "GitHub",
+    "share": "Compartir",
+    "shareTitle": "CrazyCube - ¡Donde los cubos lloran y bromean!"
   },
   "tabs": {
     "breed": "Cruzar",
@@ -226,6 +258,16 @@
     "graveyard": "Cementerio",
     "ping": "Ping"
   },
+  "navigation": {
+    "home": "Inicio"
+  },
+  "ping": {
+    "description": "¡Haz ping a tus NFTs cada 3 minutos para ganar tokens CRA! Ping una vez cada 3 minutos o una vez cada 15 días, acumulación hasta 15 días.",
+    "connectWallet": "Conecta tu billetera para ver tus cubos",
+    "noNFTs": "No se encontraron NFTs de CrazyCube.",
+    "sentFor": "Ping enviado para",
+    "error": "Error de ping"
+  },
   "tokenInfo": {
     "priceUSD": "Precio USD",
     "marketCap": "Capitalización de Mercado",
@@ -234,11 +276,16 @@
     "avg": "Prom.",
     "totalSupply": "Suministro Total",
     "circulating": "En Circulación",
-    "burned": "Quemado"
+    "burned": "Quemado",
+    "overview": "Resumen Token CRA",
+    "holders": "Tenedores",
+    "comingSoon": "métrica próximamente"
   },
   "common": {
     "retry": "Reintentar",
-    "loading": "Cargando..."
+    "loading": "Cargando...",
+    "loadingNFTs": "Cargando NFTs...",
+    "total": "total"
   },
   "market": {
     "loading": "Cargando datos del mercado...",
@@ -357,20 +404,20 @@
       "cooldown48": "Cooldown de 48h"
     },
     "roadmap": {
-      "title": "🛣️ Camino hacia la Descentralización",
+      "title": "Camino hacia la descentralización",
       "phase1": {
         "title": "Fase 1: Depuración",
         "desc": "1-2 meses de pruebas y optimización de todas las mecánicas del juego"
       },
       "phase2": {
         "title": "Fase 2: Autonomía",
-        "desc": "Conectar agente autónomo y eliminar derechos de administrador"
+        "desc": "Conectar agente autónomo y eliminar derechos de admin"
       },
       "phase3": {
         "title": "Fase 3: Libertad",
-        "desc": "La colección NFT y el contrato del juego serán completamente descentralizados, el token CRA se vuelve autónomo"
+        "desc": "Gestión completamente descentralizada solo por mercado"
       },
-      "callout": "🚀 CrazyCube - ¡primera colección NFT con plan completo de descentralización!"
+      "tagline": "🚀 CrazyCube - ¡primera colección NFT con plan de descentralización completa!"
     }
   },
   "status": {
@@ -387,12 +434,22 @@
     "noStarsLeft": "Sin Estrellas",
     "activated": "Activado",
     "notActivated": "No Activado",
-    "cantPing": "No Puede Ping",
+    "cantPing": "No se puede Ping",
     "rewardReady": "Recompensa Lista",
-    "readyForBreeding": "Listo para Cruzar",
+    "readyForBreeding": "Listo para Reproducir",
     "claimReady": "Listo para Reclamar",
     "locked": "Bloqueado",
-    "claimable": "Reclamable"
+    "claimable": "Reclamable",
+    "burnable": "Quemable",
+    "done": "¡Hecho!",
+    "graveyard": "Cementerio",
+    "alive": "Vivo",
+    "dying": "Muriendo",
+    "notClaimed": "No",
+    "confirming": "Confirmando..."
+  },
+  "nft": {
+    "burnable": "Se Puede Quemar"
   },
   "pages": {
     "breed": {
@@ -579,5 +636,22 @@
       "¡No vimos nada!",
       "¡No mires!"
     ]
+  },
+  "distribution": {
+    "activeVsGraveyard": "Activos vs En cementerio por rareza",
+    "rarity": "Rareza",
+    "byRarity": "Por Rareza",
+    "byStatus": "Por Estado",
+    "nfts": "NFTs"
+  },
+  "graveyard": {
+    "claimedReward": "Recompensa reclamada",
+    "claimError": "Error al reclamar"
+  },
+  "contractInteraction": {
+    "error": "Error",
+    "enterTokenId": "Por favor ingresa un ID de token",
+    "enterTokenIdAndHours": "Por favor ingresa ID de token y horas de espera",
+    "enterBothParents": "Por favor ingresa ambos IDs de tokens padre"
   }
 }

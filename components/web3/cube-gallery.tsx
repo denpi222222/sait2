@@ -26,7 +26,7 @@ const cubesData: CubeInfo[] = [
     rarity: 6,
     power: 95,
     element: "Fire",
-    description: "Легендарный куб огня, способный испепелить врагов",
+    description: "Legendary fire cube capable of incinerating enemies",
     color: "from-red-500 to-orange-500"
   },
   {
@@ -36,7 +36,7 @@ const cubesData: CubeInfo[] = [
     rarity: 5,
     power: 88,
     element: "Ice",
-    description: "Защитник льда с непробиваемой броней",
+    description: "Ice defender with impenetrable armor",
     color: "from-blue-500 to-cyan-500"
   },
   {
@@ -46,7 +46,7 @@ const cubesData: CubeInfo[] = [
     rarity: 6,
     power: 92,
     element: "Electric",
-    description: "Молниеносный ударник с электрической силой",
+    description: "Lightning striker with electric power",
     color: "from-yellow-500 to-purple-500"
   },
   {
@@ -56,7 +56,7 @@ const cubesData: CubeInfo[] = [
     rarity: 4,
     power: 78,
     element: "Earth",
-    description: "Мощный земляной куб, создающий землетрясения",
+    description: "Mighty earth cube creating earthquakes",
     color: "from-green-500 to-brown-500"
   },
   {
@@ -66,7 +66,7 @@ const cubesData: CubeInfo[] = [
     rarity: 3,
     power: 65,
     element: "Air",
-    description: "Быстрый воздушный куб с увертливостью ветра",
+    description: "Fast air cube with wind agility",
     color: "from-gray-500 to-blue-300"
   },
   {
@@ -76,7 +76,7 @@ const cubesData: CubeInfo[] = [
     rarity: 5,
     power: 85,
     element: "Dark",
-    description: "Таинственный теневой куб из параллельного мира",
+    description: "Mysterious shadow cube from parallel world",
     color: "from-purple-900 to-black"
   },
   {
@@ -86,7 +86,7 @@ const cubesData: CubeInfo[] = [
     rarity: 6,
     power: 98,
     element: "Light",
-    description: "Святой световой куб, изгоняющий тьму",
+    description: "Holy light cube banishing darkness",
     color: "from-yellow-300 to-white"
   },
   {
@@ -96,7 +96,7 @@ const cubesData: CubeInfo[] = [
     rarity: 6,
     power: 100,
     element: "Cosmic",
-    description: "Легендарный космический куб из далеких галактик",
+    description: "Legendary cosmic cube from distant galaxies",
     color: "from-purple-500 to-pink-500"
   }
 ]
@@ -136,7 +136,7 @@ export default function CubeGallery() {
           ⚡ CUBE COLLECTION ⚡
         </h2>
         <p className="text-xl text-cyan-200 max-w-2xl mx-auto">
-          Откройте для себя уникальные NFT кубы с различными силами и способностями
+          Discover unique NFT cubes with various powers and abilities
         </p>
       </motion.div>
 
@@ -348,7 +348,7 @@ export default function CubeGallery() {
                 onClick={() => setSelectedCube(null)}
                 className="w-full bg-gradient-to-r from-cyan-500 to-purple-500 text-white font-bold py-3 px-6 rounded-xl"
               >
-                Закрыть
+                Close
               </motion.button>
             </motion.div>
           </motion.div>

@@ -19,11 +19,11 @@ import {
   Sparkles
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useContractStats } from '@/hooks/useContractStats';
+import { useGameStats } from '@/hooks/useGameStats';
 import { formatWithCommas } from '@/utils/formatNumber';
 
 export default function Denis3LiveData() {
-  const { stats: contractStats, isLoading, error } = useContractStats();
+  const { stats: contractStats, isLoading, error } = useGameStats();
 
   const formatCRA = (amount: string) => {
     const num = parseFloat(amount);
@@ -37,12 +37,7 @@ export default function Denis3LiveData() {
     return new Date(timestamp).toLocaleString('ru-RU');
   };
 
-  const totalStarsValue = (() => {
-    if (!contractStats) return '...'
-    const n = parseInt(contractStats.totalStars, 10)
-    if (isNaN(n) || n > 100_000) return 'N/A'
-    return n.toLocaleString()
-  })()
+  const totalStarsValue = 'N/A' // totalStars was deprecated due to invalid data
 
   if (isLoading) {
     return (
@@ -195,7 +190,7 @@ export default function Denis3LiveData() {
                   </div>
                 </div>
                 <div className="text-3xl font-bold text-green-400">
-                  {contractStats.activeNFTs}
+                  {contractStats.activeCubes}
                 </div>
               </Card>
             </motion.div>

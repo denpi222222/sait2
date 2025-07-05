@@ -6,10 +6,10 @@ import { Badge } from '@/components/ui/badge';
 import { motion } from 'framer-motion';
 import { Activity, DollarSign, Flame, Clock, Database, Vault, TrendingUp } from 'lucide-react';
 import { useCrazyCubeGame } from '@/hooks/useCrazyCubeGame';
-import { useCrazyCubeStats } from '@/hooks/useCrazyCubeStats';
-import useCRAStats from "@/hooks/useCRAStats"
+import { useGameStats } from '@/hooks/useGameStats';
 import { formatEther } from 'viem';
 import { formatWithCommas } from "@/utils/formatNumber"
+import { useTranslation } from 'react-i18next';
 
 interface StatCardProps {
   title: string;
@@ -58,48 +58,48 @@ export const GameDashboard = () => {
   const {
     craBalance,
     breedCost,
-    graveyardSize,
     isConnected
   } = useCrazyCubeGame();
 
-  const { stats: globalStats } = useCrazyCubeStats();
-  const { data: craStats } = useCRAStats()
+  const { stats: gameStats, isLoading: statsLoading } = useGameStats();
+
+  const { t } = useTranslation();
 
   const statCards = [
     {
       title: "Total NFTs",
-      value: globalStats ? globalStats.totalNFTs.toLocaleString() : "-",
-      subtitle: "Minted crazy cubes",
+      value: gameStats ? gameStats.totalNFTs.toLocaleString() : "-",
+      subtitle: "Max cube collection",
       icon: <Activity className="w-4 h-4 text-blue-400" />,
       color: "blue" as const,
     },
     {
+      title: "Active NFTs",
+      value: gameStats ? gameStats.activeCubes.toLocaleString() : "-",
+      subtitle: "Living crazy cubes",
+      icon: <TrendingUp className="w-4 h-4 text-green-400" />,
+      color: "green" as const,
+    },
+    {
       title: "In Graveyard",
-      value: globalStats ? globalStats.inGraveyard.toLocaleString() : "-",
+      value: gameStats ? parseInt(gameStats.graveyardSize).toLocaleString() : "-",
       subtitle: "Waiting for resurrection",
       icon: <Flame className="w-4 h-4 text-red-400" />,
       color: "red" as const,
     },
     {
       title: "Reward Pool",
-      value: globalStats ? `${new Intl.NumberFormat('en-US').format(parseFloat(globalStats.rewardPoolCRA))} CRA` : "-",
+      value: gameStats ? `${new Intl.NumberFormat('en-US').format(parseFloat(gameStats.currentMonthlyPool))} CRA` : "-",
       subtitle: "Locked for rewards",
-      icon: <Vault className="w-4 h-4 text-green-400" />,
-      color: "green" as const,
-    },
-    {
-      title: "CRA Supply",
-      value: craStats ? `${new Intl.NumberFormat('en-US').format(parseFloat(craStats.totalSupply))} CRA` : "-",
-      subtitle: "Total CRA minted",
-      icon: <Database className="w-4 h-4 text-purple-400" />,
+      icon: <Vault className="w-4 h-4 text-purple-400" />,
       color: "purple" as const,
     },
     {
-      title: "Graveyard Size",
-      value: graveyardSize.toString(),
-      subtitle: "Waiting for resurrection",
-      icon: <Clock className="w-4 h-4 text-orange-400" />,
-      color: "orange" as const,
+      title: "CRA Supply",
+      value: gameStats ? `${new Intl.NumberFormat('en-US').format(parseFloat(gameStats.craTotalSupply))} CRA` : "-",
+      subtitle: "Total CRA minted",
+      icon: <Database className="w-4 h-4 text-amber-400" />,
+      color: "amber" as const,
     },
     {
       title: "Breed Cost",
@@ -151,7 +151,7 @@ export const GameDashboard = () => {
             <div className="text-xs text-slate-400">Your Balance</div>
           </div>
           <div>
-            <div className="text-lg font-bold text-green-300">Connected</div>
+            <div className="text-lg font-bold text-green-300">{t('wallet.connected', 'Connected')}</div>
             <div className="text-xs text-slate-400">Wallet Status</div>
           </div>
           <div>

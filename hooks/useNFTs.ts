@@ -1,18 +1,20 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { useAccount, useReadContract, useReadContracts } from "wagmi"
+import { useState, useEffect, useCallback } from "react"
+import { useAccount, useReadContract, usePublicClient } from "wagmi"
 import { NFT_CONTRACT_ADDRESS } from "@/config/wagmi"
 import { nftAbi } from "@/config/abis/nftAbi"
+import { resolveIpfsUrl } from "@/lib/ipfs"
 import type { NFT, NFTMetadata } from "@/types/nft"
 
 export function useNFTs() {
   const { address, isConnected, chain } = useAccount()
+  const publicClient = usePublicClient()
   const [nfts, setNfts] = useState<NFT[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
 
-  // Получаем баланс NFT пользователя
+  // Get user's NFT balance
   const { data: balanceData } = useReadContract({
     address: NFT_CONTRACT_ADDRESS,
     abi: nftAbi,
@@ -23,14 +25,14 @@ export function useNFTs() {
     },
   })
 
-  // Получаем токены пользователя
+  // Get user's tokens
   useEffect(() => {
     const controller = new AbortController()
     const signal = controller.signal
 
-    const fetchNFTs = async () => {
+    const fetchNFTsInChunks = async () => {
       if (!address || !isConnected || balanceData === undefined) {
-        if (!isConnected) setNfts([]) // Очищаем NFT если кошелек отключен
+        if (!isConnected) setNfts([]) // Clear NFTs if wallet is disconnected
         return
       }
 
@@ -45,37 +47,59 @@ export function useNFTs() {
           return
         }
 
-        // 1. Получаем все ID токенов пользователя одним батч-запросом
-        const tokenOfOwnerByIndexContracts = Array.from({ length: balance }, (_, i) => ({
-          address: NFT_CONTRACT_ADDRESS,
-          abi: nftAbi,
-          functionName: "tokenOfOwnerByIndex",
-          args: [address, BigInt(i)],
-        }))
+        // --- APECHAIN FIX ---
+        // Load NFTs in chunks to avoid one large request,
+        // which causes errors on ApeChain RPC nodes.
+        const CHUNK_SIZE = 20; // Configurable. Smaller = more requests, but smaller in size.
+        let allFetchedNFTs: NFT[] = [];
 
-        const tokenIdsResults = await readContracts({ contracts: tokenOfOwnerByIndexContracts })
-        const tokenIds = tokenIdsResults.map(r => r.result as bigint).filter(Boolean)
+        for (let i = 0; i < balance; i += CHUNK_SIZE) {
+          if (signal.aborted) return;
 
-        // 2. Получаем все tokenURI одним батч-запросом
-        const tokenURIContracts = tokenIds.map(tokenId => ({
-          address: NFT_CONTRACT_ADDRESS,
-          abi: nftAbi,
-          functionName: "tokenURI",
-          args: [tokenId],
-        }))
+          const chunkIndexPromises = [];
+          const endIndex = Math.min(i + CHUNK_SIZE, balance);
 
-        const tokenURIResults = await readContracts({ contracts: tokenURIContracts })
-        const tokenURIs = tokenURIResults.map(r => r.result as string).filter(Boolean)
+          for (let j = i; j < endIndex; j++) {
+            chunkIndexPromises.push(
+              publicClient!.readContract({
+                address: NFT_CONTRACT_ADDRESS,
+                abi: nftAbi,
+                functionName: "tokenOfOwnerByIndex",
+                args: [address, BigInt(j)],
+              })
+            );
+          }
 
-        // 3. Загружаем метаданные
-        const nftPromises = tokenURIs.map((tokenURI, index) =>
-          fetchMetadata(tokenURI, Number(tokenIds[index]), signal)
-        )
+          const tokenIdsInChunk = (await Promise.all(chunkIndexPromises)).filter(Boolean) as bigint[];
+          if (signal.aborted) return;
 
-        const fetchedNFTs = (await Promise.all(nftPromises)).filter(
-          (nft): nft is NFT => nft !== null
-        )
-        setNfts(fetchedNFTs)
+          const tokenURIPromises = tokenIdsInChunk.map(tokenId =>
+            publicClient!.readContract({
+              address: NFT_CONTRACT_ADDRESS,
+              abi: nftAbi,
+              functionName: "tokenURI",
+              args: [tokenId],
+            })
+          );
+
+          const tokenURIs = (await Promise.all(tokenURIPromises)).filter(Boolean) as string[];
+          if (signal.aborted) return;
+
+          const metadataPromises = tokenURIs.map((uri, index) =>
+            fetchMetadata(uri, Number(tokenIdsInChunk[index]), signal)
+          );
+
+          const fetchedChunk = (await Promise.all(metadataPromises)).filter(
+            (nft): nft is NFT => nft !== null
+          );
+
+          allFetchedNFTs = [...allFetchedNFTs, ...fetchedChunk];
+          
+          // Update state after each chunk for UI responsiveness
+          if (!signal.aborted) {
+            setNfts([...allFetchedNFTs]);
+          }
+        }
       } catch (err) {
         console.error("Error fetching NFTs:", err)
         if (!signal.aborted) {
@@ -88,24 +112,18 @@ export function useNFTs() {
       }
     }
 
-    fetchNFTs()
+    fetchNFTsInChunks()
 
-    // Отменяем запросы при уходе со страницы
+    // Cancel requests when leaving the page
     return () => {
       controller.abort()
     }
-  }, [address, isConnected, balanceData, chain]) // Добавляем chain в зависимости
-
-  // Используем useReadContracts для батчинга
-  const { readContracts } = useReadContracts()
+  }, [address, isConnected, balanceData, chain, publicClient]) // Add publicClient
 
   const fetchMetadata = async (tokenURI: string, tokenId: number, signal: AbortSignal): Promise<NFT | null> => {
     try {
-      // Если URI начинается с ipfs://, преобразуем его в HTTP URL
-      const url = tokenURI.startsWith("ipfs://") ? `https://ipfs.io/ipfs/${tokenURI.slice(7)}` : tokenURI
-
-      // Проверяем, что URL безопасен (базовая проверка)
-      if (!url.startsWith('https://') && !url.startsWith('http://localhost')) { // localhost для тестов
+      const url = resolveIpfsUrl(tokenURI)
+      if (!url.startsWith('https://')) {
         console.warn(`Skipping insecure metadata URL for token ${tokenId}: ${url}`)
         return null
       }
@@ -118,8 +136,7 @@ export function useNFTs() {
         id: `${tokenId}`,
         tokenId,
         name: metadata.name,
-        image: metadata.image, // В идеале, это изображение тоже нужно проксировать и санировать
-        rarity: determineRarity(metadata.attributes),
+        image: resolveIpfsUrl(metadata.image),
         attributes: metadata.attributes,
         rewardBalance: 0,
         frozen: false,
@@ -130,27 +147,6 @@ export function useNFTs() {
       }
       return null
     }
-  }
-
-  const determineRarity = (attributes: { trait_type: string; value: string | number }[]): NFT["rarity"] => {
-    // --- ИСПРАВЛЕНИЕ БЕЗОПАСНОСТИ ---
-    // НЕЛЬЗЯ доверять метаданным NFT для определения редкости!
-    // Злоумышленник может указать любую редкость в своих метаданных.
-    // 
-    // В продакшене здесь должна быть логика:
-    // 1. Проверка tokenId в whitelist verified NFT
-    // 2. Получение редкости из verified smart contract
-    // 3. Или API, которое проверяет подлинность NFT
-    
-    // Пока что для безопасности возвращаем "Common" для всех NFT
-    // и выводим предупреждение в консоль
-    
-    console.warn("⚠️ SECURITY WARNING: Rarity determination from metadata is unsafe!")
-    console.warn("This could be exploited by malicious NFTs with fake rarity attributes.")
-    console.warn("In production, verify rarity from trusted smart contract or API.")
-    
-    // TODO: Заменить на проверенный источник редкости
-    return "Common" // Безопасное значение по умолчанию
   }
 
   return {

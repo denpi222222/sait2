@@ -1,11 +1,12 @@
-import { useReadContract } from 'wagmi'
+import { usePublicClient } from 'wagmi'
 import { apeChain } from '../config/chains'
+import { useState, useEffect, useCallback } from 'react'
 import { getRarityLabel, getRarityColor as rarityColor } from "@/lib/rarity"
 
-// Адрес игрового контракта
+// Game contract address
 const GAME_CONTRACT_ADDRESS = apeChain.contracts.gameProxy.address
 
-// ABI для новых функций nftData и nftState
+// ABI for new functions nftData and nftState
 const GAME_CONTRACT_ABI = [
   {
     "inputs": [{"internalType": "uint256", "name": "tokenId", "type": "uint256"}],
@@ -53,58 +54,77 @@ export interface NFTContractInfo {
 }
 
 export function useNFTContractInfo(tokenId: string | undefined) {
-  const isValidId = tokenId !== undefined && /^\d+$/.test(tokenId)
+  const publicClient = usePublicClient()
+  const [nftInfo, setNftInfo] = useState<NFTContractInfo | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<Error | null>(null)
 
-  // Получаем статические данные NFT
-  const { data: nftData, isLoading: isLoadingData, error: dataError, refetch: refetchData } = useReadContract({
-    address: GAME_CONTRACT_ADDRESS,
-    abi: GAME_CONTRACT_ABI,
-    functionName: 'nftData',
-    args: isValidId ? [BigInt(tokenId!)] : undefined,
-    query: { 
-      enabled: isValidId,
-      refetchInterval: 60000 // статические данные обновляем реже
+  const fetchData = useCallback(async () => {
+    const isValidId = tokenId !== undefined && /^\d+$/.test(tokenId)
+    if (!publicClient || !isValidId) {
+      if (isValidId) setIsLoading(true) // Show loading if ID exists but client is not ready yet
+      else setIsLoading(false)
+      return
     }
-  })
 
-  // Получаем динамические данные NFT
-  const { data: nftState, isLoading: isLoadingState, error: stateError, refetch: refetchState } = useReadContract({
-    address: GAME_CONTRACT_ADDRESS,
-    abi: GAME_CONTRACT_ABI,
-    functionName: 'nftState',
-    args: isValidId ? [BigInt(tokenId!)] : undefined,
-    query: { 
-      enabled: isValidId,
-      // Обновляем каждые 30 секунд, так как звезды могут сгореть
-      refetchInterval: 30000 
+    setIsLoading(true)
+    setError(null)
+
+    try {
+      // Call data reading directly to bypass automatic multicall from wagmi
+      const nftDataPromise = publicClient.readContract({
+        address: GAME_CONTRACT_ADDRESS,
+        abi: GAME_CONTRACT_ABI,
+        functionName: 'nftData',
+        args: [BigInt(tokenId!)],
+      })
+
+      const nftStatePromise = publicClient.readContract({
+        address: GAME_CONTRACT_ADDRESS,
+        abi: GAME_CONTRACT_ABI,
+        functionName: 'nftState',
+        args: [BigInt(tokenId!)],
+      })
+
+      const [nftData, nftState] = await Promise.all([nftDataPromise, nftStatePromise])
+
+      const parsedInfo: NFTContractInfo = {
+        static: {
+          rarity: Number(nftData[0]),
+          initialStars: Number(nftData[1]),
+          isActivated: nftData[2],
+        },
+        dynamic: {
+          currentStars: Number(nftState[0]),
+          lockedCRA: nftState[1],
+          lastPingTime: nftState[2],
+          lastBreedTime: nftState[3],
+          isInGraveyard: nftState[4],
+        },
+      }
+      setNftInfo(parsedInfo)
+    } catch (e) {
+      console.error(`Failed to fetch contract info for token ${tokenId}:`, e)
+      setError(e as Error)
+      setNftInfo(null)
+    } finally {
+      setIsLoading(false)
     }
-  })
+  }, [tokenId, publicClient])
 
-  const isLoading = isLoadingData || isLoadingState
-  const error = dataError || stateError
+  useEffect(() => {
+    fetchData()
+    // Set up interval for periodic data updates
+    const intervalId = setInterval(fetchData, 30000) // Update every 30 seconds
+    return () => clearInterval(intervalId)
+  }, [fetchData])
 
-  const refetch = () => {
-    refetchData()
-    refetchState()
-  }
+  const refetch = useCallback(() => {
+    // Don't reset data, just start loading again
+    void fetchData()
+  }, [fetchData])
 
-  // Парсим данные контракта
-  const nftInfo: NFTContractInfo | null = (nftData && nftState) ? {
-    static: {
-      rarity: Number(nftData[0]),
-      initialStars: Number(nftData[1]),
-      isActivated: nftData[2]
-    },
-    dynamic: {
-      currentStars: Number(nftState[0]),
-      lockedCRA: nftState[1],
-      lastPingTime: nftState[2],
-      lastBreedTime: nftState[3],
-      isInGraveyard: nftState[4]
-    }
-  } : null
-
-  // Функции для удобства
+  // Functions for convenience
   const getRarityText = getRarityLabel
   const getRarityColor = rarityColor
 
@@ -134,13 +154,13 @@ export function useNFTContractInfo(tokenId: string | undefined) {
   }
 
   return {
-    // Данные
+    // Data
     nftInfo,
     isLoading,
     error,
     refetch,
 
-    // Утилиты
+    // Utilities
     getRarityText,
     getRarityColor,
     getRarityByStars,
@@ -148,7 +168,7 @@ export function useNFTContractInfo(tokenId: string | undefined) {
     getStarsBurnedCount,
     isNFTDead,
 
-    // Удобные геттеры
+    // Convenient getters
     rarity: nftInfo?.static.rarity || 0,
     currentStars: nftInfo?.dynamic.currentStars || 0,
     initialStars: nftInfo?.static.initialStars || 0,

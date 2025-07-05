@@ -19,7 +19,7 @@ export function NFTGrid({ onSelect, selectable = false, maxDisplay, CardComponen
   const { nfts, isLoading, error } = useAlchemyNfts()
   const [showAll, setShowAll] = useState(false)
 
-  // Определяем, сколько NFT показывать
+  // Determine how many NFTs to show
   const displayNFTs = showAll || !maxDisplay ? nfts : nfts.slice(0, maxDisplay)
   const hasMore = maxDisplay !== undefined && nfts.length > maxDisplay && !showAll
 

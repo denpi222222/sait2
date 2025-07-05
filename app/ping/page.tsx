@@ -20,8 +20,10 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { useSocialPrompt } from "@/hooks/use-social-prompt"
 import { SocialPromptModal } from "@/components/SocialPromptModal"
 import { usePerformanceContext } from "@/hooks/use-performance-context"
+import { useTranslation } from "react-i18next"
 
 export default function PingPage() {
+  const { t } = useTranslation()
   const { address, isConnected } = useAccount()
   const { connectors, connect } = useConnect()
   const { nfts, isLoading: isLoadingNFTs, error, refetch } = useAlchemyNfts()
@@ -50,11 +52,11 @@ export default function PingPage() {
     if (injected) connect({ connector: injected })
   }
 
-  if (!mounted) return (<div className="min-h-screen bg-gradient-to-br from-sky-900 via-cyan-900 to-sky-900 flex items-center justify-center text-white">Loading...</div>)
+  if (!mounted) return (<div className="min-h-screen bg-gradient-to-br from-sky-900 via-cyan-900 to-sky-900 flex items-center justify-center text-white">{t('common.loading', 'Loading...')}</div>)
 
   return (
     <div className={`min-h-screen bg-gradient-to-br from-sky-900 via-cyan-900 to-sky-900 p-4 ${isLiteMode ? 'lite-mode' : ''}`}>
-      {/* Космический дождь из золотых кубиков */}
+      {/* Cosmic rain of golden cubes */}
       {!isLiteMode && (
         <>
           <CoinsAnimation intensity={isMobile ? 0.8 : 1.4} theme="blue" />
@@ -65,7 +67,7 @@ export default function PingPage() {
         <header className="mb-3 flex items-center justify-between">
           <Link href="/">
             <Button variant="outline" className="border-cyan-500/30 bg-black/20 text-cyan-300 hover:bg-black/40">
-              <ArrowLeft className="mr-2 w-4 h-4" /> Home
+              <ArrowLeft className="mr-2 w-4 h-4" /> {t('navigation.home', 'Home')}
             </Button>
           </Link>
           
@@ -77,20 +79,20 @@ export default function PingPage() {
         {/* Page Title and Info */}
         <div className="text-center mb-3">
           <p className="text-cyan-300/80 text-xs font-medium leading-relaxed max-w-xl mx-auto">
-            Ping your NFTs every 3 minutes to earn CRA tokens! Ping once every 3 minutes or once every 15 days, accumulation up to 15 days.
+            {t('ping.description', 'Ping your NFTs every 3 minutes to earn CRA tokens! Ping once every 3 minutes or once every 15 days, accumulation up to 15 days.')}
           </p>
         </div>
 
         {!isConnected ? (
           <div className="text-center py-12">
             <SatelliteDish className="w-12 h-12 text-cyan-400 mx-auto mb-4" />
-            <p className="text-cyan-200 mb-4">Connect wallet to view your cubes</p>
-            <Button onClick={handleConnect} className="bg-gradient-to-r from-cyan-600 to-sky-600 hover:from-cyan-500 hover:to-sky-500"><motion.span animate={{opacity:[0.5,1,0.5]}} transition={{duration:1.5,repeat:Infinity}}>Connect Wallet</motion.span></Button>
+            <p className="text-cyan-200 mb-4">{t('ping.connectWallet', 'Connect wallet to view your cubes')}</p>
+            <Button onClick={handleConnect} className="bg-gradient-to-r from-cyan-600 to-sky-600 hover:from-cyan-500 hover:to-sky-500"><motion.span animate={{opacity:[0.5,1,0.5]}} transition={{duration:1.5,repeat:Infinity}}>{t('wallet.connect', 'Connect Wallet')}</motion.span></Button>
           </div>
         ) : isLoadingNFTs ? (
-          <div className="text-center text-cyan-200">Loading NFTs...</div>
+          <div className="text-center text-cyan-200">{t('common.loadingNFTs', 'Loading NFTs...')}</div>
         ) : nfts.length === 0 ? (
-          <div className="text-center text-cyan-200">No CrazyCube NFTs found.</div>
+          <div className="text-center text-cyan-200">{t('ping.noNFTs', 'No CrazyCube NFTs found.')}</div>
         ) : (
           <LazyLoad placeholder={<Skeleton className="h-64 w-full bg-sky-800/30" />}>
             <div className="nft-card-grid">

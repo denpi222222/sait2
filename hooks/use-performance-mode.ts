@@ -21,18 +21,18 @@ export const usePerformanceMode = (): PerformanceInfo => {
 
   useEffect(() => {
     const detectPerformance = () => {
-      // Детект мобильного устройства
+      // Detect mobile device
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
                       window.innerWidth <= 768;
 
-      // Детект характеристик устройства
+      // Detect device characteristics
       const hardwareConcurrency = navigator.hardwareConcurrency || 0;
       const deviceMemory = (navigator as any).deviceMemory || 0;
 
-      // Определяем слабое устройство
+      // Determine weak device
       const isWeakDevice = hardwareConcurrency <= 4 || deviceMemory <= 2 || isMobile;
 
-      // Детект скорости соединения
+      // Detect connection speed
       let connectionSpeed: 'slow' | 'fast' | 'unknown' = 'unknown';
       if ('connection' in navigator) {
         const connection = (navigator as any).connection;
@@ -43,7 +43,7 @@ export const usePerformanceMode = (): PerformanceInfo => {
         }
       }
 
-      // Автоматически включаем lite режим для слабых устройств
+      // Auto-enable lite mode for weak devices
       const isLiteMode = isWeakDevice || connectionSpeed === 'slow';
 
       setPerformanceInfo({
@@ -58,7 +58,7 @@ export const usePerformanceMode = (): PerformanceInfo => {
 
     detectPerformance();
 
-    // Пересчитываем при изменении размера окна
+    // Recalculate on window resize
     const handleResize = () => {
       detectPerformance();
     };

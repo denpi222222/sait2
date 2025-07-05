@@ -98,14 +98,14 @@ export const CubiePlayer: React.FC<CubiePlayerProps> = ({
         model.rotation.z = Math.sin(animationTime * 4) * 0.05
         // Find body parts for animation
         model.traverse((child) => {
-          if (child.name.toLowerCase().includes('arm') || 
-              child.name.toLowerCase().includes('рука') ||
-              child.name.toLowerCase().includes('hand')) {
+          if (child.name.toLowerCase().includes('hand') ||
+              child.name.toLowerCase().includes('arm') ||
+              child.name.toLowerCase().includes('рука')) {
             child.rotation.x = Math.sin(animationTime * 6) * 0.5
           }
-          if (child.name.toLowerCase().includes('leg') || 
-              child.name.toLowerCase().includes('нога') ||
-              child.name.toLowerCase().includes('foot')) {
+          if (child.name.toLowerCase().includes('leg') ||
+              child.name.toLowerCase().includes('foot') ||
+              child.name.toLowerCase().includes('нога')) {
             child.rotation.x = Math.sin(animationTime * 6 + Math.PI) * 0.6
           }
         })
@@ -199,7 +199,7 @@ export const CubiePlayer: React.FC<CubiePlayerProps> = ({
     animate()
   }, [])
 
-  return null // Компонент не рендерит JSX, работает с Three.js напрямую
+  return null // Component doesn't render JSX, works with Three.js directly
 }
 
 export default CubiePlayer 

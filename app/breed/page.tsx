@@ -281,13 +281,13 @@ export default function BreedPage() {
     }
   }, [isTxSuccess, isTxError])
 
-  // вычислить, должен ли показываться наблюдатель кубов
+  // calculate whether breeding cube observer should be shown
   const selectionCount = selectedNFTs.length
   const phase: "idle"|"breeding"|"success" = isBreeding ? "breeding" : (isTxSuccess?"success":"idle")
 
   useEffect(() => {
     if (liveRevived.length > 0) {
-      // немедленно рефетчим список, чтобы показать воскресший куб
+      // immediately refetch list to show resurrected cube
       refetch()
     }
   }, [liveRevived])

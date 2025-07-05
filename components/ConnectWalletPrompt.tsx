@@ -10,8 +10,8 @@ interface ConnectWalletPromptProps {
 }
 
 export function ConnectWalletPrompt({ 
-  title = "Подключите кошелёк", 
-  description = "Чтобы просматривать свои NFT и использовать все функции игры, необходимо подключить кошелёк.",
+  title = "Connect Wallet", 
+  description = "To view your NFTs and use all game features, you need to connect your wallet.",
   onConnect,
   isConnecting = false 
 }: ConnectWalletPromptProps) {
@@ -34,12 +34,12 @@ export function ConnectWalletPrompt({
           {isConnecting ? (
             <>
               <div className="w-4 h-4 mr-2 border-2 border-current border-t-transparent rounded-full animate-spin" />
-              Подключение...
+              Connecting...
             </>
           ) : (
             <>
               <Wallet className="w-4 h-4 mr-2" />
-              Подключить кошелёк
+              Connect Wallet
             </>
           )}
         </Button>
@@ -48,7 +48,7 @@ export function ConnectWalletPrompt({
           <div className="flex items-start space-x-2">
             <AlertCircle className="w-4 h-4 text-yellow-600 dark:text-yellow-400 mt-0.5 flex-shrink-0" />
             <p className="text-xs text-yellow-700 dark:text-yellow-300">
-              Данные отображаются только для подключенных кошельков. Мы не показываем фейковые балансы.
+              Data is only shown for connected wallets. We don't show fake balances.
             </p>
           </div>
         </div>

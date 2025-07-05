@@ -1,5 +1,10 @@
 "use client"
 
+/**
+ * @deprecated This hook is deprecated. Use useGameStats instead for consolidated game statistics.
+ * This hook will be removed in a future version.
+ */
+
 import { useEffect, useState } from "react"
 import { usePublicClient } from "wagmi"
 import { formatEther } from "viem"

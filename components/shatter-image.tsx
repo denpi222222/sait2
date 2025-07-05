@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import { Physics2DPlugin } from "gsap/Physics2DPlugin"
 import Image from "next/image"
+import { sanitizeUrl } from "@/lib/urlUtils"
 
 gsap.registerPlugin(Physics2DPlugin)
 
@@ -37,6 +38,8 @@ export function ShatterImage({
   const wrapRef = useRef<HTMLDivElement>(null)
   const imgRef  = useRef<HTMLImageElement | null>(null)
   const [ready, setReady] = useState(false)
+  // Sanitize the URL on component initialization to prevent XSS.
+  const safeSrc = sanitizeUrl(src)
 
   /* ───────────────────────── build shards */
   const build = () => {
@@ -79,13 +82,21 @@ export function ShatterImage({
         const lx = c * bw - 1
         const ty = r * bh - 1
 
+        // [CRITICAL-SECURITY-VULNERABILITY] Using a user-provided `src` (from NFT metadata)
+        // directly in `backgroundImage` is a major XSS vector. An attacker can set the image URL
+        // to "javascript:..." to execute arbitrary code and steal user funds.
+        // ALWAYS sanitize external URLs and implement a strict Content-Security-Policy (CSP).
+        // [SECURITY-NOTE] Using user-provided `src` directly in `backgroundImage` can be an XSS vector
+        // if the URL is not properly sanitized beforehand (e.g., `url("javascript:alert(1)")`).
+        // Ensure that the `src` prop is always a valid and trusted image URL before it reaches this component.
+        // A Content-Security-Policy (CSP) is also highly recommended.
         // @ts-expect-error – we are fine assigning a partial style object
         Object.assign(shard.style, {
           width : `${w}px`,
           height: `${h}px`,
           left  : `${lx}px`,
           top   : `${ty}px`,
-          backgroundImage   : `url(${src})`,
+          backgroundImage   : `url(${safeSrc})`,
           backgroundSize    : `${width}px ${height}px`,
           backgroundPosition: `-${lx}px -${ty}px`,
           backgroundRepeat  : "no-repeat",
@@ -145,22 +156,22 @@ export function ShatterImage({
       window.removeEventListener("resize", onResize)
       ro.disconnect()
     }
-  }, [ready, grid])
+  }, [ready, grid, safeSrc]) // Add safeSrc to dependencies
   useEffect(() => {
     if (!ready) return
     build()
     const onResize = () => build()
     window.addEventListener("resize", onResize)
     return () => window.removeEventListener("resize", onResize)
-  }, [ready, grid])
+  }, [ready, grid, safeSrc]) // Add safeSrc to dependencies
 
   /* ───────────────────────── render */
   return (
     <div ref={wrapRef} className={`relative overflow-hidden ${className}`}>
-      {isLocal(src) ? (
+      {isLocal(safeSrc) ? (
         <img
           ref={el => { imgRef.current = el }}
-          src={src}
+          src={safeSrc}
           alt={alt}
           className="w-full h-full object-contain"
           onLoad={() => setReady(true)}
@@ -168,7 +179,7 @@ export function ShatterImage({
         />
       ) : (
         <Image
-          src={src}
+          src={safeSrc}
           alt={alt}
           fill
           className="object-contain"
@@ -181,4 +192,3 @@ export function ShatterImage({
     </div>
   )
 }
-

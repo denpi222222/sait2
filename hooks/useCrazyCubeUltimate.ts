@@ -1,19 +1,19 @@
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
-import CrazyCubeUltimateABI_JSON from '../contracts/abi/CrazyCubeUltimate.json'; // Импорт ABI
-import { NFT_CONTRACT_ADDRESS, MAIN_CHAIN_ID } from '../config/wagmi'; // Адрес контракта и ID сети
+import CrazyCubeUltimateABI_JSON from '../contracts/abi/CrazyCubeUltimate.json'; // Import ABI
+import { NFT_CONTRACT_ADDRESS, MAIN_CHAIN_ID } from '../config/wagmi'; // Contract address and network ID
 
-// В Wagmi v2 ABI передается как массив. Если ваш JSON файл это объект с полем 'abi', используйте CrazyCubeUltimateABI_JSON.abi
-// Если JSON файл это непосредственно массив ABI, то используйте CrazyCubeUltimateABI_JSON
-// Эта строка пытается обработать оба случая.
+// In Wagmi v2 ABI is passed as array. If your JSON file is object with 'abi' field, use CrazyCubeUltimateABI_JSON.abi
+// If JSON file is directly ABI array, then use CrazyCubeUltimateABI_JSON
+// This line tries to handle both cases.
 const contractAbi = (CrazyCubeUltimateABI_JSON as any).abi || CrazyCubeUltimateABI_JSON;
 
 export function useCrazyCubeUltimate() {
   const { address: accountAddress, chainId } = useAccount();
   const isConnectedToCorrectChain = chainId === MAIN_CHAIN_ID;
 
-  // --- Функции для чтения данных с контракта ---
+  // --- Functions to read data from contract ---
 
-  // Получение общего количества NFT (totalSupply)
+  // Get total NFT count (totalSupply)
   const { 
     data: totalSupply, 
     isLoading: isLoadingTotalSupply, 
@@ -25,11 +25,11 @@ export function useCrazyCubeUltimate() {
     functionName: 'totalSupply',
     chainId: MAIN_CHAIN_ID,
     query: {
-      enabled: isConnectedToCorrectChain, // Запрос активен, если подключены к правильной сети
+      enabled: isConnectedToCorrectChain, // Query is active if connected to correct network
     },
   });
 
-  // Получение баланса NFT для текущего аккаунта (balanceOf)
+  // Get NFT balance for current account (balanceOf)
   const { 
     data: balanceOf, 
     isLoading: isLoadingBalanceOf, 
@@ -39,26 +39,26 @@ export function useCrazyCubeUltimate() {
     abi: contractAbi,
     address: NFT_CONTRACT_ADDRESS,
     functionName: 'balanceOf',
-    args: accountAddress ? [accountAddress] : undefined, // Аргумент - адрес аккаунта
+    args: accountAddress ? [accountAddress] : undefined, // Argument - account address
     chainId: MAIN_CHAIN_ID,
     query: {
-      enabled: isConnectedToCorrectChain && !!accountAddress, // Активен, если есть адрес и правильная сеть
+      enabled: isConnectedToCorrectChain && !!accountAddress, // Active if address exists and correct network
     },
   });
 
-  // --- Функции для записи данных (отправки транзакций) ---
+  // --- Functions to write data (send transactions) ---
   const { data: hash, error: writeContractError, isPending: isSubmittingTx, writeContractAsync } = useWriteContract();
 
-  // Функция для сжигания NFT (burnNFT)
+  // Function to burn NFT (burnNFT)
   const burnNFT = async (tokenId: bigint) => {
     if (!isConnectedToCorrectChain) {
-      alert('Пожалуйста, подключитесь к сети ApeChain.');
+      alert('Please connect to ApeChain network.');
       console.error('Not connected to the correct chain (ApeChain).');
       return;
     }
     if (!writeContractAsync) {
         console.error('writeContractAsync function is not available');
-        alert('Ошибка: функция отправки транзакции недоступна.');
+        alert('Error: transaction send function unavailable.');
         return;
     }
     try {
@@ -71,22 +71,22 @@ export function useCrazyCubeUltimate() {
       });
       return txHash;
     } catch (err) {
-      console.error('Ошибка при сжигании NFT:', err);
-      alert(`Ошибка при сжигании NFT: ${ (err as Error).message }`);
+      console.error('Error burning NFT:', err);
+      alert(`Error burning NFT: ${ (err as Error).message }`);
       throw err;
     }
   };
 
-  // Функция для активации NFT (activateNFT)
+  // Function to activate NFT (activateNFT)
   const activateNFT = async (tokenId: bigint) => {
     if (!isConnectedToCorrectChain) {
-      alert('Пожалуйста, подключитесь к сети ApeChain.');
+      alert('Please connect to ApeChain network.');
       console.error('Not connected to the correct chain (ApeChain).');
       return;
     }
      if (!writeContractAsync) {
         console.error('writeContractAsync function is not available');
-        alert('Ошибка: функция отправки транзакции недоступна.');
+        alert('Error: transaction send function unavailable.');
         return;
     }
     try {
@@ -99,19 +99,19 @@ export function useCrazyCubeUltimate() {
       });
       return txHash;
     } catch (err) {
-      console.error('Ошибка при активации NFT:', err);
-      alert(`Ошибка при активации NFT: ${ (err as Error).message }`);
+      console.error('Error activating NFT:', err);
+      alert(`Error activating NFT: ${ (err as Error).message }`);
       throw err;
     }
   };
   
-  // --- Отслеживание статуса транзакции ---
+  // --- Read data and statuses ---
   const { isLoading: isConfirmingTx, isSuccess: isTxConfirmed, error: txConfirmationError } = useWaitForTransactionReceipt({ 
     hash,
   });
 
   return {
-    // Данные и статусы чтения
+    // Read data
     totalSupply,
     isLoadingTotalSupply,
     errorTotalSupply,
@@ -122,18 +122,18 @@ export function useCrazyCubeUltimate() {
     errorBalanceOf,
     refetchBalanceOf,
 
-    // Функции записи
+    // Write functions
     burnNFT,
     activateNFT,
     
-    // Статусы записи
-    isSubmittingTx,    // true, когда транзакция отправляется в кошелек
-    writeContractError, // Ошибка при отправке транзакции
-    hash,               // Хэш транзакции после отправки
+    // Write statuses
+    isSubmittingTx,    // true, when transaction is being sent to wallet
+    writeContractError, // Error when sending transaction
+    hash,               // Transaction hash after sending
 
-    // Статусы подтверждения транзакции
-    isConfirmingTx,     // true, когда ожидается майнинг транзакции
-    isTxConfirmed,      // true, когда транзакция подтверждена
-    txConfirmationError,// Ошибка во время подтверждения транзакции
+    // Transaction confirmation statuses
+    isConfirmingTx,     // true, when waiting for transaction mining
+    isTxConfirmed,      // true, when transaction is confirmed
+    txConfirmationError,// Error during transaction confirmation
   };
 }

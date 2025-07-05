@@ -171,13 +171,24 @@
     ]
   },
   "wallet": {
-    "connect": "연결",
+    "connect": "지갑 연결",
     "connecting": "연결 중…",
     "copyAddress": "주소 복사",
     "copied": "복사됨!",
     "openExplorer": "탐색기에서 열기",
     "disconnect": "지갑 연결 해제",
-    "balance": "잔액:"
+    "balance": "잔액:",
+    "notConnected": "지갑이 연결되지 않음",
+    "connectFirst": "먼저 지갑을 연결하세요",
+    "connected": "연결됨"
+  },
+  "userNFTs": {
+    "title": "내 NFT",
+    "connectToView": "CrazyCube NFT를 보려면 지갑을 연결하세요",
+    "errorLoading": "NFT 로딩 오류",
+    "noNFTs": "아직 CrazyCube NFT가 없습니다",
+    "yourCrazyCubeNFTs": "내 CrazyCube NFT",
+    "showing": "{{total}}개 중 {{count}}개 표시"
   },
   "cubeAnimation": {
     "loading": "로딩 중...",
@@ -215,7 +226,28 @@
   "social": {
     "telegram": "텔레그램",
     "discord": "디스코드",
-    "followUs": "팔로우하기"
+    "followUs": "팔로우하기",
+    "megaGiveaway": "메가 경품 이벤트!",
+    "supportAndWin": "우리를 지원하고 NFT + CRA 토큰을 받으세요!",
+    "prizePool": "상금 풀:",
+    "exclusiveNFTs": "독점 NFT",
+    "craTokens": "CRA 토큰 (다양한 수량)",
+    "discordRoles": "특별 Discord 역할",
+    "bonusSurprises": "보너스와 서프라이즈",
+    "joinTelegram": "텔레그램 참여",
+    "joinDiscord": "디스코드 참여",
+    "twitterActions": "트위터 액션:",
+    "followTwitter": "@crazy___cube 팔로우",
+    "viewPost": "게시물 보기",
+    "like": "좋아요",
+    "retweet": "리트윗",
+    "allDone": "모든 것을 완료했습니다!",
+    "later": "나중에",
+    "participateNow": "지금 참여하세요!",
+    "weeklyGiveaway": "활발한 참가자들 사이에서 매주 경품 이벤트!",
+    "github": "GitHub",
+    "share": "공유하기",
+    "shareTitle": "CrazyCube - 큐브가 울고 웃는 곳!"
   },
   "tabs": {
     "breed": "교배",
@@ -225,6 +257,14 @@
     "stats": "통계",
     "graveyard": "묘지",
     "ping": "핑"
+  },
+  "navigation": {
+    "home": "홈"
+  },
+  "ping": {
+    "description": "CRA 토큰을 얻기 위해 3분마다 NFT를 ping하세요! 3분마다 한 번 또는 15일마다 한 번 ping, 최대 15일까지 누적.",
+    "connectWallet": "큐브를 보려면 지갑을 연결하세요",
+    "noNFTs": "CrazyCube NFT를 찾을 수 없습니다."
   },
   "tokenInfo": {
     "priceUSD": "USD 가격",
@@ -238,7 +278,9 @@
   },
   "common": {
     "retry": "다시 시도",
-    "loading": "로딩 중..."
+    "loading": "로딩 중...",
+    "loadingNFTs": "NFT 로딩 중...",
+    "total": "총계"
   },
   "market": {
     "loading": "시장 데이터 로딩 중...",
@@ -383,16 +425,26 @@
     "claim": "청구",
     "claimed": "청구됨",
     "alreadyBurned": "이미 소각됨",
-    "alreadyInGraveyard": "이미 묘지에",
-    "noStarsLeft": "별이 남지 않음",
+    "alreadyInGraveyard": "이미 묘지에 있음",
+    "noStarsLeft": "별 없음",
     "activated": "활성화됨",
-    "notActivated": "비활성화됨",
+    "notActivated": "활성화되지 않음",
     "cantPing": "핑할 수 없음",
     "rewardReady": "보상 준비됨",
     "readyForBreeding": "교배 준비됨",
     "claimReady": "청구 준비됨",
     "locked": "잠김",
-    "claimable": "청구 가능"
+    "claimable": "청구 가능",
+    "burnable": "소각 가능",
+    "done": "완료!",
+    "graveyard": "묘지",
+    "alive": "살아있음",
+    "dying": "죽어감",
+    "notClaimed": "아니오",
+    "confirming": "확인 중..."
+  },
+  "nft": {
+    "burnable": "소각 가능"
   },
   "pages": {
     "breed": {
@@ -579,5 +631,22 @@
       "우린 아무것도 못 봤어요!",
       "보지 마세요!"
     ]
+  },
+  "graveyard": {
+    "claimedReward": "보상 청구됨",
+    "claimError": "청구 오류"
+  },
+  "contractInteraction": {
+    "error": "오류",
+    "enterTokenId": "토큰 ID를 입력하세요",
+    "enterTokenIdAndHours": "토큰 ID와 대기 시간을 입력하세요",
+    "enterBothParents": "두 부모 토큰 ID를 모두 입력하세요"
+  },
+  "distribution": {
+    "activeVsGraveyard": "희귀도별 활성 vs 묘지",
+    "rarity": "희귀도",
+    "byRarity": "희귀도별",
+    "byStatus": "상태별",
+    "nfts": "NFT"
   }
 }

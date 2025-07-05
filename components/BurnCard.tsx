@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
 import { parseEther, formatEther } from "viem"
 import { getColor, getLabel } from "@/lib/rarity"
+import { useTranslation } from "react-i18next"
 import {
   AlertDialog,
   AlertDialogContent,
@@ -37,6 +38,7 @@ const fmtCRA = (val: string | bigint) => {
 }
 
 export default function BurnCard({ nft, index, onActionComplete }: BurnCardProps) {
+  const { t } = useTranslation()
   const tokenId = String(nft.tokenId)
   const { isLiteMode } = usePerformanceContext()
   const {
@@ -139,12 +141,20 @@ export default function BurnCard({ nft, index, onActionComplete }: BurnCardProps
 
   const startBurn = () => {
     if (!isConnected) {
-      toast({ title: 'Wallet not connected', description: 'Connect wallet first', variant: 'destructive' })
+      toast({ 
+        title: t('wallet.notConnected', 'Wallet not connected'), 
+        description: t('wallet.connectFirst', 'Connect wallet first'), 
+        variant: 'destructive' 
+      })
       return
     }
     if (!data) return
     if (data.isInGraveyard) {
-      toast({ title: 'Already burned', description: 'This NFT is already in graveyard', variant: 'destructive' })
+      toast({ 
+        title: t('burn.alreadyBurned', 'Already burned'), 
+        description: t('burn.inGraveyard', 'This NFT is already in graveyard'), 
+        variant: 'destructive' 
+      })
       return
     }
     setDialogOpen(true)
@@ -152,12 +162,20 @@ export default function BurnCard({ nft, index, onActionComplete }: BurnCardProps
 
   const handleBurn = requireApeChain(async () => {
     if (!isConnected) {
-      toast({ title: 'Wallet not connected', description: 'Connect wallet first', variant: 'destructive' })
+      toast({ 
+        title: t('wallet.notConnected', 'Wallet not connected'), 
+        description: t('wallet.connectFirst', 'Connect wallet first'), 
+        variant: 'destructive' 
+      })
       return
     }
     if (!data) return
     if (data.isInGraveyard) {
-      toast({ title: 'Already burned', description: 'This NFT is already in graveyard', variant: 'destructive' })
+      toast({ 
+        title: t('burn.alreadyBurned', 'Already burned'), 
+        description: t('burn.inGraveyard', 'This NFT is already in graveyard'), 
+        variant: 'destructive' 
+      })
       return
     }
     const fee = calcFee()
@@ -197,7 +215,7 @@ export default function BurnCard({ nft, index, onActionComplete }: BurnCardProps
             imageSrc={nft.image}
             tokenId={tokenId}
             title={nft.name || `CrazyCube #${tokenId}`}
-            rarityLabel={data?.rarity ? getLabel(data.rarity) : undefined}
+            rarityLabel={data?.rarity ? getLabel(data.rarity) || 'Common' : 'Common'}
             rarityColorClass={`${data ? getColor(data.rarity) : 'bg-gray-500'} text-white`}
             widgets={widgets}
             delay={isLiteMode ? 0 : index * 0.05}

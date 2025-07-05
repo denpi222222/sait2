@@ -171,13 +171,24 @@
     ]
   },
   "wallet": {
-    "connect": "Підключити",
+    "connect": "Підключити гаманець",
     "connecting": "Підключення…",
-    "copyAddress": "Скопіювати адресу",
+    "copyAddress": "Копіювати адресу",
     "copied": "Скопійовано!",
-    "openExplorer": "Відкрити в оглядачі",
-    "disconnect": "Від'єднати гаманець",
-    "balance": "Баланс:"
+    "openExplorer": "Відкрити в провіднику",
+    "disconnect": "Відключити гаманець",
+    "balance": "Баланс:",
+    "notConnected": "Гаманець не підключено",
+    "connectFirst": "Спочатку підключіть гаманець",
+    "connected": "Підключено"
+  },
+  "userNFTs": {
+    "title": "Ваші NFT",
+    "connectToView": "Підключіть гаманець, щоб побачити ваші CrazyCube NFT",
+    "errorLoading": "Помилка завантаження NFT",
+    "noNFTs": "У вас поки що немає CrazyCube NFT",
+    "yourCrazyCubeNFTs": "Ваші CrazyCube NFT",
+    "showing": "Показано {{count}} з {{total}} NFT"
   },
   "cubeAnimation": {
     "loading": "Завантаження...",
@@ -215,7 +226,28 @@
   "social": {
     "telegram": "Телеграм",
     "discord": "Дискорд",
-    "followUs": "Підписуйтесь"
+    "followUs": "Підписуйтесь",
+    "megaGiveaway": "МЕГА РОЗІГРАШ!",
+    "supportAndWin": "Підтримай нас і ВИГРАЙ NFT + CRA токени!",
+    "prizePool": "ПРИЗОВИЙ ФОНД:",
+    "exclusiveNFTs": "Ексклюзивні NFT",
+    "craTokens": "CRA токени (різні суми)",
+    "discordRoles": "Спеціальні ролі в Discord",
+    "bonusSurprises": "Бонуси та сюрпризи",
+    "joinTelegram": "Приєднатися до Телеграм",
+    "joinDiscord": "Приєднатися до Дискорд",
+    "twitterActions": "Twitter дії:",
+    "followTwitter": "Підписатися на @crazy___cube",
+    "viewPost": "Переглянути пост",
+    "like": "Лайк",
+    "retweet": "Ретвіт",
+    "allDone": "Я ВСЕ ЗРОБИВ!",
+    "later": "Пізніше",
+    "participateNow": "БРАТИ УЧАСТЬ ЗАРАЗ!",
+    "weeklyGiveaway": "Розіграш щотижня серед активних учасників!",
+    "github": "GitHub",
+    "share": "Поділитися",
+    "shareTitle": "CrazyCube - Де куби плачуть та жартують!"
   },
   "tabs": {
     "breed": "Розведення",
@@ -226,19 +258,55 @@
     "graveyard": "Кладовище",
     "ping": "Пінг"
   },
+  "navigation": {
+    "home": "Головна",
+    "breed": "Розведення",
+    "bridge": "Брідж",
+    "burn": "Спалення",
+    "claim": "Забрати",
+    "graveyard": "Кладовище",
+    "ping": "Пінг",
+    "stats": "Статистика"
+  },
+  "ping": {
+    "title": "NFT Пінг",
+    "description": "Пінгуйте свої NFT кожні 3 хвилини, щоб заробляти CRA токени! Пінг раз на 3 хвилини або раз на 15 днів, накопичення до 15 днів.",
+    "connectWallet": "Підключіть гаманець, щоб побачити ваші куби",
+    "noNFTs": "CrazyCube NFT не знайдено.",
+    "loadingNFTs": "Завантаження NFT...",
+    "pingAll": "Пінг всіх",
+    "pingSelected": "Пінг обраних",
+    "selectAll": "Обрати всі",
+    "deselectAll": "Скасувати всі",
+    "selected": "Обрано",
+    "nfts": "NFT",
+    "lastPing": "Останній пінг",
+    "nextPing": "Наступний пінг",
+    "available": "Доступно",
+    "cooldown": "Кулдаун",
+    "pingSuccess": "Пінг успішний!",
+    "pingError": "Помилка пінгу:",
+    "transactionPending": "Транзакція в очікуванні...",
+    "selectNFTs": "Оберіть NFT для пінгу"
+  },
   "tokenInfo": {
     "priceUSD": "Ціна USD",
     "marketCap": "Ринкова капіталізація",
     "volume24h": "Обсяг 24г",
     "totalBurns": "Всього спалено",
-    "avg": "Середн.",
+    "avg": "Сер.",
     "totalSupply": "Загальна пропозиція",
     "circulating": "В обігу",
-    "burned": "Спалено"
+    "burned": "Спалено",
+    "overview": "Огляд токена CRA",
+    "holders": "Власники",
+    "comingSoon": "метрика скоро з'явиться"
   },
   "common": {
     "retry": "Повторити",
-    "loading": "Завантаження..."
+    "loading": "Завантаження...",
+    "loadingNFTs": "Завантаження NFT...",
+    "total": "Всього"
   },
   "market": {
     "loading": "Завантаження ринкових даних...",
@@ -370,7 +438,7 @@
         "title": "Фаза 3: Свобода",
         "desc": "NFT колекція та ігровий контракт будуть повністю децентралізовані, CRA токен стане автономним"
       },
-      "callout": "🚀 CrazyCube - перша NFT колекція з повним планом децентралізації!"
+      "tagline": "🚀 CrazyCube - перша NFT колекція з повним планом децентралізації!"
     }
   },
   "status": {
@@ -392,7 +460,14 @@
     "readyForBreeding": "Готовий до розведення",
     "claimReady": "Готовий до отримання",
     "locked": "Заблоковано",
-    "claimable": "Можна отримати"
+    "claimable": "Можна отримати",
+    "burnable": "Можна спалити",
+    "done": "Готово!",
+    "graveyard": "Кладовище",
+    "alive": "Живий",
+    "dying": "Вмирає",
+    "notClaimed": "Ні",
+    "confirming": "Підтвердження..."
   },
   "pages": {
     "breed": {
@@ -579,5 +654,44 @@
       "Ми нічого не бачили!",
       "Не дивись!"
     ]
+  },
+  "graveyard": {
+    "claimedReward": "Нагороду отримано",
+    "claimError": "Помилка отримання нагороди"
+  },
+  "contractInteraction": {
+    "error": "Помилка",
+    "enterTokenId": "Введіть ID токена",
+    "enterTokenIdAndHours": "Введіть ID токена та години очікування",
+    "enterBothParents": "Введіть ID обох батьківських токенів"
+  },
+  "distribution": {
+    "activeVsGraveyard": "Активні vs На кладовищі за рідкістю",
+    "rarity": "Рідкість",
+    "byRarity": "За рідкістю",
+    "byStatus": "За статусом",
+    "nfts": "NFT"
+  },
+  "status": {
+    "ready": "Готовий",
+    "readyToClaim": "Готовий до отримання",
+    "waiting": "Не готовий",
+    "processing": "Обробка",
+    "success": "Успішно",
+    "failed": "Помилка",
+    "claim": "Отримати",
+    "claimed": "Отримано",
+    "alreadyBurned": "Вже спалений",
+    "alreadyInGraveyard": "Вже на кладовищі",
+    "noStarsLeft": "Немає зірок",
+    "activated": "Активований",
+    "notActivated": "Не активований",
+    "cantPing": "Не можна пінгувати",
+    "rewardReady": "Нагорода готова",
+    "readyForBreeding": "Готовий до розведення",
+    "claimReady": "Готовий до отримання",
+    "locked": "Заблоковано",
+    "claimable": "Можна отримати",
+    "burnable": "Можна спалити"
   }
 }

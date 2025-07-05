@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useAccount, usePublicClient } from "wagmi"
 import { labelToIndex, getRarityLabel } from "@/lib/rarity"
 import { alchemyFetch } from "@/lib/alchemyFetch"
+import { resolveIpfsUrl } from "@/lib/ipfs"
 import { hexToDecimal } from "./useUserNFTs"
 import rarityList from "@/public/cube_rarity.json"
 import { apeChain } from "@/config/chains"
@@ -76,9 +77,36 @@ export function useAlchemyNfts() {
     setError(null)
     
     try {
-      // Primary attempt: Alchemy NFT API with rotation support
+      // 🛡️ WHALE PROTECTION: Fetch NFTs with pagination to prevent DoS attacks on large holders
+      await fetchNftsWithPagination()
+    } catch (e) {
+      console.error('Alchemy fetch error', e)
+      setError(e as Error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const fetchNftsWithPagination = async () => {
+    let allNFTs: import("@/types/nft").NFT[] = []
+    let pageKey: string | undefined = undefined
+    const PAGE_SIZE = 100 // Alchemy's recommended page size
+    let pageCount = 0
+    const MAX_PAGES = 20 // Protection against infinite loops (max 2000 NFTs)
+
+    do {
+      pageCount++
+      if (pageCount > MAX_PAGES) {
+        console.warn(`Reached maximum page limit (${MAX_PAGES}) for user ${address}`)
+        break
+      }
+
+      // Primary attempt: Alchemy NFT API with pagination
       try {
-        const queryPath = `/getNFTsForOwner?owner=${address}&contractAddresses[]=${CRAZYCUBE_ADDR}`;
+        let queryPath = `/getNFTsForOwner?owner=${address}&contractAddresses[]=${CRAZYCUBE_ADDR}&limit=${PAGE_SIZE}`
+        if (pageKey) {
+          queryPath += `&pageKey=${encodeURIComponent(pageKey)}`
+        }
 
         const response = await alchemyFetch('nft', queryPath, {
           method: 'GET',
@@ -87,20 +115,13 @@ export function useAlchemyNfts() {
 
         if (response.ok) {
           const data = await response.json()
+          pageKey = data.pageKey
+          
           const items: import("@/types/nft").NFT[] = (data.ownedNfts as AlchemyNft[]).map((nft: AlchemyNft) => {
             let tokenIdDec: number
             const metadata = nft.raw?.metadata
             const idFromNameMatch = (metadata?.name || nft.name || "").match(/#(\d+)/)
             tokenIdDec = idFromNameMatch ? Number(idFromNameMatch[1]) : Number(hexToDecimal(nft.tokenId) || 0)
-
-            const rarityFromMeta = metadata?.attributes?.find(attr => attr.trait_type === 'Rarity')?.value?.toString() || ""
-            const starsAttr = metadata?.attributes?.find(attr => attr.trait_type === 'Stars')?.value?.toString() || ''
-            let starsNum = (rarityMap[tokenIdDec] ?? parseInt(starsAttr)) || 0
-            if (starsNum === 0 || isNaN(starsNum)) {
-              starsNum = labelToIndex(rarityFromMeta || 'Common')
-            }
-
-            const rarity = getRarityLabel(starsNum) as 'Common' | 'Uncommon' | 'Rare' | 'Epic' | 'Legendary' | 'Mythic'
 
             return {
               id: `${tokenIdDec}`,
@@ -112,17 +133,12 @@ export function useAlchemyNfts() {
                   || nft.image?.originalUrl 
                   || (nft.media && nft.media.length ? nft.media[0].gateway : '')
                   || '/favicon.ico';
-
-                if (img && img.startsWith('ipfs://')) {
-                  img = `https://nftstorage.link/ipfs/${img.replace('ipfs://', '')}`
-                }
-                return img;
+                return resolveIpfsUrl(img)
               })(),
-              rarity,
               attributes: metadata?.attributes || [],
               rewardBalance: 0,
               frozen: false,
-              stars: starsNum,
+              stars: 0, // Safe default value. Real stars will be loaded from contract.
             }
           })
           
@@ -144,10 +160,7 @@ export function useAlchemyNfts() {
                 item.image = meta.rawMetadata.image
               }
               
-              // Convert IPFS URLs
-              if (item.image && item.image.startsWith('ipfs://')) {
-                item.image = `https://nftstorage.link/ipfs/${item.image.replace('ipfs://', '')}`
-              }
+              item.image = resolveIpfsUrl(item.image) || item.image
             } catch (e) {
               console.warn('Metadata enrichment failed for token', item.tokenId, e)
             }
@@ -218,15 +231,6 @@ export function useAlchemyNfts() {
         const idFromNameMatch = (metadata?.name || nft.name || "").match(/#(\d+)/)
         tokenIdDec = idFromNameMatch ? Number(idFromNameMatch[1]) : Number(hexToDecimal(nft.tokenId) || 0)
 
-        const rarityFromMeta = metadata?.attributes?.find(attr => attr.trait_type === 'Rarity')?.value?.toString() || ''
-        const starsAttr = metadata?.attributes?.find(attr => attr.trait_type === 'Stars')?.value?.toString() || ''
-        let starsNum = (rarityMap[tokenIdDec] ?? parseInt(starsAttr)) || 0
-        if (starsNum === 0 || isNaN(starsNum)) {
-          starsNum = labelToIndex(rarityFromMeta || 'Common')
-        }
-
-        const rarity = getRarityLabel(starsNum) as 'Common' | 'Uncommon' | 'Rare' | 'Epic' | 'Legendary' | 'Mythic'
-
         return {
           id: `${tokenIdDec}`,
           tokenId: tokenIdDec,
@@ -237,17 +241,12 @@ export function useAlchemyNfts() {
               || nft.image?.originalUrl 
               || (nft.media && nft.media.length ? nft.media[0].gateway : '')
               || '/favicon.ico';
-
-            if (img && img.startsWith('ipfs://')) {
-              img = `https://nftstorage.link/ipfs/${img.replace('ipfs://', '')}`
-            }
-            return img;
+            return resolveIpfsUrl(img)
           })(),
-          rarity,
           attributes: metadata?.attributes || [],
           rewardBalance: 0,
           frozen: false,
-          stars: starsNum,
+          stars: 0, // Safe default value.
         }
       })
       
@@ -269,10 +268,7 @@ export function useAlchemyNfts() {
             item.image = meta.rawMetadata.image
           }
           
-          // Convert IPFS URLs
-          if (item.image && item.image.startsWith('ipfs://')) {
-            item.image = `https://nftstorage.link/ipfs/${item.image.replace('ipfs://', '')}`
-          }
+          item.image = resolveIpfsUrl(item.image) || item.image
         } catch (e) {
           console.warn('Metadata enrichment failed for token', item.tokenId, e)
         }
@@ -326,12 +322,7 @@ export function useAlchemyNfts() {
         // Only filter out NFTs that are not owned, keep graveyard NFTs
         setNfts(enrichedWithGameState.filter(Boolean) as any)
       }
-    } catch (e) {
-      console.error('Alchemy fetch error', e)
-      setError(e as Error)
-    } finally {
-      setIsLoading(false)
-    }
+    } while (pageKey);
   }
 
   // Fetch immediately on mount / dependency change

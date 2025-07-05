@@ -84,7 +84,11 @@ export default function NFTBurnCard({ nft, index, onActionComplete }: NFTBurnCar
 
   const handleBurn = async () => {
     if (!isConnected) {
-      toast({ title: 'Wallet not connected', description: 'Connect wallet first', variant: 'destructive' })
+      toast({ 
+        title: t('wallet.notConnected', 'Wallet not connected'), 
+        description: t('wallet.connectFirst', 'Connect wallet first'), 
+        variant: 'destructive' 
+      })
       return
     }
     if (!gameData) return
@@ -124,7 +128,11 @@ export default function NFTBurnCard({ nft, index, onActionComplete }: NFTBurnCar
       if (onActionComplete) onActionComplete()
     } catch (error: any) {
       console.error('Burn error', error)
-      toast({ title: 'Error', description: error?.message || 'Failed to burn NFT', variant: 'destructive' })
+      toast({ 
+        title: t('burn.error', 'Error'), 
+        description: error?.message || t('burn.failed', 'Failed to burn NFT'), 
+        variant: 'destructive' 
+      })
     } finally {
       setIsProcessing(false)
       setStep('idle')

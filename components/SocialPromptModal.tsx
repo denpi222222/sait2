@@ -78,7 +78,7 @@ export function SocialPromptModal({ tweetId, onClose }: Props) {
           {/* Blinking Title */}
           <motion.div {...blinkAnimation}>
             <h2 className="text-3xl font-extrabold text-transparent bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 bg-clip-text mb-2">
-              🎉 МЕГА РОЗЫГРЫШ! 🎉
+              🎉 {t('social.megaGiveaway', 'MEGA GIVEAWAY!')} 🎉
             </h2>
                          <motion.p 
                className="text-yellow-200 text-base font-bold"
@@ -91,7 +91,7 @@ export function SocialPromptModal({ tweetId, onClose }: Props) {
                }}
                transition={{ duration: 2, repeat: Infinity }}
              >
-               Поддержи нас и ВЫИГРАЙ NFT + CRA токены! 💎
+               {t('social.supportAndWin', 'Support us and WIN NFT + CRA tokens!')} 💎
              </motion.p>
           </motion.div>
 
@@ -107,12 +107,12 @@ export function SocialPromptModal({ tweetId, onClose }: Props) {
             }}
             transition={{ duration: 2, repeat: Infinity }}
           >
-                         <p className="text-white font-bold text-base mb-2">🏆 ПРИЗОВОЙ ФОНД:</p>
+                         <p className="text-white font-bold text-base mb-2">🏆 {t('social.prizePool', 'PRIZE POOL:')}</p>
              <div className="text-yellow-200 font-semibold">
-               <div>🎁 Эксклюзивные NFT</div>
-               <div>💰 CRA токены (разные суммы)</div>
-               <div>⭐ Особые роли в Discord</div>
-               <div>🔥 Бонусы и сюрпризы</div>
+               <div>🎁 {t('social.exclusiveNFTs', 'Exclusive NFTs')}</div>
+               <div>💰 {t('social.craTokens', 'CRA tokens (various amounts)')}</div>
+               <div>⭐ {t('social.discordRoles', 'Special Discord roles')}</div>
+               <div>🔥 {t('social.bonusSurprises', 'Bonuses and surprises')}</div>
              </div>
           </motion.div>
 
@@ -128,7 +128,7 @@ export function SocialPromptModal({ tweetId, onClose }: Props) {
               className="block w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-bold py-3 px-5 rounded-2xl transition-all duration-200 shadow-lg shadow-blue-500/40 text-base"
             >
               <Send className="inline w-6 h-6 mr-3" />
-              📱 Присоединиться к Telegram
+              📱 {t('social.joinTelegram', 'Join Telegram')}
             </motion.a>
 
             {/* Discord */}
@@ -141,17 +141,16 @@ export function SocialPromptModal({ tweetId, onClose }: Props) {
               className="block w-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-bold py-3 px-5 rounded-2xl transition-all duration-200 shadow-lg shadow-indigo-500/40 text-base"
             >
               <Users className="inline w-6 h-6 mr-3" />
-              🎮 Присоединиться к Discord
+              🎮 {t('social.joinDiscord', 'Join Discord')}
             </motion.a>
 
             {/* Twitter actions */}
-            <div className="space-y-3">
-              <motion.p 
+            <div className="space-y-3">              <motion.p
                 className="text-pink-200 text-base font-bold"
                 animate={{ opacity: [1, 0.7, 1] }}
                 transition={{ duration: 1, repeat: Infinity }}
               >
-                ⚡ Twitter действия:
+                ⚡ {t('social.twitterActions', 'Twitter actions:')}
               </motion.p>
               
               <div className="grid grid-cols-1 gap-3">
@@ -165,7 +164,7 @@ export function SocialPromptModal({ tweetId, onClose }: Props) {
                   className="flex items-center justify-center bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold py-2.5 px-4 rounded-xl transition-all duration-200 shadow-lg shadow-cyan-500/40 text-sm"
                 >
                   <UserPlus className="w-5 h-5 mr-2" />
-                  🐦 Подписаться на @crazy___cube
+                  🐦 {t('social.followTwitter', 'Follow @crazy___cube')}
                 </motion.a>
 
                                {/* Tweet view button */}
@@ -177,7 +176,7 @@ export function SocialPromptModal({ tweetId, onClose }: Props) {
                  whileTap={{ scale: 0.95 }}
                  className="flex items-center justify-center bg-gradient-to-r from-sky-500 to-blue-500 hover:from-sky-600 hover:to-blue-600 text-white font-bold py-2.5 px-4 rounded-xl transition-all duration-200 shadow-lg shadow-sky-500/40 text-sm"
                >
-                 📰 Посмотреть пост
+                 📰 {t('social.viewPost', 'View post')}
                </motion.a>
 
                {/* Like and Retweet buttons */}
@@ -191,7 +190,7 @@ export function SocialPromptModal({ tweetId, onClose }: Props) {
                    className="flex items-center justify-center bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-bold py-2.5 px-2 rounded-xl transition-all duration-200 shadow-lg shadow-pink-500/40 text-sm"
                  >
                    <Heart className="w-4 h-4 mr-1" />
-                   ❤️ Лайк
+                   ❤️ {t('social.like', 'Like')}
                  </motion.a>
 
                  <motion.a
@@ -203,7 +202,7 @@ export function SocialPromptModal({ tweetId, onClose }: Props) {
                    className="flex items-center justify-center bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold py-2.5 px-2 rounded-xl transition-all duration-200 shadow-lg shadow-green-500/40 text-sm"
                  >
                    <Repeat className="w-4 h-4 mr-1" />
-                   🔄 Ретвит
+                   🔄 {t('social.retweet', 'Retweet')}
                  </motion.a>
                </div>
               </div>
@@ -218,7 +217,7 @@ export function SocialPromptModal({ tweetId, onClose }: Props) {
               whileTap={{ scale: 0.95 }}
               className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold py-3 px-4 rounded-2xl shadow-lg shadow-green-500/40 text-base"
             >
-              ✅ Я ВСЁ СДЕЛАЛ!
+              ✅ {t('social.allDone', 'I DID EVERYTHING!')}
             </motion.button>
             <motion.button
               onClick={onClose}
@@ -226,7 +225,7 @@ export function SocialPromptModal({ tweetId, onClose }: Props) {
               whileTap={{ scale: 0.95 }}
               className="flex-1 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white font-bold py-3 px-4 rounded-2xl shadow-lg shadow-gray-500/40 text-base"
             >
-              ⏰ Позже
+              ⏰ {t('social.later', 'Later')}
             </motion.button>
           </div>
 
@@ -240,10 +239,10 @@ export function SocialPromptModal({ tweetId, onClose }: Props) {
             className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-400/30 rounded-xl p-3 mt-4"
           >
             <p className="text-yellow-200 font-bold text-base">
-              🔥 УЧАСТВУЙ СЕЙЧАС! 🔥
+              🔥 {t('social.participateNow', 'PARTICIPATE NOW!')} 🔥
             </p>
             <p className="text-yellow-300 text-xs mt-1">
-              Розыгрыш каждую неделю среди активных участников!
+              {t('social.weeklyGiveaway', 'Giveaway every week among active participants!')}
             </p>
           </motion.div>
         </div>

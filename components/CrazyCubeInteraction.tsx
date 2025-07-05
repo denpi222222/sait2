@@ -40,7 +40,7 @@ export function CrazyCubeInteraction() {
   useEffect(() => {
     if (isTxConfirmed && lastTxHash) {
       alert(`Transaction ${lastTxHash} confirmed!`);
-      refetchTotalSupply(); // Обновляем данные после успешной транзакции
+      refetchTotalSupply(); // Update data after successful transaction
       refetchBalanceOf();
       setLastTxHash(null); // Reset hash after confirmation
     }
@@ -53,9 +53,9 @@ export function CrazyCubeInteraction() {
     }
     try {
       await burnNFT(BigInt(tokenIdToBurn));
-      setTokenIdToBurn(''); // Очищаем поле ввода
+      setTokenIdToBurn(''); // Clear input field
     } catch (e) {
-      // Ошибки уже обрабатываются и выводятся alert'ом в хуке
+      // Errors are already handled and displayed via alert in the hook
       console.error("Error while calling burnNFT from component:", e);
     }
   };
@@ -67,9 +67,9 @@ export function CrazyCubeInteraction() {
     }
     try {
       await activateNFT(BigInt(tokenIdToActivate));
-      setTokenIdToActivate(''); // Очищаем поле ввода
+      setTokenIdToActivate(''); // Clear input field
     } catch (e) {
-      // Ошибки уже обрабатываются и выводятся alert'ом в хуке
+      // Errors are already handled and displayed via alert in the hook
       console.error("Error while calling activateNFT from component:", e);
     }
   };

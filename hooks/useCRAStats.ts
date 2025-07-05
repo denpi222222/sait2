@@ -1,3 +1,8 @@
+/**
+ * @deprecated This hook is deprecated. Use useSubgraphData instead for consolidated subgraph statistics.
+ * This hook will be removed in a future version.
+ */
+
 import { useEffect, useState } from 'react'
 
 interface CRAStats {

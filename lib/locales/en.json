@@ -171,13 +171,24 @@
     ]
   },
   "wallet": {
-    "connect": "Connect",
+    "connect": "Connect Wallet",
     "connecting": "Connecting…",
     "copyAddress": "Copy Address",
     "copied": "Copied!",
     "openExplorer": "Open in Explorer",
     "disconnect": "Disconnect Wallet",
-    "balance": "Balance:"
+    "balance": "Balance:",
+    "notConnected": "Wallet not connected",
+    "connectFirst": "Please connect your wallet first",
+    "connected": "Connected"
+  },
+  "userNFTs": {
+    "title": "Your NFTs",
+    "connectToView": "Connect your wallet to view your CrazyCube NFTs",
+    "errorLoading": "Error loading NFTs",
+    "noNFTs": "You don't own any CrazyCube NFTs yet",
+    "yourCrazyCubeNFTs": "Your CrazyCube NFTs",
+    "showing": "Showing {{count}} of {{total}} NFTs"
   },
   "cubeAnimation": {
     "loading": "Loading...",
@@ -215,7 +226,28 @@
   "social": {
     "telegram": "Telegram",
     "discord": "Discord",
-    "followUs": "Follow Us"
+    "followUs": "Follow Us",
+    "megaGiveaway": "MEGA GIVEAWAY!",
+    "supportAndWin": "Support us and WIN NFT + CRA tokens!",
+    "prizePool": "PRIZE POOL:",
+    "exclusiveNFTs": "Exclusive NFTs",
+    "craTokens": "CRA tokens (various amounts)",
+    "discordRoles": "Special Discord roles",
+    "bonusSurprises": "Bonuses and surprises",
+    "joinTelegram": "Join Telegram",
+    "joinDiscord": "Join Discord",
+    "twitterActions": "Twitter actions:",
+    "followTwitter": "Follow @crazy___cube",
+    "viewPost": "View post",
+    "like": "Like",
+    "retweet": "Retweet",
+    "allDone": "I DID EVERYTHING!",
+    "later": "Later",
+    "participateNow": "PARTICIPATE NOW!",
+    "weeklyGiveaway": "Giveaway every week among active participants!",
+    "github": "GitHub",
+    "share": "Share",
+    "shareTitle": "CrazyCube - Where cubes cry and joke!"
   },
   "tabs": {
     "breed": "Breed",
@@ -226,6 +258,16 @@
     "graveyard": "Graveyard",
     "ping": "Ping"
   },
+  "navigation": {
+    "home": "Home"
+  },
+  "ping": {
+    "description": "Ping your NFTs every 3 minutes to earn CRA tokens! Ping once every 3 minutes or once every 15 days, accumulation up to 15 days.",
+    "connectWallet": "Connect wallet to view your cubes",
+    "noNFTs": "No CrazyCube NFTs found.",
+    "sentFor": "Ping sent for",
+    "error": "Ping error"
+  },
   "tokenInfo": {
     "priceUSD": "Price USD",
     "marketCap": "Market Cap",
@@ -234,11 +276,16 @@
     "avg": "Avg.",
     "totalSupply": "Total Supply",
     "circulating": "Circulating",
-    "burned": "Burned"
+    "burned": "Burned",
+    "overview": "CRA Token Overview",
+    "holders": "Holders",
+    "comingSoon": "metric coming soon"
   },
   "common": {
     "retry": "Retry",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "loadingNFTs": "Loading NFTs...",
+    "total": "total"
   },
   "market": {
     "loading": "Loading market data...",
@@ -357,21 +404,28 @@
       "cooldown48": "48h cooldown"
     },
     "roadmap": {
-      "title": "🛣️ Path to Decentralization",
+      "title": "Road to decentralization",
       "phase1": {
         "title": "Phase 1: Debugging",
         "desc": "1-2 months of testing and optimizing all game mechanics"
       },
       "phase2": {
         "title": "Phase 2: Autonomy",
-        "desc": "Connecting autonomous agent and removing admin rights"
+        "desc": "Connect autonomous agent and remove admin rights"
       },
       "phase3": {
         "title": "Phase 3: Freedom",
-        "desc": "NFT collection and game contract will be fully decentralized, CRA token becomes autonomous"
+        "desc": "Fully decentralized management only by market"
       },
-      "callout": "🚀 CrazyCube - first NFT collection with complete decentralization plan!"
+      "tagline": "🚀 CrazyCube - first NFT collection with full decentralization plan!"
     }
+  },
+  "distribution": {
+    "activeVsGraveyard": "Active vs In graveyard by rarity",
+    "rarity": "Rarity",
+    "byRarity": "By Rarity",
+    "byStatus": "By Status",
+    "nfts": "NFTs"
   },
   "status": {
     "ready": "Ready",
@@ -392,7 +446,14 @@
     "readyForBreeding": "Ready for Breeding",
     "claimReady": "Ready to Claim",
     "locked": "Locked",
-    "claimable": "Claimable"
+    "claimable": "Claimable",
+    "burnable": "Burnable",
+    "done": "Done!",
+    "graveyard": "Graveyard",
+    "alive": "Alive",
+    "dying": "Dying",
+    "notClaimed": "No",
+    "confirming": "Confirming..."
   },
   "pages": {
     "breed": {
@@ -579,5 +640,15 @@
       "We didn't see anything!",
       "Don't look!"
     ]
+  },
+  "graveyard": {
+    "claimedReward": "Claimed reward",
+    "claimError": "Claim error"
+  },
+  "contractInteraction": {
+    "error": "Error",
+    "enterTokenId": "Please enter a token ID",
+    "enterTokenIdAndHours": "Please enter token ID and wait hours",
+    "enterBothParents": "Please enter both parent token IDs"
   }
 }

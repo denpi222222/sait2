@@ -339,7 +339,7 @@ export default function InfoPage() {
                           </div>
                           <h4 className="text-lg font-bold text-white mb-2">{t("info.roadmap.phase3.title", "Phase 3: Freedom")}</h4>
                           <p className="text-slate-300 text-sm">
-            {t("info.roadmap.phase3.desc", "Полная передача управления сообществу")}
+                            {t("info.roadmap.phase3.desc", "Full transfer of control to community")}
                           </p>
                         </div>
                       </div>

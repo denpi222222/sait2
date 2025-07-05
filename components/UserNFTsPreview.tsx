@@ -13,11 +13,11 @@ import type { NFT as NFTType } from '@/types/nft'
 import { getRarityColor, getRarityLabel } from '@/lib/rarity'
 import { useNFTContractInfo } from '@/hooks/useNFTContractInfo'
 import { Loader2, Star, Zap, Clock, Eye } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
 import { useMobile } from '@/hooks/use-mobile'
 import Link from 'next/link'
 import { apeChain } from "@/config/chains"
-import { useTranslation } from 'react-i18next'
 
 // Import address from config instead of hardcoding
 const GAME_CONTRACT_ADDRESS = apeChain.contracts.gameProxy.address
@@ -82,6 +82,7 @@ const resolveImageSrc = (url?: string) => {
 }
 
 export function UserNFTsPreview() {
+  const { t } = useTranslation()
   const { isConnected: connected, address: account } = useAccount()
   const { connect, connectors } = useConnect()
   const { nfts: userNFTs, isLoading, error } = useAlchemyNfts()
@@ -138,11 +139,11 @@ export function UserNFTsPreview() {
         <CardContent>
           <div className="flex flex-col items-center justify-center gap-4 py-6">
             <div className="text-center text-slate-400">
-              Connect your wallet to view your CrazyCube NFTs
+              {t('userNFTs.connectToView', 'Connect your wallet to view your CrazyCube NFTs')}
             </div>
             {connectors.length > 0 && (
-              <Button onClick={() => connect({ connector: connectors[0] })} className="bg-cyan-600 hover:bg-cyan-700 text-white">
-                Connect Wallet
+              <Button onClick={() => connect({ connector: connectors[0]! })} className="bg-cyan-600 hover:bg-cyan-700 text-white">
+                {t('wallet.connect', 'Connect Wallet')}
               </Button>
             )}
           </div>
@@ -155,7 +156,7 @@ export function UserNFTsPreview() {
     return (
       <Card className="w-full bg-slate-900/50 border-cyan-500/30">
         <CardHeader>
-          <CardTitle className="text-cyan-300">Your NFTs</CardTitle>
+          <CardTitle className="text-cyan-300">{t('userNFTs.title', 'Your NFTs')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -176,17 +177,17 @@ export function UserNFTsPreview() {
     return (
       <Card className="w-full bg-slate-900/50 border-red-500/30">
         <CardHeader>
-          <CardTitle className="text-red-300">Your NFTs</CardTitle>
+          <CardTitle className="text-red-300">{t('userNFTs.title', 'Your NFTs')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-center text-red-400">
-            Error loading NFTs: {error.message}
+            {t('userNFTs.errorLoading', 'Error loading NFTs')}: {error.message}
             <br />
             <Button 
               onClick={() => window.location.reload()} 
               className="mt-2 bg-red-600 hover:bg-red-700"
             >
-              Retry
+              {t('common.retry', 'Retry')}
             </Button>
           </div>
         </CardContent>
@@ -198,10 +199,10 @@ export function UserNFTsPreview() {
     return (
       <Card className="w-full bg-slate-900/50 border-orange-500/30">
         <CardHeader>
-          <CardTitle className="text-orange-300">Your NFTs</CardTitle>
+          <CardTitle className="text-orange-300">{t('userNFTs.title', 'Your NFTs')}</CardTitle>
         </CardHeader>
         <CardContent>          <div className="text-center text-orange-400">
-            You don't own any CrazyCube NFTs yet
+            {t('userNFTs.noNFTs', 'You don\'t own any CrazyCube NFTs yet')}
           </div>
         </CardContent>
       </Card>
@@ -213,9 +214,9 @@ export function UserNFTsPreview() {
   return (
     <Card className="w-full bg-slate-900/50 border-cyan-500/30">
       <CardHeader>        <CardTitle className="flex items-center justify-between text-cyan-300">
-          <span>Your CrazyCube NFTs</span>
+          <span>{t('userNFTs.yourCrazyCubeNFTs', 'Your CrazyCube NFTs')}</span>
           <Badge className="bg-cyan-500/20 text-cyan-300">
-            {userNFTs.length} total
+            {userNFTs.length} {t('common.total', 'total')}
           </Badge>
         </CardTitle>
       </CardHeader>
@@ -236,7 +237,10 @@ export function UserNFTsPreview() {
         {userNFTs.length > displayCount && (
           <div className="mt-4 text-center">
             <div className="text-sm text-slate-400">
-              Showing {displayNfts.length} of {userNFTs.length} NFTs
+              {t('userNFTs.showing', 'Showing {{count}} of {{total}} NFTs', { 
+                count: displayNfts.length, 
+                total: userNFTs.length 
+              })}
             </div>
           </div>
         )}
@@ -265,7 +269,7 @@ function NFTCard({ nft, pingInterval, breedCooldown }: NFTCardProps) {
       const craWei = nftInfo.dynamic.lockedCRA
       const craEther = Number(formatEther(craWei))
       
-      // Защита от огромных чисел и NaN
+      // Protection against huge numbers and NaN
       if (!isFinite(craEther) || craEther > 1e12) {
         return 0
       }
@@ -356,9 +360,9 @@ function NFTCard({ nft, pingInterval, breedCooldown }: NFTCardProps) {
           </span>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-slate-400">Burnable:</span>
+          <span className="text-slate-400">{t('nft.burnable', 'Burnable')}:</span>
           <span className={burnable ? 'text-red-400' : 'text-slate-500'}>
-            {burnable ? '🔥 Burnable' : '—'}
+            {burnable ? `🔥 ${t('status.burnable', 'Burnable')}` : '—'}
           </span>
         </div>
       </div>

@@ -76,7 +76,7 @@ export function useNetwork() {
 
   const isApeChain = chainId === apeChain.id
 
-  // Автоматическое переключение при подключении
+  // Auto-switch on connection
   useEffect(() => {
     if (isConnected && !isApeChain && !isSwitching) {
       const timer = setTimeout(() => {
@@ -87,7 +87,7 @@ export function useNetwork() {
     }
   }, [isConnected, isApeChain, isSwitching])
 
-  // Принудительное переключение с множественными попытками
+  // Force network switch with multiple attempts
   const forceSwitchToApeChain = async (maxAttempts = 5) => {
     if (isSwitching || isApeChain) return
 
@@ -104,7 +104,7 @@ export function useNetwork() {
 
         await switchChain({ chainId: apeChain.id })
         
-        // Проверяем, действительно ли переключились
+        // Check if we actually switched
         await new Promise(resolve => setTimeout(resolve, 1000))
         
         if (chainId === apeChain.id) {
@@ -125,7 +125,7 @@ export function useNetwork() {
             variant: 'destructive',
           })
         } else {
-          // Ждем перед следующей попыткой
+          // Wait before next attempt
           await new Promise(resolve => setTimeout(resolve, 2000 * attempt))
         }
       }
@@ -134,7 +134,7 @@ export function useNetwork() {
     setIsSwitching(false)
   }
 
-  // Обычное переключение
+  // Regular network switch
   const switchToApeChain = async () => {
     if (!switchChain) {
       toast({
@@ -171,7 +171,7 @@ export function useNetwork() {
     }
   }
 
-  // Обертка для действий, требующих ApeChain
+  // Wrapper for actions that require ApeChain
   const requireApeChain = <T extends any[]>(action: (...args: T) => Promise<any> | void) => async (...args: T) => {
     if (!isApeChain) {
       toast({

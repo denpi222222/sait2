@@ -158,13 +158,24 @@
     ]
   },
   "wallet": {
-    "connect": "कनेक्ट",
+    "connect": "वॉलेट कनेक्ट करें",
     "connecting": "कनेक्ट हो रहा है...",
-    "copyAddress": "एड्रेस कॉपी करें",
+    "copyAddress": "पता कॉपी करें",
     "copied": "कॉपी हो गया!",
     "openExplorer": "एक्सप्लोरर में खोलें",
     "disconnect": "वॉलेट डिस्कनेक्ट करें",
-    "balance": "बैलेंस:"
+    "balance": "बैलेंस:",
+    "notConnected": "वॉलेट कनेक्ट नहीं है",
+    "connectFirst": "पहले अपना वॉलेट कनेक्ट करें",
+    "connected": "कनेक्ट हो गया"
+  },
+  "userNFTs": {
+    "title": "आपके NFT",
+    "connectToView": "अपने CrazyCube NFT देखने के लिए वॉलेट कनेक्ट करें",
+    "errorLoading": "NFT लोड करने में त्रुटि",
+    "noNFTs": "आपके पास अभी तक कोई CrazyCube NFT नहीं है",
+    "yourCrazyCubeNFTs": "आपके CrazyCube NFT",
+    "showing": "{{total}} में से {{count}} NFT दिखाए जा रहे हैं"
   },
   "cubeAnimation": {
     "loading": "लोड हो रहा है...",
@@ -202,7 +213,28 @@
   "social": {
     "telegram": "टेलीग्राम",
     "discord": "डिस्कॉर्ड",
-    "followUs": "हमें फॉलो करें"
+    "followUs": "हमें फॉलो करें",
+    "megaGiveaway": "मेगा गिवअवे!",
+    "supportAndWin": "हमारा समर्थन करें और NFT + CRA टोकन जीतें!",
+    "prizePool": "इनाम पूल:",
+    "exclusiveNFTs": "विशेष NFT",
+    "craTokens": "CRA टोकन (विभिन्न मात्रा में)",
+    "discordRoles": "विशेष डिस्कॉर्ड भूमिकाएं",
+    "bonusSurprises": "बोनस और सरप्राइज",
+    "joinTelegram": "टेलीग्राम ज्वाइन करें",
+    "joinDiscord": "डिस्कॉर्ड ज्वाइन करें",
+    "twitterActions": "ट्विटर एक्शन:",
+    "followTwitter": "@crazy___cube को फॉलो करें",
+    "viewPost": "पोस्ट देखें",
+    "like": "लाइक",
+    "retweet": "रीट्वीट",
+    "allDone": "मैंने सब कुछ किया!",
+    "later": "बाद में",
+    "participateNow": "अभी भाग लें!",
+    "weeklyGiveaway": "सक्रिय प्रतिभागियों के बीच हर सप्ताह गिवअवे!",
+    "github": "GitHub",
+    "share": "साझा करें",
+    "shareTitle": "CrazyCube - जहां क्यूब्स रोते और मजाक करते हैं!"
   },
   "tabs": {
     "breed": "ब्रीड",
@@ -212,6 +244,14 @@
     "stats": "आँकड़े",
     "graveyard": "कब्रिस्तान",
     "ping": "पिंग"
+  },
+  "navigation": {
+    "home": "होम"
+  },
+  "ping": {
+    "description": "CRA टोकन कमाने के लिए हर 3 मिनट में अपने NFT को ping करें! हर 3 मिनट में एक बार या हर 15 दिन में एक बार ping करें, 15 दिनों तक संचय।",
+    "connectWallet": "अपने क्यूब देखने के लिए वॉलेट कनेक्ट करें",
+    "noNFTs": "कोई CrazyCube NFT नहीं मिले।"
   },
   "graveyardCube": {
     "phrases": [
@@ -236,7 +276,9 @@
   },
   "common": {
     "retry": "पुनः प्रयास",
-    "loading": "लोड हो रहा है..."
+    "loading": "लोड हो रहा है...",
+    "loadingNFTs": "NFT लोड हो रहे हैं...",
+    "total": "कुल"
   },
   "market": {
     "loading": "बाजार डेटा लोड हो रहा है...",
@@ -390,7 +432,17 @@
     "readyForBreeding": "ब्रीडिंग के लिए तैयार",
     "claimReady": "क्लेम के लिए तैयार",
     "locked": "लॉक्ड",
-    "claimable": "क्लेम योग्य"
+    "claimable": "क्लेम योग्य",
+    "burnable": "जलाने योग्य",
+    "done": "हो गया!",
+    "graveyard": "कब्रिस्तान",
+    "alive": "जीवित",
+    "dying": "मर रहा है",
+    "notClaimed": "नहीं",
+    "confirming": "पुष्टि कर रहे हैं..."
+  },
+  "nft": {
+    "burnable": "जलाने योग्य"
   },
   "pages": {
     "breed": {

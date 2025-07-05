@@ -105,7 +105,7 @@ export function usePendingBurnRewards() {
   }, [publicClient, address])
 
   const fetchByEvents = useCallback(async (): Promise<PendingReward[]> => {
-    // Просто вызываем scanHistoricalBurns, передавая пустой Set (ищем все токены пользователя)
+    // Simply call scanHistoricalBurns, passing empty Set (search all user's tokens)
     const res = await scanHistoricalBurns(new Set())
     // enrich with metadata if missing
     try {

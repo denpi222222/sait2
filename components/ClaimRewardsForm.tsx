@@ -9,11 +9,13 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Loader2 } from "lucide-react"
 import { useNetwork } from "@/hooks/use-network"
+import { useTranslation } from "react-i18next"
 
 export function ClaimRewardsForm() {
   const { address } = useAccount()
   const [tokenId, setTokenId] = useState<string>("")
   const { isApeChain, requireApeChain } = useNetwork()
+  const { t } = useTranslation()
 
   const { data: burnRecord, isLoading: isLoadingRecord } = useReadContract({
     address: NFT_CONTRACT_ADDRESS,
@@ -62,12 +64,12 @@ export function ClaimRewardsForm() {
           <div className="text-sm">
             <p>Total amount: {Number((burnRecord as any)[1]) / 1e18} CRA</p>
             <p>Claim available time: {new Date(Number((burnRecord as any)[2]) * 1000).toLocaleString()}</p>
-            <p>Claimed: {(burnRecord as any)[4] ? "Yes" : "No"}</p>
+            <p>Claimed: {(burnRecord as any)[4] ? t('status.claimed', 'Yes') : t('status.notClaimed', 'No')}</p>
           </div>
         ) : null}
         {error && <p className="text-red-500 text-sm">{error.message}</p>}
         <Button disabled={!isApeChain || !tokenId || isClaiming} onClick={handleClaim} className="w-full">
-          {isClaiming ? "Confirming..." : "Claim"}
+          {isClaiming ? t('status.confirming', 'Confirming...') : t('status.claim', 'Claim')}
         </Button>
       </CardContent>
     </Card>

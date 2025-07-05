@@ -25,7 +25,7 @@ const I18nLanguageSwitcher = dynamic(
   { ssr: false },
 )
 
-// Динамические импорты тяжёлых анимаций с условной загрузкой
+// Dynamic imports of heavy animations with conditional loading
 const CubeAnimation = dynamic(() => import("@/components/cube-animation").then((m) => m.CubeAnimation), {
   ssr: false,
   loading: () => null,

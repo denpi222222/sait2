@@ -37,7 +37,7 @@ export default function StatsPage() {
   const [isLoading, setIsLoading] = useState(true)
   const { stats:globalStats } = useCrazyCubeStats()
 
-  // Имитируем загрузку страницы
+  // Simulate page loading
   useEffect(() => {
     if (isClient) {
       const timer = setTimeout(() => {

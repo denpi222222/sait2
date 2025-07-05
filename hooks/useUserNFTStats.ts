@@ -5,12 +5,12 @@ import { useAccount, useReadContract } from "wagmi"
 import { TOKEN_CONTRACT_ADDRESS } from "@/config/wagmi"
 import { tokenAbi } from "@/config/abis/tokenAbi"
 import { formatUnits } from "viem"
-import { useNFTs } from "./useNFTs" // Используем исправленный безопасный хук
+import { useNFTs } from "./useNFTs" // Use fixed safe hook
 import type { UserNFTStats } from "@/types/nft"
 
 export function useUserNFTStats() {
   const { address, isConnected } = useAccount()
-  // Используем наш новый, безопасный хук для получения NFT
+  // Use our new, safe hook to get NFTs
   const { nfts, isLoading: isNftsLoading } = useNFTs()
   
   const [stats, setStats] = useState<UserNFTStats>({
@@ -19,10 +19,10 @@ export function useUserNFTStats() {
     totalRewards: 0,
     estimatedValue: "0",
   })
-  const [isLoading, setIsLoading] = useState(true) // Общий статус загрузки
+  const [isLoading, setIsLoading] = useState(true) // General loading status
   const [error, setError] = useState<Error | null>(null)
 
-  // Получаем баланс токенов пользователя
+  // Get user's token balance
   const { data: tokenBalance } = useReadContract({
     address: TOKEN_CONTRACT_ADDRESS,
     abi: tokenAbi,
@@ -33,9 +33,9 @@ export function useUserNFTStats() {
     },
   })
 
-  // Обновляем статистику пользователя при изменении данных
+  // Update user stats when data changes
   useEffect(() => {
-    // Ждем, пока загрузятся и NFT, и баланс токенов
+    // Wait until both NFTs and token balance are loaded
     if (isNftsLoading || !isConnected) {
       return
     }
@@ -43,23 +43,22 @@ export function useUserNFTStats() {
     try {
       const totalOwned = nfts.length
       const totalFrozen = nfts.filter((nft) => nft.frozen).length
-      // TODO: Заменить на реальные данные из контракта, когда они будут
+      // TODO: Replace with real data from contract when available
       const totalRewards = nfts.reduce((sum, nft) => sum + (nft.rewardBalance || 0), 0)
 
-      // --- ИСПРАВЛЕНИЕ БЕЗОПАСНОСТИ ---
-      // УБИРАЕМ опасную оценку на основе метаданных NFT
-      // Показываем только реальный баланс токенов
+      // REMOVE dangerous estimation based on NFT metadata
+      // Show only real token balance
       
       const tokenValue = tokenBalance ? parseFloat(formatUnits(tokenBalance, 18)) : 0
-      // В реальном приложении сюда нужно добавить стоимость NFT в токенах, 
-      // полученную с API маркетплейса или из verified контракта
-      const estimatedValue = tokenValue.toFixed(6) // Показываем только токены
+      // In real app, add NFT value in tokens here,
+      // obtained from marketplace API or verified contract
+      const estimatedValue = tokenValue.toFixed(6) // Show only tokens
 
       setStats({
         totalOwned,
         totalFrozen,
         totalRewards,
-        estimatedValue, // Теперь это только токены, без фейковой оценки NFT
+        estimatedValue, // Now this is only tokens, without fake NFT estimation
       })
 
       setIsLoading(false)
@@ -70,10 +69,10 @@ export function useUserNFTStats() {
     }
   }, [nfts, tokenBalance, isConnected, isNftsLoading])
 
-  // Сбрасываем состояние, если кошелек отключен
+  // Reset state if wallet is disconnected
   useEffect(() => {
     if (!isConnected) {
-      // Очищаем статистику для неподключенных пользователей
+      // Clear stats for disconnected users
       setStats({
         totalOwned: 0,
         totalFrozen: 0,

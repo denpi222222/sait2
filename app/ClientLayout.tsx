@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-import { Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
 import { BuildErrorDisplay } from "@/components/build-error-display"
@@ -21,16 +20,6 @@ import { apeChain } from '@/config/chains'
 import { PerformanceProvider } from "@/hooks/use-performance-context"
 import { useWalletEvents } from "@/hooks/use-wallet-events"
 import { useMobile } from "@/hooks/use-mobile"
-import { NetworkSwitchOverlay } from "@/components/NetworkSwitchOverlay"
-
-// Initialize global error handling on client
-const initGlobalErrorHandling = () => {
-  if (typeof window !== "undefined") {
-    setupGlobalErrorHandling()
-  }
-}
-
-const inter = Inter({ subsets: ["latin"] })
 
 // Create a client for React Query
 const queryClient = new QueryClient()
@@ -148,7 +137,7 @@ export default function ClientLayout({
               <ErrorBoundary>
                 <PerformanceProvider>
                   <WalletEventHandler>
-                    <div className={inter.className}>
+                    <div>
                       {/* LanguageSwitcher removed */}
                       {children}
                       {mounted && (
@@ -157,8 +146,6 @@ export default function ClientLayout({
                           <BuildErrorDisplay />
                           <SocialSidebar />
                           <MobileNavigation />
-                          <NetworkSwitchOverlay />
-                          {/* initGlobalErrorHandling now runs via useEffect */}
                         </>
                       )}
                     </div>

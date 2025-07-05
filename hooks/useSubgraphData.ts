@@ -1,18 +1,14 @@
 "use client"
 
-/**
- * @deprecated This hook is deprecated. Use useSubgraphData instead for consolidated subgraph statistics.
- * This hook will be removed in a future version. useSubgraphData provides the same functionality
- * with better organization and additional features.
- */
-
 import { useState, useEffect } from 'react'
 
-// Interfaces for subgraph data
-export interface ContractStats {
+/**
+ * Interface for comprehensive subgraph statistics
+ */
+export interface SubgraphStats {
   id: string
   
-  // Core Statistics from Contract
+  // Core Statistics from Contract Events
   totalCRABurned: string // BigInt as string
   totalTokensBurned: string // BigInt as string
   totalStars: string // BigInt as string
@@ -25,7 +21,7 @@ export interface ContractStats {
   totalPoolTopUps: string // BigInt as string
   lastMonthlyUnlock: string // BigInt as string
   
-  // Game Configuration
+  // Game Configuration (from events)
   breedCostBps: string // BigInt as string
   rewardRatePerSecond: string // BigInt as string
   pingInterval: string // BigInt as string (in seconds)
@@ -40,7 +36,7 @@ export interface ContractStats {
   manualFloorPrice: string // BigInt as string
   currentBreedCost: string // BigInt as string
   
-  // Activity Counters
+  // Activity Counters (event-based)
   totalPings: number
   totalBreeds: number
   totalBurns: number
@@ -56,7 +52,10 @@ export interface ContractStats {
   lastUpdated: string // BigInt as string
 }
 
-export interface GlobalStats {
+/**
+ * Global activity statistics from subgraph
+ */
+export interface GlobalActivityStats {
   id: string
   totalBurns: number
   totalClaimed: string // BigInt as string
@@ -69,9 +68,19 @@ export interface GlobalStats {
   lastUpdated: string // BigInt as string
 }
 
-// GraphQL запросы
-const CONTRACT_STATS_QUERY = `
-  query GetContractStats {
+/**
+ * CRA token statistics from subgraph
+ */
+export interface CRATokenStats {
+  id: string
+  totalSupply: string // BigInt as string
+  deadBalance: string // BigInt as string
+  lastUpdated: string
+}
+
+// GraphQL queries
+const SUBGRAPH_STATS_QUERY = `
+  query GetSubgraphStats {
     contractStats(id: "contract") {
       id
       totalCRABurned
@@ -108,8 +117,8 @@ const CONTRACT_STATS_QUERY = `
   }
 `
 
-const GLOBAL_STATS_QUERY = `
-  query GetGlobalStats {
+const GLOBAL_ACTIVITY_QUERY = `
+  query GetGlobalActivity {
     globalStats(id: "1") {
       id
       totalBurns
@@ -125,13 +134,32 @@ const GLOBAL_STATS_QUERY = `
   }
 `
 
+const CRA_TOKEN_QUERY = `
+  query GetCRAToken {
+    craStats(id: "1") {
+      id
+      totalSupply
+      deadBalance
+      lastUpdated
+    }
+  }
+`
+
 // Subgraph endpoint
 const SUBGRAPH_URL = "https://api.studio.thegraph.com/query/111010/denis-2/v1.0.6"
 
-// Hook for working with subgraph data
-export const useSubgraphStats = () => {
-  const [contractStats, setContractStats] = useState<ContractStats | null>(null)
-  const [globalStats, setGlobalStats] = useState<GlobalStats | null>(null)
+/**
+ * Consolidated subgraph data hook
+ * 
+ * This hook replaces useSubgraphStats and provides a unified interface
+ * for all subgraph-based statistics and historical data.
+ * 
+ * @returns {object} Subgraph statistics and utility functions
+ */
+export const useSubgraphData = () => {
+  const [contractStats, setContractStats] = useState<SubgraphStats | null>(null)
+  const [globalStats, setGlobalStats] = useState<GlobalActivityStats | null>(null)
+  const [craStats, setCraStats] = useState<CRATokenStats | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [lastRefresh, setLastRefresh] = useState<number>(0)
@@ -164,157 +192,132 @@ export const useSubgraphStats = () => {
     }
   }
 
-  // Load contract statistics
+  // Fetch contract statistics
   const fetchContractStats = async () => {
     try {
-      const data = await fetchGraphQL(CONTRACT_STATS_QUERY)
+      const data = await fetchGraphQL(SUBGRAPH_STATS_QUERY)
       setContractStats(data.contractStats)
     } catch (err) {
       console.error('Error fetching contract stats:', err)
-      setError(err instanceof Error ? err.message : 'Unknown error')
+      throw err
     }
   }
 
-  // Load global statistics
+  // Fetch global activity statistics
   const fetchGlobalStats = async () => {
     try {
-      const data = await fetchGraphQL(GLOBAL_STATS_QUERY)
+      const data = await fetchGraphQL(GLOBAL_ACTIVITY_QUERY)
       setGlobalStats(data.globalStats)
     } catch (err) {
       console.error('Error fetching global stats:', err)
-      setError(err instanceof Error ? err.message : 'Unknown error')
+      throw err
     }
   }
 
-  // Load all data
+  // Fetch CRA token statistics
+  const fetchCRAStats = async () => {
+    try {
+      const data = await fetchGraphQL(CRA_TOKEN_QUERY)
+      setCraStats(data.craStats)
+    } catch (err) {
+      console.error('Error fetching CRA stats:', err)
+      throw err
+    }
+  }
+
+  // Fetch all statistics
   const fetchAllStats = async () => {
     setIsLoading(true)
     setError(null)
     
     try {
+      console.log('🔄 Fetching subgraph data...')
       await Promise.all([
         fetchContractStats(),
-        fetchGlobalStats()
+        fetchGlobalStats(),
+        fetchCRAStats()
       ])
       setLastRefresh(Date.now())
+      console.log('✅ Subgraph data loaded successfully')
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch stats')
+      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch subgraph stats'
+      setError(errorMessage)
+      console.error('❌ Subgraph data error:', errorMessage)
     } finally {
       setIsLoading(false)
     }
   }
 
-  // Update data
-  const refresh = () => {
-    fetchAllStats()
-  }
-
-  // Auto-load on mount
+  // Initial load
   useEffect(() => {
     fetchAllStats()
   }, [])
 
-  // Auto-update every 30 seconds
+  // Auto-refresh every 3 minutes (subgraph data updates less frequently)
   useEffect(() => {
-    const interval = setInterval(() => {
-      fetchAllStats()
-    }, 30000) // 30 seconds
-
+    const interval = setInterval(fetchAllStats, 180000)
     return () => clearInterval(interval)
   }, [])
 
-  // Helper functions for formatting
-  const formatBigInt = (value: string | undefined) => {
-    if (!value) return '0'
-    return value
+  // Utility functions
+  const formatNumber = (value: string | number) => {
+    const num = typeof value === 'string' ? parseFloat(value) : value
+    return new Intl.NumberFormat('en-US').format(num)
   }
 
-  const formatEther = (value: string | undefined) => {
-    if (!value) return '0'
-    // Convert wei to ether (divide by 10^18)
-    const wei = BigInt(value)
-    const ether = wei / BigInt(10 ** 18)
-    const remainder = wei % BigInt(10 ** 18)
+  const formatSeconds = (seconds: string) => {
+    const secs = parseInt(seconds)
+    const hours = Math.floor(secs / 3600)
+    const minutes = Math.floor((secs % 3600) / 60)
+    const remainingSeconds = secs % 60
     
-    if (remainder === BigInt(0)) {
-      return ether.toString()
-    } else {
-      // For more precise display with decimal places
-      return (Number(wei) / 10 ** 18).toFixed(6).replace(/\.?0+$/, '')
-    }
+    if (hours > 0) return `${hours}h ${minutes}m ${remainingSeconds}s`
+    if (minutes > 0) return `${minutes}m ${remainingSeconds}s`
+    return `${remainingSeconds}s`
   }
 
-  const formatSeconds = (value: string | undefined) => {
-    if (!value) return '0'
-    const seconds = Number(value)
-    if (seconds < 60) return `${seconds}s`
-    if (seconds < 3600) return `${Math.floor(seconds / 60)}m`
-    if (seconds < 86400) return `${Math.floor(seconds / 3600)}h`
-    return `${Math.floor(seconds / 86400)}d`
-  }
-
-  const formatTimestamp = (value: string | undefined) => {
-    if (!value) return 'Never'
-    const timestamp = Number(value) * 1000 // Convert to milliseconds
-    return new Date(timestamp).toLocaleString()
+  const formatBPS = (bps: string) => {
+    const percentage = (parseInt(bps) / 100).toFixed(2)
+    return `${percentage}%`
   }
 
   return {
     // Data
     contractStats,
     globalStats,
+    craStats,
     
     // State
     isLoading,
     error,
     lastRefresh,
     
-    // Functions
-    refresh,
-    fetchContractStats,
-    fetchGlobalStats,
+    // Actions
+    refresh: fetchAllStats,
+    refreshContract: fetchContractStats,
+    refreshGlobal: fetchGlobalStats,
+    refreshCRA: fetchCRAStats,
     
-    // Formatting utilities
-    formatBigInt,
-    formatEther,
+    // Utility functions
+    formatNumber,
     formatSeconds,
-    formatTimestamp,
+    formatBPS,
     
-    // Quick access to frequently used data
-    get totalCRABurned() {
-      return contractStats ? formatEther(contractStats.totalCRABurned) : '0'
+    // Convenience getters for backward compatibility
+    get totalActivityEvents() {
+      return (globalStats?.totalPings ?? 0) + 
+             (globalStats?.totalBreeds ?? 0) + 
+             (globalStats?.totalBurns ?? 0)
     },
     
-    get totalTokensBurned() {
-      return contractStats ? contractStats.totalTokensBurned : '0'
+    get totalValueLocked() {
+      return contractStats?.currentLockedPool ?? '0'
     },
     
-    get totalStars() {
-      return contractStats ? contractStats.totalStars : '0'
-    },
-    
-    get currentMonthlyPool() {
-      return contractStats ? formatEther(contractStats.currentMonthlyPool) : '0'
-    },
-    
-    get currentLockedPool() {
-      return contractStats ? formatEther(contractStats.currentLockedPool) : '0'
-    },
-    
-    get graveyardSize() {
-      return contractStats ? contractStats.graveyardSize : '0'
-    },
-    
-    get currentBreedCost() {
-      return contractStats ? formatEther(contractStats.currentBreedCost) : '0'
-    },
-    
-    get pingIntervalFormatted() {
-      return contractStats ? formatSeconds(contractStats.pingInterval) : '0'
-    },
-    
-    get breedCooldownFormatted() {
-      return contractStats ? formatSeconds(contractStats.breedCooldown) : '0'
+    get averageActivityPerDay() {
+      if (!contractStats) return 0
+      const daysRunning = Math.max(1, Math.floor((Date.now() - parseInt(contractStats.lastUpdated) * 1000) / (1000 * 60 * 60 * 24)))
+      return Math.round(this.totalActivityEvents / daysRunning)
     }
   }
-} 
+}

@@ -111,6 +111,7 @@ export async function GET() {
     const poolResponse = await fetch(
       `${GECKO_TERMINAL_API}/networks/${APECHAIN_NETWORK}/pools/${CRA_POOL_ADDRESS}?include=base_token,quote_token`,
       {
+        // Используем встроенный Data Cache от Next.js, который надежно работает в serverless.
         headers: {
           'Accept': 'application/json',
         },
@@ -119,7 +120,11 @@ export async function GET() {
     )
 
     if (!poolResponse.ok) {
-      throw new Error(`GeckoTerminal API error: ${poolResponse.status}`)
+      // Логируем ошибку с деталями для отладки
+      const errorBody = await poolResponse.text()
+      console.error(`GeckoTerminal API error: ${poolResponse.status}`, { errorBody })
+      // Выбрасываем ошибку, чтобы попасть в блок catch и вернуть fallback-данные
+      throw new Error(`Failed to fetch from GeckoTerminal API with status: ${poolResponse.status}`)
     }
 
     const poolData = await poolResponse.json()

@@ -591,14 +591,29 @@ const LaserGrid = () => {
 export default function GamePage() {
   const [text] = useState("CRAZYCUBE 3D GAME")
   const [subtitle] = useState("COMING SOON")
+  const [spacing, setSpacing] = useState(100)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setMousePos({ x: e.clientX, y: e.clientY })
     }
+
+    const updateSpacing = () => {
+      const width = window.innerWidth
+      if (width < 768) setSpacing(50) // Smaller spacing for mobile
+      else if (width < 1024) setSpacing(80) // Medium for tablets
+      else setSpacing(100) // Large for desktop
+    }
+
+    updateSpacing()
     window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
+    window.addEventListener('resize', updateSpacing)
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('resize', updateSpacing)
+    }
   }, [])
   
   // Расчет позиций для букв
@@ -620,8 +635,8 @@ export default function GamePage() {
     return positions
   }
   
-  const mainTextPositions = getLetterPositions(text, -70, 100)
-  const subtitlePositions = getLetterPositions(subtitle, 80, 100)
+  const mainTextPositions = getLetterPositions(text, -70, spacing)
+  const subtitlePositions = getLetterPositions(subtitle, 80, spacing)
   
   return (
     <div className="relative min-h-screen overflow-hidden bg-black">

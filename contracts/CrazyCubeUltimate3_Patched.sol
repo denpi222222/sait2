@@ -5,8 +5,10 @@ import "./CrazyCubeUltimate3.sol";
 
 /**
  * @title CrazyCubeUltimate3_Patched
- * @notice Мини-апгрейд: добавлен только один сеттер `setRarityBonusBps`.
- *         Storage-layout не меняется, поэтому прокси-апгрейд безопасен.
+ * @author CrazyCube Team
+ * @notice Mini-upgrade: added only one setter `setRarityBonusBps`.
+ *         Storage-layout doesn't change, so proxy-upgrade is safe.
+ * @dev    This contract can be deployed via proxy upgrade from CrazyCubeUltimate3.
  */
 contract CrazyCubeUltimate3_Patched is CrazyCubeUltimate3 {
 
@@ -29,10 +31,10 @@ contract CrazyCubeUltimate3_Patched is CrazyCubeUltimate3 {
     }
 
     /**
-     * @notice Изменяет бонус (bps) для указанной rarity.
-     * @dev    Доступно роли CONFIGURATOR_ROLE.
-     * @param rarity  Значение 1-6 (Common-Legendary+)
-     * @param bps     Новое значение в базис-пунктах (0-10_000; 10_000 = 100%)
+     * @notice Changes bonus (bps) for specified rarity.
+     * @dev    Available to CONFIGURATOR_ROLE.
+     * @param rarity Target rarity (1-6)
+     * @param newBps New bonus in basis points (max 50000 = 500%)
      */
     function setRarityBonusBps(uint8 rarity, uint16 bps)
         external
@@ -41,7 +43,7 @@ contract CrazyCubeUltimate3_Patched is CrazyCubeUltimate3 {
         require(rarity >= 1 && rarity <= 6, "rarity");
         require(bps < 10_000,             "bps>=100%");
 
-        // Логируем старое и новое значение через стандартное событие
+        // Log old and new value through standard event
         emit ConfigChanged(
             string(abi.encodePacked("rarityBonusBps[", _toString(rarity), "]")),
             rarityBonusBps[rarity],
@@ -52,9 +54,9 @@ contract CrazyCubeUltimate3_Patched is CrazyCubeUltimate3 {
     }
 
     /**
-     * @notice Меняет комиссию за операцию burn (в базис-пунктах)
-     * @dev    Доступно роли CONFIGURATOR_ROLE. 1 bp = 0.01 %; лимит 0-10 000 (100 %)
-     * @param newBps Новое значение burnFeeBps
+     * @notice Changes burn fee (bps)
+     * @dev    Available to CONFIGURATOR_ROLE. 1 bp = 0.01 %; limit 0-10 000 (100 %)
+     * @param newBps New value for burnFeeBps
      */
     function setBurnFeeBps(uint16 newBps) external onlyRole(CONFIGURATOR_ROLE) {
         require(newBps <= 10_000, "bps>100%" );

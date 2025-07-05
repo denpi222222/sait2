@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useContractStats } from '@/hooks/useContractStats';
+import { useGameStats } from '@/hooks/useGameStats';
 import { motion } from 'framer-motion';
 import { 
   Flame,
@@ -57,7 +57,7 @@ export function ContractFullStats() {
     graveyardCooldownFormatted,
     burnFeeFormatted,
     monthlyUnlockFormatted
-  } = useContractStats();
+  } = useGameStats();
 
   if (isLoading) {
     return (
@@ -103,7 +103,7 @@ export function ContractFullStats() {
   const coreStats = [
     { title: 'Total CRA Burned', value: `${parseFloat(contractStats.totalCRABurned).toFixed(0)} CRA`, icon: Flame, color: 'orange' },
     { title: 'Total NFTs Burned', value: contractStats.totalTokensBurned, icon: Activity, color: 'red' },
-    { title: 'Active NFTs', value: contractStats.activeNFTs, icon: Users, color: 'green' },
+    { title: 'Active NFTs', value: contractStats.activeCubes.toString(), icon: Users, color: 'green' },
     { title: 'Total Stars', value: 'N/A', icon: Sparkles, color: 'yellow' },
     { title: 'Graveyard Size', value: contractStats.graveyardSize, icon: Users, color: 'slate' },
   ];

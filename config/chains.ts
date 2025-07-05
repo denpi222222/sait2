@@ -1,7 +1,7 @@
 import { defineChain } from "viem"
 
 export const apeChain = defineChain({
-  id: 33139, // Обновленный Chain ID для ApeChain mainnet 2025
+  id: 33139, // Updated Chain ID for ApeChain mainnet 2025
   name: "ApeChain",
   network: "apechain",
   nativeCurrency: {
@@ -14,12 +14,16 @@ export const apeChain = defineChain({
       http: [
         "https://rpc.apechain.com",
         "https://apechain.calderachain.xyz",
+        "https://apechain-rpc.publicnode.com",
+        "https://apechain.drpc.org",
       ],
     },
     public: {
       http: [
         "https://rpc.apechain.com",
         "https://apechain.calderachain.xyz",
+        "https://apechain-rpc.publicnode.com",
+        "https://apechain.drpc.org",
       ],
     },
   },

@@ -40,8 +40,10 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ tokenId: tokenId.toString() })
   } catch (error) {
     console.error("Error fetching token by index:", error)
-
-    // Для демонстрации возвращаем моковые данные
-    return NextResponse.json({ tokenId: String(1000 + Math.floor(Math.random() * 100)) })
+    // CRITICAL: Do not return mock data on error in production.
+    // This would mislead the user and show them incorrect NFTs.
+    // Always return a proper error response.
+    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred"
+    return NextResponse.json({ error: "Failed to fetch token ID from the contract", details: errorMessage }, { status: 500 })
   }
 }

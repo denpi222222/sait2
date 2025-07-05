@@ -4,8 +4,9 @@ import { useState, useEffect } from "react"
 import { ChartCard } from "./chart-card"
 import { PieChart } from "lucide-react"
 import { motion } from "framer-motion"
+import { useTranslation } from "react-i18next"
 
-// Базовый URL для запросов к Subgraph
+// Base URL for Subgraph requests
 const SUBGRAPH_URL = '/api/subgraph';
 
 interface RarityDistribution {
@@ -17,24 +18,25 @@ interface RarityDistribution {
 }
 
 export function DistributionChart() {
+  const { t } = useTranslation()
   const [isLoading, setIsLoading] = useState(true)
   const [data, setData] = useState<RarityDistribution[]>([])
   const [viewMode, setViewMode] = useState<'rarity' | 'status'>('rarity')
   
-  // Цвета для разных редкостей
+  // Colors for different rarities
   const rarityColors = [
-    "#6366f1", // индиго (редкость 1)
-    "#8b5cf6", // фиолетовый (редкость 2)
-    "#ec4899", // розовый (редкость 3)
-    "#f43f5e", // красный (редкость 4)
-    "#f59e0b", // янтарный (редкость 5)
-    "#10b981", // изумрудный (редкость 6)
+    "#6366f1", // indigo (rarity 1)
+    "#8b5cf6", // violet (rarity 2)
+    "#ec4899", // pink (rarity 3)
+    "#f43f5e", // red (rarity 4)
+    "#f59e0b", // amber (rarity 5)
+    "#10b981", // emerald (rarity 6)
   ];
   
-  // Функция для запроса данных из Subgraph
+  // Function to request data from Subgraph
   async function fetchDistributionData() {
     try {
-      // Запрос к Subgraph
+      // Request to Subgraph
       const query = `{
         globalStats(id: "1") {
           totalActiveNFTs
@@ -54,32 +56,32 @@ export function DistributionChart() {
       
       const { data } = await response.json();
       
-      // Если Subgraph еще не настроен, используем тестовые данные
+      // If Subgraph is not configured yet, use test data
       if (!data) {
         return generateMockData();
       }
       
-      // Группируем NFT по редкости
+      // Group NFTs by rarity
       const distribution = processRarityData(data.rarityStats || []);
       
       setData(distribution);
     } catch (error) {
       console.error("Error fetching distribution data:", error);
-      // Используем тестовые данные при ошибке
+      // Use test data on error
       setData(generateMockData());
     } finally {
       setIsLoading(false);
     }
   }
   
-  // Обработка данных о редкости
+  // Processing rarity data
   function processRarityData(nfts: any[]): RarityDistribution[] {
-    // Если данных нет, возвращаем тестовые данные
+    // If no data, return test data
     if (nfts.length === 0) {
       return generateMockData();
     }
     
-    // Группируем по редкости
+    // Group by rarity
     const rarityGroups: Record<number, { total: number, inGraveyard: number }> = {};
     
     nfts.forEach(nft => {
@@ -94,9 +96,9 @@ export function DistributionChart() {
       }
     });
     
-    // Преобразуем в массив для отображения
+    // Convert to array for display
     return Object.entries(rarityGroups)
-      .filter(([rarity]) => rarity !== '0') // Игнорируем редкость 0
+      .filter(([rarity]) => rarity !== '0') // Ignore rarity 0
       .map(([rarity, stats]) => ({
         rarity: parseInt(rarity),
         count: stats.total,
@@ -107,12 +109,12 @@ export function DistributionChart() {
       .sort((a, b) => a.rarity - b.rarity);
   }
   
-  // Загрузка данных при монтировании
+  // Load data on mount
   useEffect(() => {
     fetchDistributionData();
   }, []);
   
-  // Генерация тестовых данных
+  // Generate test data
   function generateMockData(): RarityDistribution[] {
     return [
       { rarity: 1, count: 2000, inGraveyard: 400, active: 1600, color: rarityColors[0] },
@@ -124,12 +126,12 @@ export function DistributionChart() {
     ];
   }
   
-  // Подготовка данных для отображения
+  // Prepare data for display
   const chartData = viewMode === 'rarity' 
-    ? data.map(d => ({ name: `Редкость ${d.rarity}`, value: d.count, color: d.color }))
+    ? data.map(d => ({ name: `Rarity ${d.rarity}`, value: d.count, color: d.color }))
     : [
-        { name: 'Активные', value: data.reduce((sum, d) => sum + d.active, 0), color: '#10b981' },
-        { name: 'В кладбище', value: data.reduce((sum, d) => sum + d.inGraveyard, 0), color: '#f43f5e' }
+        { name: 'Active', value: data.reduce((sum, d) => sum + d.active, 0), color: '#10b981' },
+        { name: 'In Graveyard', value: data.reduce((sum, d) => sum + d.inGraveyard, 0), color: '#f43f5e' }
       ];
   
   const total = chartData.reduce((sum, d) => sum + d.value, 0);
@@ -142,13 +144,13 @@ export function DistributionChart() {
           onClick={() => setViewMode('rarity')} 
           className={`px-3 py-1 rounded-md ${viewMode === 'rarity' ? 'bg-violet-600 text-white' : 'bg-slate-800 text-slate-300'}`}
         >
-          По редкости
+          {t('distribution.byRarity')}
         </button>
         <button 
           onClick={() => setViewMode('status')} 
           className={`px-3 py-1 rounded-md ${viewMode === 'status' ? 'bg-violet-600 text-white' : 'bg-slate-800 text-slate-300'}`}
         >
-          По статусу
+          {t('distribution.byStatus')}
         </button>
       </div>
       
@@ -180,7 +182,7 @@ export function DistributionChart() {
           {/* Center text */}
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <span className="text-xl font-bold text-slate-200">{total}</span>
-            <span className="text-xs text-slate-400">NFTs</span>
+            <span className="text-xs text-slate-400">{t('distribution.nfts')}</span>
           </div>
         </div>
       </div>
@@ -203,11 +205,11 @@ export function DistributionChart() {
       
       {viewMode === 'rarity' && (
         <div className="mt-4 pt-4 border-t border-slate-700/30">
-          <div className="text-xs text-slate-400 mb-2">Активные vs В кладбище по редкости:</div>
+          <div className="text-xs text-slate-400 mb-2">{t('distribution.activeVsGraveyard', 'Active vs In graveyard by rarity')}:</div>
           <div className="grid grid-cols-3 gap-2">
             {data.map(item => (
               <div key={item.rarity} className="text-center">
-                <div className="text-xs font-medium text-slate-300">Редкость {item.rarity}</div>
+                <div className="text-xs font-medium text-slate-300">{t('distribution.rarity', 'Rarity')} {item.rarity}</div>
                 <div className="flex h-2 mt-1 overflow-hidden rounded-full bg-slate-700/30">
                   <div 
                     className="bg-green-500" 

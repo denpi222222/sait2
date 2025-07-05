@@ -19,6 +19,43 @@ const ABI_MIN = [
 const CACHE_KEY = "crazycube:graveyard:tokens"
 const REFRESH_INTERVAL_MS = 10000 // 10 sec
 
+// Retry logic with exponential backoff
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+
+async function withRetry<T>(
+  fn: () => Promise<T>,
+  maxRetries: number = 3,
+  baseDelay: number = 1000
+): Promise<T> {
+  let lastError: Error | null = null
+  
+  for (let i = 0; i <= maxRetries; i++) {
+    try {
+      return await fn()
+    } catch (error) {
+      lastError = error as Error
+      
+      // Check if it's a network error that we should retry
+      const shouldRetry = error instanceof Error && (
+        error.message.includes('Failed to fetch') ||
+        error.message.includes('Network request failed') ||
+        error.message.includes('HTTP request failed') ||
+        error.message.includes('timeout')
+      )
+      
+      if (i === maxRetries || !shouldRetry) {
+        throw error
+      }
+      
+      const delay = baseDelay * Math.pow(2, i)
+      console.log(`Retrying in ${delay}ms (attempt ${i + 1}/${maxRetries})...`)
+      await sleep(delay)
+    }
+  }
+  
+  throw lastError
+}
+
 export function useGraveyardTokens() {
   const [tokens, setTokens] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
@@ -40,25 +77,27 @@ export function useGraveyardTokens() {
         setError(null)
         console.log("🔄 Fetching graveyard tokens directly from contract...")
 
-        // ТОЛЬКО прямой запрос к контракту - никакого субграфа!
-        const graveyardSize = await publicClient.readContract({
-          address: GAME_ADDR,
-          abi: ABI_MIN,
-          functionName: "totalBurned"
-        }) as bigint
+        // ONLY direct contract query - no subgraph!
+        const graveyardSize = await withRetry(async () => {
+          return await publicClient.readContract({
+            address: GAME_ADDR,
+            abi: ABI_MIN,
+            functionName: "totalBurned"
+          }) as bigint
+        })
 
         console.log(`📊 Graveyard size: ${graveyardSize}`)
 
         let finalTokens: string[] = []
-        const maxTokens = Math.min(Number(graveyardSize), 200) // лимит для производительности
+        const maxTokens = Math.min(Number(graveyardSize), 200) // limit for performance
 
         if (maxTokens > 0) {
-          // Определяем, поддерживает ли сеть Multicall3
+          // Determine if network supports Multicall3
           const supportsMulticall = !!publicClient.chain?.contracts?.multicall3?.address
 
           if (supportsMulticall) {
             // ----------------------------------------------------------
-            // 1) Быстрый путь — on-chain multicall (если доступен)
+            // 1) Fast path — on-chain multicall (if available)
             // ----------------------------------------------------------
           const contracts = Array.from({ length: maxTokens }, (_, i) => ({
             address: GAME_ADDR,
@@ -68,10 +107,12 @@ export function useGraveyardTokens() {
           }))
 
           try {
-              const mcRaw = await publicClient.multicall({
-              contracts,
-                allowFailure: true,
-              }) as any
+              const mcRaw = await withRetry(async () => {
+                return await publicClient.multicall({
+                  contracts,
+                  allowFailure: true,
+                }) as any
+              })
 
               const mcResults: any[] = Array.isArray(mcRaw) ? mcRaw : (mcRaw?.results ?? [])
 
@@ -86,19 +127,21 @@ export function useGraveyardTokens() {
           }
 
           // ------------------------------------------------------------
-          // 2) Fallback – параллельные eth_call (до 10 одновременно)
+          // 2) Fallback – parallel eth_call (up to 10 simultaneously)
           // ------------------------------------------------------------
           if (finalTokens.length === 0) {
             const CHUNK = 10
             for (let i = 0; i < maxTokens; i += CHUNK) {
               const slice = Array.from({ length: Math.min(CHUNK, maxTokens - i) }, (_, k) => i + k)
               const chunkResults = await Promise.all(slice.map(idx =>
-              publicClient.readContract({
-                address: GAME_ADDR,
-                abi: ABI_MIN,
-                functionName: "graveyardTokens",
-                  args: [BigInt(idx)]
-              }).catch(() => 0n)
+                withRetry(async () => {
+                  return await publicClient.readContract({
+                    address: GAME_ADDR,
+                    abi: ABI_MIN,
+                    functionName: "graveyardTokens",
+                    args: [BigInt(idx)]
+                  })
+                }).catch(() => 0n)
               ))
               chunkResults.forEach(res => {
                 if (res > 0n) finalTokens.push(res.toString())
@@ -116,8 +159,10 @@ export function useGraveyardTokens() {
       } catch (e: any) {
         console.error("useGraveyardTokens error", e)
         if (mounted) {
-          setError(e?.message || "error")
-          // Попробуем загрузить из кэша при ошибке
+          const errorMessage = e?.message || "Network connection failed"
+          setError(errorMessage)
+          
+          // Try to load from cache on error
           if(tokens.length===0){
             try{
               const cachedRaw = typeof window !== "undefined" ? localStorage.getItem(CACHE_KEY) : null
@@ -126,6 +171,7 @@ export function useGraveyardTokens() {
                 if(cached.ids?.length){
                   setTokens(cached.ids)
                   setReady(cached.ids.length > 0)
+                  console.log("📦 Loaded from cache due to network error")
                 }
               }
             }catch{}

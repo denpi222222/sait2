@@ -8,7 +8,7 @@ import { apeChain } from '@/config/chains'
 import { toast } from '@/hooks/use-toast'
 import { formatWithCommas } from '@/utils/formatNumber'
 
-// ABI для игрового контракта CrazyCubeUltimate
+// ABI for the game contract CrazyCubeUltimate
 const GAME_CONTRACT_ABI = [
   // Read functions
   {
@@ -159,7 +159,7 @@ const GAME_CONTRACT_ABI = [
   }
 ] as const
 
-// ABI для CRA токена
+// ABI for the CRA token
 const CRA_TOKEN_ABI = [
   {
     "inputs": [{"internalType": "address", "name": "account", "type": "address"}],
@@ -190,7 +190,7 @@ const CRA_TOKEN_ABI = [
   }
 ] as const
 
-// Адреса контрактов из config
+// Contract addresses from config
 const GAME_CONTRACT_ADDRESS = apeChain.contracts.gameProxy.address
 const CRA_TOKEN_ADDRESS = apeChain.contracts.crazyToken.address
 
@@ -239,7 +239,7 @@ export const useCrazyCubeGame = () => {
   const chainId = useChainId()
   const [isLoading, setIsLoading] = useState(false)
 
-  // Используем хук кладбища, чтобы сообщать front-end когда cooldown завершён
+  // Use graveyard hook to inform front-end when cooldown is finished
   const { ready: graveyardReady } = useGraveyardTokens()
 
   // Write contract hook
@@ -386,17 +386,17 @@ export const useCrazyCubeGame = () => {
 
       const now = Math.floor(Date.now() / 1000)
       
-      // Новая структура контракта: [owner, totalAmount, claimAvailableTime, graveyardReleaseTime, claimed, waitPeriod]
+      // New contract structure: [owner, totalAmount, claimAvailableTime, graveyardReleaseTime, claimed, waitPeriod]
       const burnRecord: BurnRecord = {
         tokenId,
         lockedAmount: formatEther(data[1] as bigint), // totalAmount
         waitPeriod: Number(data[5]), // waitPeriod
-        burnTime: Number(data[2]), // используем claimAvailableTime как burnTime для совместимости
+        burnTime: Number(data[2]), // use claimAvailableTime as burnTime for compatibility
         claimed: data[4], // claimed
-        canClaim: !data[4] && now >= Number(data[2]), // можно клеймить если не заклеймлено и время пришло
-        timeLeft: Math.max(0, Number(data[2]) - now), // время до клейма
+        canClaim: !data[4] && now >= Number(data[2]), // can claim if not claimed and time has come
+        timeLeft: Math.max(0, Number(data[2]) - now), // time until claim
         claimAvailableTime: Number(data[2]), // claimAvailableTime
-        graveyardReleaseTime: Number(data[3]) // graveyardReleaseTime для breeding
+        graveyardReleaseTime: Number(data[3]) // graveyardReleaseTime for breeding
       }
       
       console.log(`🔍 Burn record for #${tokenId}:`, {
@@ -510,7 +510,7 @@ export const useCrazyCubeGame = () => {
     try {
       await ensureNetwork()
       
-      // Добавляем 10% буфер к сумме чтобы избежать нехватки копеек из-за округления
+      // Add 10% buffer to amount to avoid shortage of pennies due to rounding
       const baseAmount = parseEther(amount)
       const bufferAmount = (baseAmount * BigInt(110)) / BigInt(100) // +10%
       
@@ -617,7 +617,7 @@ export const useCrazyCubeGame = () => {
     pingInterval,
     breedCooldown,
 
-    // Флаг готовности кладбища
+    // Graveyard readiness flag
     ready: graveyardReady
   }
 }

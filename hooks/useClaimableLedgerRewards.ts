@@ -69,7 +69,7 @@ export function useClaimableLedgerRewards(refreshIntervalMs = 60000) {
               tokenId: ev.tokenId.toString(),
               waitHours: ev.waitHours,
               burnTime: ev.timestamp,
-              canClaim: false,  // будем считать ниже
+              canClaim: false,  // will calculate below
               timeLeft: 0,
             }))
           }

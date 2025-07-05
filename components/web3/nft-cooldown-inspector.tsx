@@ -35,9 +35,9 @@ interface NFTCooldownData {
   pingCooldownLeft: number;
   breedCooldownLeft: number;
   expectedReward: string;
-  burnLockedAmount?: string;
-  burnTimeLeft?: number;
-  canClaim?: boolean;
+  burnLockedAmount?: string | undefined;
+  burnTimeLeft?: number | undefined;
+  canClaim?: boolean | undefined;
 }
 
 export default function NFTCooldownInspector() {
@@ -56,7 +56,7 @@ export default function NFTCooldownInspector() {
   } = useCrazyCubeGame();
 
   const inspectNFT = async () => {
-    if (!tokenId.trim() || !isConnected) return;
+    if (!tokenId.trim()) return;
     
     try {
       setLoading(true);
@@ -74,6 +74,8 @@ export default function NFTCooldownInspector() {
       
       // Calculate expected reward
       const baseReward = 1931412793049873561040n;
+      // ✅ SAFE: gameData.rarity comes from smart contract, not from NFT metadata
+      // Attacker cannot fake this data
       const rarityBonuses = [0, 0, 5, 10, 20, 35, 50];
       const bonus = rarityBonuses[gameData.rarity] || 0;
       const expectedReward = baseReward + (baseReward * BigInt(bonus) / 100n);
@@ -117,9 +119,9 @@ export default function NFTCooldownInspector() {
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = seconds % 60;
     
-    if (hours > 0) return `${hours}ч ${minutes}м ${secs}с`;
-    if (minutes > 0) return `${minutes}м ${secs}с`;
-    return `${secs}с`;
+    if (hours > 0) return `${hours}h ${minutes}m ${secs}s`;
+    if (minutes > 0) return `${minutes}m ${secs}s`;
+    return `${secs}s`;
   };
 
   const formatTimestamp = (timestamp: number) => {
@@ -167,7 +169,7 @@ export default function NFTCooldownInspector() {
         canPing: pingCooldownLeft === 0,
         canBreed: breedCooldownLeft === 0
       } : null);
-    }, 3000); // Изменено с 1000 на 3000 (3 секунды)
+    }, 3000); // Changed from 1000 to 3000 (3 seconds)
 
     return () => clearInterval(interval);
   }, [nftData, pingInterval, breedCooldown]);
@@ -185,7 +187,7 @@ export default function NFTCooldownInspector() {
       <div className="flex gap-2 mb-4">
         <Input
           type="number"
-          placeholder="Введите ID NFT"
+          placeholder="Enter any NFT ID (1-5000)"
           value={tokenId}
           onChange={(e) => setTokenId(e.target.value)}
           className="bg-slate-900/50 border-slate-600 text-white placeholder:text-slate-400 h-9"
@@ -193,7 +195,7 @@ export default function NFTCooldownInspector() {
         />
         <Button 
           onClick={inspectNFT}
-          disabled={loading || !isConnected || !tokenId.trim()}
+          disabled={loading || !tokenId.trim()}
           className="bg-blue-600 hover:bg-blue-700 h-9 px-3"
         >
           {loading ? (
@@ -204,15 +206,18 @@ export default function NFTCooldownInspector() {
         </Button>
       </div>
 
-      {/* Connection Warning */}
-      {!isConnected && (
-        <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-lg p-3 mb-4 text-sm">
-          <div className="flex items-center">
-            <Info className="h-5 w-5 text-yellow-400 mr-2" />
-            <span className="text-yellow-300">{t('info.connectWallet', 'Connect wallet to inspect NFT')}</span>
-          </div>
+      {/* Info Message */}
+      <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-3 mb-4 text-sm">
+        <div className="flex items-center">
+          <Info className="h-5 w-5 text-blue-400 mr-2" />
+          <span className="text-blue-300">
+            {isConnected 
+              ? t('info.inspectorReady', 'NFT Inspector ready - enter any NFT ID to view stats')
+              : t('info.inspectorNoWallet', 'NFT Inspector works without wallet connection - enter any NFT ID to view public stats')
+            }
+          </span>
         </div>
-      )}
+      </div>
 
       {/* Error Display */}
       {error && (
@@ -322,4 +327,4 @@ export default function NFTCooldownInspector() {
       )}
     </Card>
   );
-} 
+}

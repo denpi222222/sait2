@@ -5,7 +5,7 @@ import { apeChain } from '../config/chains'
 
 const GAME_ADDR = apeChain.contracts.gameProxy.address
 
-// минимальное ABI только с событием NFTBred
+// minimal ABI with only NFTBred event
 const NFTBRED_ITEM = parseAbiItem(
   "event NFTBred(address indexed requester,uint256 parent1Id,uint256 parent2Id,uint256 revivedId)"
 )
@@ -25,6 +25,13 @@ export const useLiveBredCubes = () => {
         address: GAME_ADDR,
         event: NFTBRED_ITEM,
         onLogs: (logs:any) => {
+          // [SECURITY/UX-NOTE] Relying solely on events for critical UI updates can be misleading.
+          // A block reorganization could revert the transaction, but the UI would have already
+          // shown a "success" state.
+          // BEST PRACTICE: Use the event as a trigger to re-fetch the definitive state from the contract.
+          // For example, after catching this event, you should trigger a refetch of the NFT's owner
+          // or its status to confirm the change is final.
+
           logs.forEach((log) => {
             const { args } = decodeEventLog({ abi: [NFTBRED_ITEM], eventName: "NFTBred", ...log })
             if ((args.requester as string).toLowerCase() === address.toLowerCase()) {
@@ -38,7 +45,7 @@ export const useLiveBredCubes = () => {
     }
   }, [client, address, isWatching])
 
-  // Методы для контроля watching
+  // Methods for controlling watching
   const startWatching = () => setIsWatching(true)
   const stopWatching = () => setIsWatching(false)
 

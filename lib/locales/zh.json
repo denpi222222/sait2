@@ -8,7 +8,7 @@
   },
   "sections": {
     "bridge": {
-      "title": "跨链桥（召回方块！）",
+      "title": "桥接 (复活方块!)",
       "description": "方块从墓地归来 — 随机 NFT 跳出并高喊\"我自由了！\"",
       "button": "桥接 NFT",
       "guide": {
@@ -171,13 +171,24 @@
     ]
   },
   "wallet": {
-    "connect": "连接",
+    "connect": "连接钱包",
     "connecting": "连接中…",
     "copyAddress": "复制地址",
     "copied": "已复制！",
     "openExplorer": "在浏览器中打开",
     "disconnect": "断开钱包",
-    "balance": "余额："
+    "balance": "余额：",
+    "notConnected": "钱包未连接",
+    "connectFirst": "请先连接钱包",
+    "connected": "已连接"
+  },
+  "userNFTs": {
+    "title": "您的 NFT",
+    "connectToView": "连接钱包查看您的 CrazyCube NFT",
+    "errorLoading": "加载 NFT 错误",
+    "noNFTs": "您还没有 CrazyCube NFT",
+    "yourCrazyCubeNFTs": "您的 CrazyCube NFT",
+    "showing": "显示 {{count}} / {{total}} 个 NFT"
   },
   "cubeAnimation": {
     "loading": "加载中...",
@@ -215,7 +226,28 @@
   "social": {
     "telegram": "Telegram",
     "discord": "Discord",
-    "followUs": "关注我们"
+    "followUs": "关注我们",
+    "megaGiveaway": "超级抽奖！",
+    "supportAndWin": "支持我们并赢取NFT + CRA代币！",
+    "prizePool": "奖池：",
+    "exclusiveNFTs": "独家NFT",
+    "craTokens": "CRA代币（各种数量）",
+    "discordRoles": "特殊Discord角色",
+    "bonusSurprises": "奖金和惊喜",
+    "joinTelegram": "加入Telegram",
+    "joinDiscord": "加入Discord",
+    "twitterActions": "Twitter操作：",
+    "followTwitter": "关注@crazy___cube",
+    "viewPost": "查看帖子",
+    "like": "点赞",
+    "retweet": "转发",
+    "allDone": "我全做完了！",
+    "later": "稍后",
+    "participateNow": "现在参与！",
+    "weeklyGiveaway": "每周在活跃参与者中抽奖！",
+    "github": "GitHub",
+    "share": "分享",
+    "shareTitle": "CrazyCube - 方块们的欢笑与眼泪!"
   },
   "tabs": {
     "breed": "繁殖",
@@ -226,6 +258,14 @@
     "graveyard": "墓地",
     "ping": "Ping"
   },
+  "navigation": {
+    "home": "首页"
+  },
+  "ping": {
+    "description": "每3分钟ping一次你的NFT来赚取CRA代币！每3分钟ping一次或每15天ping一次，累积最多15天。",
+    "connectWallet": "连接钱包查看你的方块",
+    "noNFTs": "未找到CrazyCube NFT。"
+  },
   "tokenInfo": {
     "priceUSD": "美元价格",
     "marketCap": "市值",
@@ -234,11 +274,16 @@
     "avg": "平均",
     "totalSupply": "总供应量",
     "circulating": "流通量",
-    "burned": "已销毁"
+    "burned": "已销毁",
+    "overview": "CRA代币概览",
+    "holders": "持有者",
+    "comingSoon": "指标即将推出"
   },
   "common": {
     "retry": "重试",
-    "loading": "加载中..."
+    "loading": "加载中...",
+    "loadingNFTs": "加载NFT中...",
+    "total": "总计"
   },
   "market": {
     "loading": "加载市场数据...",
@@ -376,7 +421,7 @@
   "status": {
     "ready": "准备就绪",
     "readyToClaim": "准备领取",
-    "waiting": "未准备好",
+    "waiting": "未准备",
     "processing": "处理中",
     "success": "成功",
     "failed": "失败",
@@ -384,15 +429,22 @@
     "claimed": "已领取",
     "alreadyBurned": "已销毁",
     "alreadyInGraveyard": "已在墓地",
-    "noStarsLeft": "无星级剩余",
+    "noStarsLeft": "无星级",
     "activated": "已激活",
     "notActivated": "未激活",
-    "cantPing": "无法 Ping",
-    "rewardReady": "奖励准备好",
+    "cantPing": "无法Ping",
+    "rewardReady": "奖励准备就绪",
     "readyForBreeding": "准备繁殖",
     "claimReady": "准备领取",
-    "locked": "锁定",
-    "claimable": "可领取"
+    "locked": "已锁定",
+    "claimable": "可领取",
+    "burnable": "可销毁",
+    "done": "完成！",
+    "graveyard": "墓地",
+    "alive": "活着",
+    "dying": "濒死",
+    "notClaimed": "否",
+    "confirming": "确认中..."
   },
   "pages": {
     "breed": {

@@ -8,6 +8,8 @@ import { AlchemyNFT, getNFTImage, getTokenIdAsDecimal } from "@/hooks/useUserNFT
 import { useCrazyCubeGame, type BurnRecord, type NFTGameData } from "@/hooks/useCrazyCubeGame"
 import { useToast } from "@/hooks/use-toast"
 
+import { useTranslation } from "react-i18next"
+
 interface NFTGraveyardCardProps {
   nft: AlchemyNFT
   index: number
@@ -15,6 +17,7 @@ interface NFTGraveyardCardProps {
 }
 
 export default function NFTGraveyardCard({ nft, index, onActionComplete }: NFTGraveyardCardProps) {
+  const { t } = useTranslation()
   const tokenIdDec = getTokenIdAsDecimal(nft)
   const { getBurnRecord, claimBurnRewards, isConnected, getNFTGameData } = useCrazyCubeGame()
   const { toast } = useToast()
@@ -54,17 +57,27 @@ export default function NFTGraveyardCard({ nft, index, onActionComplete }: NFTGr
   }
 
   const handleClaim = async () => {
-    if (!isConnected) { toast({title:'Connect wallet',variant:'destructive'}); return }
+    if (!isConnected) { 
+      toast({
+        title: t('wallet.notConnected', 'Connect wallet'),
+        variant: 'destructive'
+      }); 
+      return 
+    }
     if (!claimReady) return
     try {
       setProcessing(true)
       await claimBurnRewards(tokenIdDec)
-      toast({title:`Claimed reward for #${tokenIdDec}`})
+      toast({title: t('graveyard.claimedReward', `Claimed reward for #${tokenIdDec}`)})
       const br = await getBurnRecord(tokenIdDec)
       setBurnRecord(br)
       if(onActionComplete) onActionComplete()
     } catch(e:any){
-      toast({title:'Claim error', description:e?.message, variant:'destructive'})
+      toast({
+        title: t('graveyard.claimError', 'Claim error'), 
+        description: e?.message, 
+        variant: 'destructive'
+      })
     } finally {setProcessing(false)}
   }
 

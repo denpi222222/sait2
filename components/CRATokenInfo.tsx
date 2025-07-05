@@ -37,7 +37,7 @@ interface CRATokenData {
   burnedAmount: string;
   lockedInGame: string;
   
-  // Цены
+  // Prices
   priceUSD: number;
   priceAPE: number;
   marketCap: number;
@@ -202,13 +202,13 @@ export default function CRATokenInfo() {
 
       // Build final data object
       const finalData: CRATokenData = {
-        // Цены
+        // Prices
         priceUSD: parseFloat(
           (priceData?.price_usd ?? priceData?.priceUsd ?? priceData?.priceUSD) || '0'
         ),
         priceAPE: parseFloat(
           (priceData?.price_native ?? priceData?.priceNative ?? priceData?.priceAPE ?? '0')
-        ) || (parseFloat((priceData?.price_usd ?? priceData?.priceUsd ?? '0')) / 1.2), // Приблизительно APE = $1.2
+        ) || (parseFloat((priceData?.price_usd ?? priceData?.priceUsd ?? '0')) / 1.2), // Approximately APE = $1.2
         marketCap: parseFloat(
           (priceData?.market_cap_usd ?? priceData?.marketCap ?? priceData?.marketCapUsd ?? priceData?.market_cap) || '0'
         ),
@@ -216,11 +216,11 @@ export default function CRATokenInfo() {
           (priceData?.volume_24h_usd ?? priceData?.volume24h ?? priceData?.volumeUsd ?? '0')
         ),
         
-        // Изменения
+        // Changes
         priceChange24h: parseFloat(
           (priceData?.price_change_24h ?? priceData?.priceChange24h ?? priceData?.priceChange24H ?? priceData?.priceChange?.h24) || '0'
         ),
-        volumeChange24h: 0, // TODO: добавить
+        volumeChange24h: 0, // TODO: add
         
         // Supply data
         totalSupply: tokenStats?.totalSupply || '0',
@@ -228,7 +228,7 @@ export default function CRATokenInfo() {
         burnedAmount: burnedWei.toString(),
         lockedInGame: tokenStats?.treasury || '0',
         
-        // Игровые данные
+        // Game data
         totalBurns: recentBurns.length,
         totalClaimed: 0,
         avgBurnAmount: avgBurnAmount / 1e18, // Convert from wei
@@ -304,12 +304,12 @@ export default function CRATokenInfo() {
       <Card className="p-6 bg-red-900/20 border-red-500/30">
         <div className="flex items-center gap-3 mb-4">
           <AlertCircle className="h-6 w-6 text-red-400" />
-          <h3 className="text-xl font-bold text-red-300">Ошибка загрузки CRA данных</h3>
+          <h3 className="text-xl font-bold text-red-300">Error loading CRA data</h3>
         </div>
         <p className="text-red-200 mb-4">{error}</p>
         <Button onClick={handleRefresh} variant="outline" className="border-red-500/50 text-red-300">
           <RefreshCw className="h-4 w-4 mr-2" />
-          Повторить
+          Retry
         </Button>
       </Card>
     );

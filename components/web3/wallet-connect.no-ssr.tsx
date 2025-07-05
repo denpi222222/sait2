@@ -75,7 +75,7 @@ export function WalletConnectNoSSR() {
             className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white border-0 min-w-[180px] px-4 py-2 text-sm font-medium"
           >
             <Wallet className="w-4 h-4 mr-2" />
-            {address ? formatAddress(address) : 'Connected'}
+            {address ? formatAddress(address) : t('wallet.connected', 'Connected')}
           </Button>
           
           {/* CRA Balance Display */}

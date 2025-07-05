@@ -268,6 +268,15 @@ export default function Denis3Analytics() {
     };
   };
 
+  /* ---------------------------------------------
+     Derived & Sanitised Global Metrics
+     -------------------------------------------*/
+  const COLLECTION_SIZE = 5000;
+  const burns = globalStats?.totalBurns ?? 0;
+  const breeds = globalStats?.totalBreeds ?? 0;
+  const inGraveyard = Math.max(burns - breeds, 0);
+  const activeNfts = Math.max(COLLECTION_SIZE - inGraveyard, 0);
+
   if (loading) {
     return (
       <Card className="p-6 bg-slate-800/50 backdrop-blur-sm border-slate-700">
@@ -333,9 +342,10 @@ export default function Denis3Analytics() {
 
         {/* Overview Tab */}
         <TabsContent value="overview" className="space-y-6">
-          {/* Global Stats Grid */}
+          {/* Derive stable counts to avoid negatives & overflow */}
           {globalStats && (
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              {/* Burns */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -345,13 +355,14 @@ export default function Denis3Analytics() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-red-300 text-sm">Burns</p>
-                      <p className="text-2xl font-bold text-white">{formatNumber(globalStats.totalBurns)}</p>
+                      <p className="text-2xl font-bold text-white">{formatNumber(burns)}</p>
                     </div>
                     <Flame className="h-8 w-8 text-red-400" />
                   </div>
                 </Card>
               </motion.div>
 
+              {/* Pings */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -368,6 +379,7 @@ export default function Denis3Analytics() {
                 </Card>
               </motion.div>
 
+              {/* Breeds */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -377,13 +389,14 @@ export default function Denis3Analytics() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-green-300 text-sm">Breeds</p>
-                      <p className="text-2xl font-bold text-white">{formatNumber(globalStats.totalBreeds)}</p>
+                      <p className="text-2xl font-bold text-white">{formatNumber(breeds)}</p>
                     </div>
                     <Heart className="h-8 w-8 text-green-400" />
                   </div>
                 </Card>
               </motion.div>
 
+              {/* Active NFTs (derived) */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -393,13 +406,14 @@ export default function Denis3Analytics() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-purple-300 text-sm">Active NFTs</p>
-                      <p className="text-2xl font-bold text-white">{formatNumber(globalStats.totalActiveNFTs)}</p>
+                      <p className="text-2xl font-bold text-white">{formatNumber(activeNfts)}</p>
                     </div>
                     <Target className="h-8 w-8 text-purple-400" />
                   </div>
                 </Card>
               </motion.div>
 
+              {/* In Graveyard (derived) */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -409,13 +423,14 @@ export default function Denis3Analytics() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-gray-300 text-sm">In Graveyard</p>
-                      <p className="text-2xl font-bold text-white">{formatNumber(globalStats.totalInGraveyard)}</p>
+                      <p className="text-2xl font-bold text-white">{formatNumber(inGraveyard)}</p>
                     </div>
                     <Skull className="h-8 w-8 text-gray-400" />
                   </div>
                 </Card>
               </motion.div>
 
+              {/* Total Stars (deprecated) */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -498,7 +513,8 @@ export default function Denis3Analytics() {
               </h3>
               
               {(() => {
-                const cooldowns = getCooldownInfo(contractStats);
+                const cs = contractStats as ContractStats; // non-null inside this scope
+                const cooldowns = getCooldownInfo(cs);
                 return (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div className="bg-blue-900/20 rounded-lg p-4 border border-blue-500/30">

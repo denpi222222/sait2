@@ -229,8 +229,8 @@ export const useBurnedNfts = () => {
 
             } catch (e) {
                 console.error("❌ [useBurnedNfts] Глобальная ошибка при загрузке событий:", e)
-                setError("Не удалось загрузить историю сжиганий. Попробуйте обновить страницу.")
-                toast.error("Не удалось загрузить историю сжиганий.")
+                setError("Failed to load burn history. Please refresh the page.")
+                toast.error("Failed to load burn history.")
             } finally {
                 setIsLoading(false)
             }
@@ -257,7 +257,7 @@ export const useClaimReward = (tokenId: string) => {
 
     const claim = async () => {
         try {
-            toast.loading('Отправка транзакции...', { id: `claim-${tokenId}` });
+            toast.loading('Sending transaction...', { id: `claim-${tokenId}` });
             await writeContractAsync({
                 address: GAME_CONTRACT_ADDRESS,
                 abi: GameContractABI,
@@ -265,21 +265,21 @@ export const useClaimReward = (tokenId: string) => {
                 args: [BigInt(tokenId)]
             });
         } catch (e: any) {
-            console.error("Ошибка при вызове claimBurnRewards:", e);
-            toast.error(e.message || 'Транзакция не удалась', { id: `claim-${tokenId}` });
+            console.error("Error calling claimBurnRewards:", e);
+            toast.error(e.message || 'Transaction failed', { id: `claim-${tokenId}` });
         }
     }
 
     // Обновляем тосты по статусу транзакции
     useEffect(() => {
         if(isTxLoading) {
-            toast.loading('Транзакция в процессе...', { id: `claim-${tokenId}` });
+            toast.loading('Transaction in progress...', { id: `claim-${tokenId}` });
         }
         if (isTxSuccess) {
-            toast.success('Награда успешно получена!', { id: `claim-${tokenId}`, duration: 5000 });
+            toast.success('Reward claimed successfully!', { id: `claim-${tokenId}`, duration: 5000 });
         }
         if (txError) {
-            toast.error(txError.message || 'Ошибка транзакции', { id: `claim-${tokenId}` });
+            toast.error(txError.message || 'Transaction error', { id: `claim-${tokenId}` });
         }
     }, [isTxLoading, isTxSuccess, txError, tokenId]);
 

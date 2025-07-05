@@ -5,7 +5,7 @@ import { formatEther } from 'viem'
 import { useCrazyCubeGame } from "./useCrazyCubeGame"
 import { apeChain } from '../config/chains'
 
-// Импортируем ABI и адреса из основного хука
+// Import ABI and addresses from the main hook
 const GAME_CONTRACT_ADDRESS = apeChain.contracts.gameProxy.address
 
 const GAME_CONTRACT_ABI = [
@@ -79,7 +79,7 @@ export interface BurnRecordInfo {
   timeLeftFormatted: string
 }
 
-// Hook для получения информации об одном NFT
+// Hook to get information about one NFT
 export const useNFTGameInfo = (tokenId: string | undefined) => {
   const enabled = !!tokenId
 
@@ -112,7 +112,7 @@ export const useNFTGameInfo = (tokenId: string | undefined) => {
 
     return {
       tokenId,
-      rarity: Number(nftData[0]),
+      rarity: Number(nftData[0]), // ✅ SAFE: taken from smart contract
       initialStars: Number(nftData[1]),
       currentStars: Number(nftState[0]),
       isActivated: nftData[2],
@@ -121,8 +121,8 @@ export const useNFTGameInfo = (tokenId: string | undefined) => {
       lastPingTime: Number(nftState[2]),
       lastBreedTime: Number(nftState[3]),
       isInGraveyard: nftState[4],
-      canPing: nftData[2] && !nftState[4] && pingCooldown === 0, // активирован, не в могиле, нет кулдауна
-      canBreed: nftData[2] && !nftState[4] && Number(nftState[0]) > 0 && breedCooldown === 0, // есть звезды
+      canPing: nftData[2] && !nftState[4] && pingCooldown === 0, // activated, not in grave, no cooldown
+      canBreed: nftData[2] && !nftState[4] && Number(nftState[0]) > 0 && breedCooldown === 0, // has stars
       pingCooldown,
       breedCooldown
     }
@@ -141,7 +141,7 @@ export const useNFTGameInfo = (tokenId: string | undefined) => {
   }
 }
 
-// Hook для получения информации о burn record
+// Hook for getting information about burn record
 export const useBurnRecord = (tokenId: string | undefined) => {
   const enabled = !!tokenId
 
@@ -195,7 +195,7 @@ export const useBurnRecord = (tokenId: string | undefined) => {
   }
 }
 
-// Hook для получения информации о нескольких NFT
+// Hook for getting information about multiple NFT
 export const useMultipleNFTGameInfo = (tokenIds: string[]) => {
   const enabled = tokenIds.length > 0
 

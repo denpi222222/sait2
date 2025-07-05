@@ -12,7 +12,7 @@ interface AshParticle {
   opacity: number
   angle: number // deg for rotation effect
   angularSpeed: number // deg/s
-  shape: "rect" | "circle" | "triangle" // форма частицы
+  shape: "rect" | "circle" | "triangle" // particle shape
 }
 
 interface AshEffectProps {
@@ -70,7 +70,7 @@ export function AshEffect({
 
     const particleSize = Math.random() * size * 2 + size // vary size
 
-    // Случайная форма частицы
+    // Random particle shape
     const shapeRand = Math.random()
     const shape: AshParticle["shape"] = shapeRand < 0.33 ? "circle" : shapeRand < 0.66 ? "triangle" : "rect"
 

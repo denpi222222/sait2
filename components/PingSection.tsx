@@ -23,9 +23,10 @@ interface PingableNFTProps {
 
 const PingableNFT = ({ nft, gameInfo, onPing, isLoading }: PingableNFTProps) => {
   const { isApeChain, requireApeChain } = useNetwork();
+  const { t } = useTranslation()
 
   const formatTimeLeft = (seconds: number): string => {
-    if (seconds === 0) return "Ready!"
+    if (seconds === 0) return t('status.ready', 'Ready!')
     const minutes = Math.floor(seconds / 60)
     const hours = Math.floor(minutes / 60)
     if (hours > 0) return `${hours}h ${minutes % 60}m`

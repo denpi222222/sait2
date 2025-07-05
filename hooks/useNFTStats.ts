@@ -1,5 +1,10 @@
 "use client"
 
+/**
+ * @deprecated This hook is deprecated. Use useGameStats instead for consolidated game statistics.
+ * This hook will be removed in a future version.
+ */
+
 import { useState, useEffect } from "react"
 import { useReadContract } from "wagmi"
 import { NFT_CONTRACT_ADDRESS, MAIN_CHAIN_ID } from "@/config/wagmi"
@@ -25,7 +30,7 @@ export function useNFTStats() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
-  // totalSupply из ERC721 (NFT contract)
+  // totalSupply from ERC721 (NFT contract)
   const { data: totalSupply } = useReadContract({
     address: NFT_CONTRACT_ADDRESS,
     abi: nftAbi,
@@ -33,7 +38,7 @@ export function useNFTStats() {
     chainId: MAIN_CHAIN_ID,
   })
 
-  // graveyard size и burnRewardPool из игрового контракта
+  // graveyard size and burnRewardPool from game contract
   const gameAddress = (
     process.env.NEXT_PUBLIC_CRAZYCUBE_CONTRACT && process.env.NEXT_PUBLIC_CRAZYCUBE_CONTRACT !== "undefined"
       ? process.env.NEXT_PUBLIC_CRAZYCUBE_CONTRACT
@@ -54,10 +59,10 @@ export function useNFTStats() {
     chainId: MAIN_CHAIN_ID,
   })
 
-  // Обновляем статистику при изменении данных
+  // Update statistics when data changes
   useEffect(() => {
     try {
-      // Если данные загружены, обновляем статистику
+      // If data is loaded, update statistics
       if (totalSupply !== undefined) {
         setStats((prev) => ({
           ...prev,
@@ -77,10 +82,10 @@ export function useNFTStats() {
     }
   }, [totalSupply, graveyardSize, burnRewardPool])
 
-  // Инициализируем пустые статистики если данные не загружены
+  // Initialize empty statistics if data is not loaded
   useEffect(() => {
     if (isLoading && !totalSupply) {
-      // Показываем пустые данные пока идет загрузка
+      // Show empty data while loading
       setStats({
         totalSupply: 0,
         burnedCount: 0,

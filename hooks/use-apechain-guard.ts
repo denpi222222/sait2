@@ -10,10 +10,10 @@ export function useApeChainGuard() {
   const { toast } = useToast()
   const isApeChain = chainId === apeChain.id
 
-  // Автоматическое переключение при подключении кошелька
+  // Auto-switch when wallet connects
   useEffect(() => {
     if (isConnected && !isApeChain) {
-      // Небольшая задержка для стабильности
+      // Small delay for stability
       const timer = setTimeout(() => {
         switchToApeChain()
       }, 1000)
@@ -43,7 +43,7 @@ export function useApeChainGuard() {
     } catch (e: any) {
       console.error('Failed to switch chain:', e)
       
-      // Если пользователь отклонил переключение, показываем инструкцию
+      // If user declined the switch, show instruction
       if (e.code === 4001) {
         toast({
           title: 'Network Switch Required',
@@ -74,7 +74,7 @@ export function useApeChainGuard() {
     return action(...args)
   }
 
-  // Принудительное переключение с повторными попытками
+  // Force switch with retry attempts
   const forceSwitchToApeChain = async (maxRetries = 3) => {
     for (let i = 0; i < maxRetries; i++) {
       try {
@@ -88,7 +88,7 @@ export function useApeChainGuard() {
             variant: 'destructive',
           })
         }
-        // Ждем перед следующей попыткой
+        // Wait before next attempt
         await new Promise(resolve => setTimeout(resolve, 2000))
       }
     }

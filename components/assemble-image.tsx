@@ -4,17 +4,17 @@ import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 
 /**
- * AssembleImage — обратный эффект ShatterImage.
- * Осколки залетают снаружи и собирают картинку за указанное время.
+ * AssembleImage — reverse effect of ShatterImage.
+ * Fragments fly in from outside and assemble the image over specified time.
  */
 interface AssembleImageProps {
   src: string
   alt?: string
   className?: string
-  grid?: number          // делим сторону на N×N
-  assembleDuration?: number // полное время сборки (с)
+  grid?: number          // divide side into N×N
+  assembleDuration?: number // full assembly time (s)
   priority?: boolean
-  fallbacks?: string[]   // список альтернатив, если первая картинка 404/403
+  fallbacks?: string[]   // list of alternatives if first image is 404/403
 }
 
 const isLocal = (s: string) => s.startsWith("/")

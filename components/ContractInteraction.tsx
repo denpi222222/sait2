@@ -15,6 +15,7 @@ import { Zap, Heart, Flame, Trophy, Copy, ExternalLink, Loader2 } from 'lucide-r
 import { formatEther, parseEther } from 'viem'
 import { motion, AnimatePresence } from 'framer-motion'
 import { apeChain } from '@/config/chains'
+import { useTranslation } from 'react-i18next'
 
 const GAME_CONTRACT_ABI = [
   // Read functions
@@ -88,6 +89,7 @@ const GAME_CONTRACT_ABI = [
 
 export function ContractInteraction() {
   const { address, isConnected } = useAccount()
+  const { t } = useTranslation()
   const { toast } = useToast()
   
   // Form states
@@ -145,8 +147,8 @@ export function ContractInteraction() {
   const handlePing = async () => {
     if (!pingTokenId) {
       toast({
-        title: "Error",
-        description: "Please enter a token ID",
+        title: t('contractInteraction.error', 'Error'),
+        description: t('contractInteraction.enterTokenId', 'Please enter a token ID'),
         variant: "destructive"
       })
       return
@@ -172,8 +174,8 @@ export function ContractInteraction() {
   const handleBurn = async () => {
     if (!burnTokenId || !burnWaitHours) {
       toast({
-        title: "Error",
-        description: "Please enter token ID and wait hours",
+        title: t('contractInteraction.error', 'Error'),
+        description: t('contractInteraction.enterTokenIdAndHours', 'Please enter token ID and wait hours'),
         variant: "destructive"
       })
       return
@@ -199,8 +201,8 @@ export function ContractInteraction() {
   const handleBreed = async () => {
     if (!parent1Id || !parent2Id) {
       toast({
-        title: "Error",
-        description: "Please enter both parent token IDs",
+        title: t('contractInteraction.error', 'Error'),
+        description: t('contractInteraction.enterBothParents', 'Please enter both parent token IDs'),
         variant: "destructive"
       })
       return
@@ -279,7 +281,7 @@ export function ContractInteraction() {
           </CardHeader>
           <CardContent>
             <Badge className="bg-green-500/20 text-green-400">
-              ✅ Connected
+              ✅ {t('wallet.connected', 'Connected')}
             </Badge>
           </CardContent>
         </Card>

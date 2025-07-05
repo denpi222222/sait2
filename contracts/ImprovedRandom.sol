@@ -3,17 +3,17 @@ pragma solidity ^0.8.19;
 
 /**
  * @title ImprovedRandom
- * @dev Улучшенная генерация псевдо-рандома для блокчейн игр
- * @notice Использует block.prevrandao + tx.origin + множественные источники энтропии
+ * @dev Improved pseudo-random generation for blockchain games
+ * @notice Uses block.prevrandao + tx.origin + multiple entropy sources
  */
 contract ImprovedRandom {
     
-    // Внутренний счетчик для уникальности
+    // Internal counter for uniqueness
     uint256 private randomNonce;
     
     /**
-     * @dev Текущий метод (для сравнения)
-     * Использует: blockhash + timestamp + msg.sender + salt
+     * @dev Current method (for comparison)
+     * Uses: blockhash + timestamp + msg.sender + salt
      */
     function _localRandom(bytes32 salt) internal view returns (bytes32) {
         bytes32 h = blockhash(block.number - 1);
@@ -21,13 +21,13 @@ contract ImprovedRandom {
     }
     
     /**
-     * @dev Предложенный метод с block.prevrandao + tx.origin
-     * Более современный подход для Ethereum 2.0
+     * @dev Proposed method with block.prevrandao + tx.origin
+     * More modern approach for Ethereum 2.0
      */
     function _improvedRandom(bytes32 salt) internal view returns (bytes32) {
         return keccak256(abi.encodePacked(
-            block.prevrandao,  // Новый источник рандомности в Ethereum
-            tx.origin,         // Изначальный отправитель транзакции
+            block.prevrandao,  // New randomness source in Ethereum
+            tx.origin,         // Original transaction sender
             block.timestamp,
             msg.sender,
             salt
@@ -35,13 +35,13 @@ contract ImprovedRandom {
     }
     
     /**
-     * @dev Гибридный метод - совместимость + современность
-     * Автоматически выбирает лучший доступный источник энтропии
+     * @dev Hybrid method - compatibility + modernity
+     * Automatically selects the best available source of entropy
      */
     function _hybridRandom(bytes32 salt) internal view returns (bytes32) {
         bytes32 entropy;
         
-        // Используем prevrandao если доступен, иначе blockhash
+        // Use prevrandao if available, otherwise blockhash
         if (block.prevrandao != 0) {
             entropy = bytes32(block.prevrandao);
         } else {
@@ -59,38 +59,38 @@ contract ImprovedRandom {
     }
     
     /**
-     * @dev РЕКОМЕНДУЕМЫЙ метод - максимальная энтропия
-     * Использует все доступные источники рандомности
+     * @dev RECOMMENDED method - maximum entropy
+     * Uses all available sources of randomness
      */
     function _enhancedRandom(bytes32 salt) internal returns (bytes32) {
         bytes32 entropy;
         
-        // Выбираем лучший доступный источник
+        // Choose best available source
         if (block.prevrandao != 0) {
             entropy = bytes32(block.prevrandao);
         } else {
             entropy = blockhash(block.number - 1);
         }
         
-        // Увеличиваем nonce для уникальности
+        // Increase nonce for uniqueness
         randomNonce++;
         
         return keccak256(abi.encodePacked(
-            entropy,                    // Основной источник рандомности
-            block.timestamp,            // Время блока
-            block.number,              // Номер блока
-            block.gaslimit,            // Лимит газа (изменяется)
-            msg.sender,                // Адрес вызывающего
-            tx.origin,                 // Изначальный отправитель
-            tx.gasprice,               // Цена газа
-            salt,                      // Пользовательская соль
-            randomNonce                // Внутренний счетчик
+            entropy,                    // Main randomness source
+            block.timestamp,            // Block time
+            block.number,              // Block number
+            block.gaslimit,            // Gas limit (changes)
+            msg.sender,                // Caller address
+            tx.origin,                 // Original sender
+            tx.gasprice,               // Gas price
+            salt,                      // User salt
+            randomNonce                // Internal counter
         ));
     }
     
     /**
-     * @dev Специальная версия для breed - дополнительная энтропия от родителей
-     * Включает ID родителей для еще большей уникальности
+     * @dev Special version for breed - additional entropy from parents
+     * Includes parent IDs for even greater uniqueness
      */
     function _breedRandom(
         bytes32 salt,
@@ -116,30 +116,30 @@ contract ImprovedRandom {
             tx.origin,
             tx.gasprice,
             salt,
-            parent1Id,                 // ID первого родителя
-            parent2Id,                 // ID второго родителя
+            parent1Id,                 // ID first parent
+            parent2Id,                 // ID second parent
             randomNonce
         ));
     }
     
     /**
-     * @dev Проверка доступности block.prevrandao
-     * Полезно для определения какой метод использовать
+     * @dev Check availability of block.prevrandao
+     * Useful for determining which method to use
      */
     function isPrevrandaoAvailable() public view returns (bool) {
         return block.prevrandao != 0;
     }
     
     /**
-     * @dev Получить текущий nonce (для отладки)
+     * @dev Get current nonce (for debugging)
      */
     function getCurrentNonce() public view returns (uint256) {
         return randomNonce;
     }
     
     /**
-     * @dev Демо функция для сравнения разных методов
-     * Возвращает результаты всех методов для анализа
+     * @dev Demo function for comparing different methods
+     * Returns results of all methods for analysis
      */
     function compareRandomMethods(bytes32 salt) external returns (
         bytes32 local,
@@ -158,7 +158,7 @@ contract ImprovedRandom {
 
 /**
  * @title RandomTester
- * @dev Контракт для тестирования разных методов рандома
+ * @dev Contract for testing different random methods
  */
 contract RandomTester is ImprovedRandom {
     
@@ -169,31 +169,31 @@ contract RandomTester is ImprovedRandom {
     );
     
     /**
-     * @dev Тест всех методов рандома с измерением газа
+     * @dev Test all methods with gas measurement
      */
     function testAllMethods(bytes32 salt) external {
         uint256 gasStart;
         uint256 gasUsed;
         
-        // Тест текущего метода
+        // Test current method
         gasStart = gasleft();
         bytes32 localResult = _localRandom(salt);
         gasUsed = gasStart - gasleft();
         emit RandomGenerated("local", localResult, gasUsed);
         
-        // Тест улучшенного метода
+        // Test improved method
         gasStart = gasleft();
         bytes32 improvedResult = _improvedRandom(salt);
         gasUsed = gasStart - gasleft();
         emit RandomGenerated("improved", improvedResult, gasUsed);
         
-        // Тест гибридного метода
+        // Test hybrid method
         gasStart = gasleft();
         bytes32 hybridResult = _hybridRandom(salt);
         gasUsed = gasStart - gasleft();
         emit RandomGenerated("hybrid", hybridResult, gasUsed);
         
-        // Тест рекомендуемого метода
+        // Test recommended method
         gasStart = gasleft();
         bytes32 enhancedResult = _enhancedRandom(salt);
         gasUsed = gasStart - gasleft();

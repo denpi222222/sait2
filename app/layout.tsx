@@ -47,12 +47,6 @@ function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
-        {/* Add direct favicon link for better browser compatibility */}
-        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/icons/favicon-180x180.png" />
         <link rel="manifest" href="/manifest.json" />
         {/* Trusted Types default policy must be defined before any JS executes */}
         <script src="/trusted-types.js" />

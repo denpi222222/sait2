@@ -23,6 +23,7 @@ interface ClaimableNFTCardProps {
 }
 
 const ClaimableNFTCard = ({ nft, tokenId, onClaim, isLoading }: ClaimableNFTCardProps) => {
+  const { t } = useTranslation();
   const { burnRecord, isLoading: isLoadingBurnRecord } = useBurnRecord(tokenId);
   const { address: wallet } = useAccount();
   const { data: currentOwner } = useReadContract({
