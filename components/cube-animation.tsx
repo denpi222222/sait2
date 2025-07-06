@@ -515,6 +515,7 @@ export function CubeAnimation() {
         audioElement.removeEventListener("canplaythrough", handleCanPlay)
       }
     }
+    return undefined
   }, [])
 
   if (!isClient) {

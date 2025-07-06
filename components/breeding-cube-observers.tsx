@@ -54,10 +54,10 @@ export default function CubeObservers({ selectionCount, phase }: CubeObserversPr
     const cnt = 1 + Math.floor(Math.random() * 3)
     const sides: Observer["dir"][] = ["left","right","bottom","top"]
     const arr: Observer[] = Array.from({ length: cnt }).map((_, i) => {
-      const dir = sides[Math.floor(Math.random()*sides.length)]
+      const dir = sides[Math.floor(Math.random()*sides.length)]!
       return {
-        img: cubeImgs[Math.floor(Math.random() * cubeImgs.length)],
-        phrase: idlePhrases[Math.floor(Math.random() * idlePhrases.length)] || "What are you doing here?",
+        img: cubeImgs[Math.floor(Math.random() * cubeImgs.length)]!,
+        phrase: idlePhrases[Math.floor(Math.random() * idlePhrases.length)]!,
         id: `${Date.now()}-${i}`,
         dir,
         pos: Math.random()*90+5 // 5%..95%

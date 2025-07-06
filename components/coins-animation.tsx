@@ -48,11 +48,11 @@ export function CoinsAnimation({ intensity = 1, className = "", rainDuration = 3
 
   useEffect(() => {
     setIsClient(true)
-    // Hide the rain effect after the configured duration to save resources
     if (rainDuration > 0) {
       const timer = setTimeout(() => setShowRain(false), rainDuration * 1000)
       return () => clearTimeout(timer)
     }
+    return
   }, [])
 
   // Optimize coin generation with useCallback

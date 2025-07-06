@@ -55,7 +55,7 @@ const ParticleEffect = dynamic(() => import("@/components/particle-effect").then
 export default function HomePage() {
   // Use translation hook
   const { t } = useTranslation()
-  const { isLiteMode, isMobile, isSlowDevice } = usePerformanceContext()
+  const { isLiteMode, isMobile, isWeakDevice } = usePerformanceContext()
 
   const { isConnected: connected, address: account } = useAccount()
   const { isApeChain, isSwitching, switchAttempts, forceSwitchToApeChain } = useNetwork()
@@ -64,9 +64,9 @@ export default function HomePage() {
   const [isClient, setIsClient] = useState(false)
 
   // Performance-aware animation settings
-  const shouldShowParticles = !isLiteMode && !isSlowDevice
-  const particleCount = isMobile ? 8 : isSlowDevice ? 5 : 15
-  const animationIntensity = isLiteMode ? 0.1 : isSlowDevice ? 0.3 : 0.5
+  const shouldShowParticles = !isLiteMode && !isWeakDevice
+  const particleCount = isMobile ? 8 : isWeakDevice ? 5 : 15
+  const animationIntensity = isLiteMode ? 0.1 : isWeakDevice ? 0.3 : 0.5
 
   // States for hover effects - memoized with useMemo
   const [bridgeHovered, setBridgeHovered] = useState(false)
@@ -146,7 +146,7 @@ export default function HomePage() {
     }
   }
 
-  const currentVariant = isLiteMode || isSlowDevice ? animationVariants.lite : animationVariants.full
+  const currentVariant = isLiteMode || isWeakDevice ? animationVariants.lite : animationVariants.full
 
   // Reduced motion preference
   const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches

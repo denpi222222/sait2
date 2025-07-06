@@ -50,7 +50,7 @@ export default function DigitRain({
       delay: Math.random() * 6,
       duration: 6 + Math.random() * 6,
       opacity: 0.4 + Math.random() * 0.5,
-      color: colors[Math.floor(Math.random() * colors.length)],
+      color: colors[Math.floor(Math.random() * colors.length)]!,
       char: String(Math.floor(Math.random() * 10)),
       rotate: (Math.random() - 0.5) * 40, // -20..20 deg
     }))

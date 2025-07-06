@@ -213,7 +213,7 @@ export const ClaimRewards = () => {
       });
 
       // wait for confirmation
-      await publicClient.waitForTransactionReceipt({ hash });
+      await publicClient!.waitForTransactionReceipt({ hash });
 
       toast({ title: "Rewards claimed!" });
       refresh();

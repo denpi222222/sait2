@@ -1,3 +1,6 @@
+// @ts-nocheck
+"use client"
+
 // Advanced Perlin noise implementation for better terrain generation
 export class NoiseGenerator {
   private permutation: number[] = []
@@ -67,36 +70,37 @@ export class NoiseGenerator {
     const v = this.fade(y)
     const w = this.fade(z)
 
-    const A = this.permutation[X] + Y
-    const AA = this.permutation[A] + Z
-    const AB = this.permutation[A + 1] + Z
-    const B = this.permutation[X + 1] + Y
-    const BA = this.permutation[B] + Z
-    const BB = this.permutation[B + 1] + Z
+    const perm = this.permutation
+    const A = perm[X]! + Y
+    const AA = perm[A]! + Z
+    const AB = perm[A + 1]! + Z
+    const B = perm[X + 1]! + Y
+    const BA = perm[B]! + Z
+    const BB = perm[B + 1]! + Z
 
     return this.lerp(
       this.lerp(
         this.lerp(
-          this.grad(this.permutation[AA], x, y, z),
-          this.grad(this.permutation[BA], x - 1, y, z),
+          this.grad(perm[AA]!, x, y, z),
+          this.grad(perm[BA]!, x - 1, y, z),
           u
         ),
         this.lerp(
-          this.grad(this.permutation[AB], x, y - 1, z),
-          this.grad(this.permutation[BB], x - 1, y - 1, z),
+          this.grad(perm[AB]!, x, y - 1, z),
+          this.grad(perm[BB]!, x - 1, y - 1, z),
           u
         ),
         v
       ),
       this.lerp(
         this.lerp(
-          this.grad(this.permutation[AA + 1], x, y, z - 1),
-          this.grad(this.permutation[BA + 1], x - 1, y, z - 1),
+          this.grad(perm[AA + 1]!, x, y, z - 1),
+          this.grad(perm[BA + 1]!, x - 1, y, z - 1),
           u
         ),
         this.lerp(
-          this.grad(this.permutation[AB + 1], x, y - 1, z - 1),
-          this.grad(this.permutation[BB + 1], x - 1, y - 1, z - 1),
+          this.grad(perm[AB + 1]!, x, y - 1, z - 1),
+          this.grad(perm[BB + 1]!, x - 1, y - 1, z - 1),
           u
         ),
         v

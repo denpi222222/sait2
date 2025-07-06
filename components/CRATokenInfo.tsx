@@ -157,11 +157,11 @@ export default function CRATokenInfo() {
           }
         }
         if (burnedWei === 0n) {
-          const totalSupplyWei: bigint = await publicClient.readContract({
+          const totalSupplyWei = await publicClient.readContract({
             address: CRA_TOKEN_ADDRESS as `0x${string}`,
             abi: ERC20_ABI,
             functionName: 'totalSupply',
-          });
+          }) as bigint;
           // Calculate initialSupplyWei dynamically and cache it
           let initialSupplyWei: bigint;
           const cachedInitRaw = typeof window !== 'undefined' ? localStorage.getItem(INITIAL_SUPPLY_KEY) : null;

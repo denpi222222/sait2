@@ -18,6 +18,7 @@ import { useCrazyCubeStats } from "@/hooks/useCrazyCubeStats"
 import { useWeb3 } from "@/hooks/useWeb3"
 import { Skeleton } from "@/components/ui/skeleton"
 import { LazyLoad } from "@/components/LazyLoad"
+import DigitRain from "@/components/digit-rain"
 import StatsNFTCard from "@/components/web3/stats-nft-card"
 import MarketTicker from "@/components/MarketTicker"
 
@@ -45,6 +46,7 @@ export default function StatsPage() {
       }, 1000)
       return () => clearTimeout(timer)
     }
+    return () => {} // Return empty cleanup function if not client
   }, [isClient])
 
   return (
@@ -83,7 +85,10 @@ export default function StatsPage() {
         <div className="space-y-8 mt-8">
           {/* Contract info panel */}
           <motion.div initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{duration:0.5}}>
-            <ContractInfo nftCount={globalStats?.totalNFTs} craTotal={globalStats?.craTotalSupply} />
+            <ContractInfo 
+              nftCount={globalStats?.totalNFTs || 0} 
+              craTotal={globalStats?.craTotalSupply || "0"} 
+            />
             <div className="mt-4"><MarketTicker/></div>
           </motion.div>
 

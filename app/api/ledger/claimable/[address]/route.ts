@@ -7,8 +7,12 @@ export const dynamic = 'force-dynamic'
 
 const LEDGER_PATH = path.join(process.cwd(), 'data', 'ledger.json')
 
-export async function GET (_req: Request, { params }: { params: { address: string } }) {
-  const address = params.address?.toLowerCase()
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ address: string }> }
+) {
+  const resolvedParams = await params
+  const address = resolvedParams.address?.toLowerCase()
   if (!address) return NextResponse.json({ error: 'address missing' }, { status: 400 })
 
   const addrSchema = z.string().regex(/^0x[a-fA-F0-9]{40}$/)

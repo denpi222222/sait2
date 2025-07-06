@@ -60,13 +60,14 @@ const Starfield = () => {
     const colors = ['#00ffff', '#ff00ff', '#ffff00', '#0088ff', '#ff0088']
     
     for (let i = 0; i < 400; i++) {
+      const randomColor = colors[Math.floor(Math.random() * colors.length)]!
       stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         size: Math.random() * 3,
         speed: Math.random() * 0.5 + 0.1,
         type: Math.random() > 0.8 ? 'pulse' : 'normal',
-        color: colors[Math.floor(Math.random() * colors.length)]
+        color: randomColor
       })
     }
     
@@ -312,6 +313,7 @@ const TextCube = ({ char, index, position }: {
     const colors = ['#ff00ff', '#00ffff', '#ffff00', '#ff0088']
     
     for (let i = 0; i < fragmentCount; i++) {
+      const randomColor = colors[Math.floor(Math.random() * colors.length)]!
       newFragments.push({
         id: Date.now() + i,
         position: { x: 0, y: 0, z: 0 },
@@ -325,7 +327,7 @@ const TextCube = ({ char, index, position }: {
           y: Math.random() * 360,
           z: Math.random() * 360
         },
-        color: colors[Math.floor(Math.random() * colors.length)]
+        color: randomColor
       })
     }
     

@@ -81,7 +81,7 @@ export function AshEffect({
       vx,
       vy,
       size: particleSize,
-      color: colors[Math.floor(Math.random() * colors.length)],
+      color: colors[Math.floor(Math.random() * colors.length)]!,
       opacity: 0.75 + Math.random() * 0.25,
       angle: Math.random() * 360,
       angularSpeed: (Math.random() - 0.5) * 60, // -30..30 deg/s

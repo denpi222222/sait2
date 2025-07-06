@@ -85,7 +85,12 @@ export default function StatsPage() {
           
           <TabsContent value="subgraph">
             <div className="grid grid-cols-1 gap-6">
-              <SubgraphStats address={address} />
+              {/* Rendering handled conditionally below to avoid TS exactOptionalPropertyTypes */}
+              {address ? (
+                <SubgraphStats address={address} />
+              ) : (
+                <SubgraphStats />
+              )}
               <Card className="p-4">
                 <h3 className="text-lg font-semibold mb-2">{t("stats.subgraph.aboutTitle", "About Subgraph")}</h3>
                 <p className="text-sm text-gray-600">{t("stats.subgraph.aboutParagraph1", "Data is fetched via The Graph – a decentralized blockchain indexing protocol. Our subgraph indexes all CrazyCubeUltimate events in real time, including NFT activations, pings, burns, revivals and breeds.")}</p>

@@ -165,7 +165,7 @@ export const BreedingSection = () => {
         return [...prev, tokenId];
       } else {
         // Replace the first selected parent
-        return [prev[1], tokenId];
+        return [prev[1]!, tokenId];
       }
     });
   };
@@ -213,10 +213,10 @@ export const BreedingSection = () => {
       // Wait for approval, then breed
       setTimeout(async () => {
         try {
-          await breedNFTs(selectedParents[0], selectedParents[1]);
+          await breedNFTs(selectedParents[0] as string, selectedParents[1] as string);
           toast({
             title: "Breeding Initiated",
-            description: `Breeding NFT #${selectedParents[0]} with NFT #${selectedParents[1]}`,
+            description: `Breeding NFT #${selectedParents[0] as string} with NFT #${selectedParents[1] as string}`,
           });
           setSelectedParents([]); // Clear selection
         } catch (breedError: any) {

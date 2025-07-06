@@ -87,6 +87,8 @@ export default function BreedPage() {
       startWatching()
       return () => stopWatching()
     }
+    // when disconnected nothing to clean
+    return undefined
   }, [connected, startWatching, stopWatching])
 
   // Load data for selected NFTs
@@ -358,8 +360,16 @@ export default function BreedPage() {
               </div>
               <h3 className="text-xl font-semibold text-white mb-2">{tr('sections.breed.connectWallet', 'Connect Your Wallet')}</h3>
               <p className="text-gray-300 mb-4">{tr('sections.breed.connectWalletDesc', 'Please connect your wallet to view and breed your NFTs')}</p>
-              {connectors.length > 0 && (
-                <Button onClick={() => connect({ connector: connectors[0] })} className="bg-cyan-600 hover:bg-cyan-700 text-white">
+              {connectors.length > 0 && connectors[0] && (
+                <Button 
+                  onClick={() => {
+                    const connector = connectors[0]
+                    if (connector) {
+                      connect({ connector })
+                    }
+                  }} 
+                  className="bg-cyan-600 hover:bg-cyan-700 text-white"
+                >
                   {tr('sections.breed.connectWalletButton', 'Connect Wallet')}
                 </Button>
               )}
@@ -535,17 +545,22 @@ export default function BreedPage() {
 
               {/* NFT Grid Improved */}
               <div className="nft-card-grid">
-                {userNFTs.map((nft, index) => (
-                  <BreedCard
-                    key={nft.tokenId || index}
-                    nft={nft}
-                    index={index}
-                    selected={selectedNFTs.includes(nft.tokenId)}
-                    selectedOrder={selectedNFTs[0] === nft.tokenId ? 1 : selectedNFTs[1] === nft.tokenId ? 2 : undefined}
-                    onSelect={handleSelectNFT}
-                    onActionComplete={refetch}
-                  />
-                ))}
+                {userNFTs.map((nft, index) => {
+                  const isSelected = selectedNFTs.includes(nft.tokenId)
+                  const selectedOrder = selectedNFTs[0] === nft.tokenId ? 1 : selectedNFTs[1] === nft.tokenId ? 2 : undefined
+                  
+                  return (
+                    <BreedCard
+                      key={nft.tokenId || index}
+                      nft={nft}
+                      index={index}
+                      selected={isSelected}
+                      {...(selectedOrder && { selectedOrder })}
+                      onSelect={handleSelectNFT}
+                      onActionComplete={refetch}
+                    />
+                  )
+                })}
               </div>
 
               {/* Cube observers commenting on breeding when 1 NFT selected */}
