@@ -1,11 +1,8 @@
 import { NextResponse } from 'next/server'
-import fs from 'fs/promises'
-import path from 'path'
+import ledgerData from '@/data/ledger.json'
 import { z } from 'zod'
 
 export const dynamic = 'force-dynamic'
-
-const LEDGER_PATH = path.join(process.cwd(), 'data', 'ledger.json')
 
 export async function GET(
   request: Request,
@@ -21,8 +18,9 @@ export async function GET(
   }
 
   try {
-    const raw = await fs.readFile(LEDGER_PATH, 'utf8')
-    const data = JSON.parse(raw) as { tokens: Record<string, { status: string; player: string; waitHours: number; burnTime: number }> }
+    const data = ledgerData as {
+      tokens: Record<string, { status: string; player: string; waitHours: number; burnTime: number }>
+    }
     const now = Math.floor(Date.now() / 1000)
 
     const pending = Object.entries(data.tokens)
