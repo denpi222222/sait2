@@ -1,5 +1,5 @@
 import { createConfig, http, fallback } from "wagmi"
-import { injected } from "wagmi/connectors"
+import { injected, metaMask, walletConnect } from "wagmi/connectors"
 import { apeChain } from "./chains"
 import { createPublicClient } from "viem"
 import { initWagmiClient } from "@/lib/alchemyKey"
@@ -32,7 +32,28 @@ export const config = createConfig({
   // Disable persistent storage to prevent auto-reconnect across sessions
   storage: null,
   connectors: [
-    // Simple injected connector for MetaMask and other wallets
+    // 1) MetaMask connector (opens MetaMask mobile via deeplink when not injected)
+    metaMask({
+      dappMetadata: {
+        name: "CrazyCube",
+        url: typeof window !== "undefined" ? window.location.origin : "https://crazycube.xyz",
+        iconUrl: "https://crazycube.xyz/favicon.ico",
+      },
+    }),
+
+    // 2) WalletConnect V2 connector – covers all mobile wallets (MetaMask, Rabby, Trust, etc.)
+    walletConnect({
+      projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "crazycube-project-id",
+      metadata: {
+        name: "CrazyCube",
+        description: "CrazyCube NFT Game",
+        url: typeof window !== "undefined" ? window.location.origin : "https://crazycube.xyz",
+        icons: ["https://crazycube.xyz/favicon.ico"],
+      },
+      showQrModal: true,
+    }),
+
+    // 3) Fallback plain injected (covers any other extension that injects ethereum)
     injected({
       shimDisconnect: true,
     }),
