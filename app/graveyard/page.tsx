@@ -23,14 +23,25 @@ export default function GraveyardPage() {
   const { graveyardSize } = useCrazyCubeGame()
   const [mounted, setMounted] = useState(false)
   const [showTitle, setShowTitle] = useState(false)
+  const [showCubeAnimation, setShowCubeAnimation] = useState(false)
 
   useEffect(() => {
     setMounted(true)
+    
+    // Quick cube disintegration animation when entering graveyard
+    const cubeTimer = setTimeout(() => {
+      setShowCubeAnimation(true)
+    }, 200) // Start cube animation almost immediately (20% faster)
+    
     // Animate title with delay
-    const timer = setTimeout(() => {
+    const titleTimer = setTimeout(() => {
       setShowTitle(true)
-    }, 500)
-    return () => clearTimeout(timer)
+    }, 800) // Reduced from 500ms for faster experience
+    
+    return () => {
+      clearTimeout(cubeTimer)
+      clearTimeout(titleTimer)
+    }
   }, [])
 
   if (!mounted) return (
@@ -47,6 +58,59 @@ export default function GraveyardPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900 p-4">
+      {/* Quick cube disintegration animation on page entry */}
+      {showCubeAnimation && (
+        <motion.div
+          className="fixed top-1/2 left-1/2 z-50 pointer-events-none"
+          initial={{ 
+            x: "-50%", 
+            y: "-50%", 
+            scale: 1,
+            opacity: 1
+          }}
+          animate={{ 
+            scale: [1, 1.2, 0],
+            opacity: [1, 0.8, 0],
+            rotate: [0, 45, 90],
+          }}
+          transition={{ 
+            duration: 1.2, // 20% faster than before
+            ease: "easeOut"
+          }}
+          onAnimationComplete={() => setShowCubeAnimation(false)}
+        >
+          <div className="w-12 h-12 bg-gradient-to-br from-red-600 to-red-800 border border-red-400 rounded shadow-lg relative">
+            {/* Cube fragments */}
+            {Array.from({ length: 8 }).map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-2 h-2 bg-red-500 rounded"
+                initial={{ 
+                  x: 0, 
+                  y: 0, 
+                  opacity: 1 
+                }}
+                animate={{
+                  x: (Math.random() - 0.5) * 200,
+                  y: (Math.random() - 0.5) * 200 + 50,
+                  opacity: 0,
+                  scale: [1, 0.5, 0],
+                }}
+                transition={{
+                  duration: 1.0, // Quick fragment scatter
+                  delay: 0.3 + i * 0.05,
+                  ease: "easeOut"
+                }}
+                style={{
+                  left: `${(i % 3) * 33}%`,
+                  top: `${Math.floor(i / 3) * 33}%`,
+                }}
+              />
+            ))}
+          </div>
+        </motion.div>
+      )}
+
       {/* Realistic ash background using canvas */}
       <AshEffect count={350} size={1.8} className="z-20" colors={["#7a7a7a","#9a9a9a","#b0b0b0"]} />
       
@@ -122,13 +186,24 @@ export default function GraveyardPage() {
             </motion.div>
           ) : (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.8 }} // Faster appearance after cube animation
             >
               <div className="nft-card-grid">
                 {tokenIds.slice(0, 20).map((id, idx) => (
-                  <GraveyardCubeCard key={id} tokenId={id} index={idx} />
+                  <motion.div
+                    key={id}
+                    initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    transition={{ 
+                      duration: 0.3, // Quick card appearance
+                      delay: 1.0 + idx * 0.05, // Staggered animation after cube
+                      ease: "easeOut"
+                    }}
+                  >
+                    <GraveyardCubeCard tokenId={id} index={idx} />
+                  </motion.div>
                 ))}
               </div>
               

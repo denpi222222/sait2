@@ -2,7 +2,7 @@
  * @type {import('next').NextConfig}
  */
 
-// Define Enhanced Content Security Policy for Web3 DApp
+// Define Enhanced Content Security Policy for Web3 DApp with Trusted Types
 const ContentSecurityPolicy = `
   default-src 'self';
   script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com;
@@ -16,6 +16,7 @@ const ContentSecurityPolicy = `
   base-uri 'self';
   form-action 'self';
   frame-ancestors 'none';
+  require-trusted-types-for 'script';
   upgrade-insecure-requests;
 `.replace(/\s{2,}/g, ' ').trim()
 
@@ -57,7 +58,7 @@ const nextConfig = {
     ],
   },
   
-  // Add enhanced security headers
+  // Add enhanced security headers with monitoring
   async headers() {
     return [
       {
@@ -66,6 +67,10 @@ const nextConfig = {
           {
             key: 'Content-Security-Policy',
             value: ContentSecurityPolicy,
+          },
+          {
+            key: 'Content-Security-Policy-Report-Only',
+            value: `${ContentSecurityPolicy} report-uri https://crazycube.report-uri.com/r/d/csp/reportOnly;`,
           },
           {
             key: 'X-Frame-Options',

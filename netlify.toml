@@ -23,8 +23,11 @@
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
     Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
     
-    # Enhanced CSP for Web3 DApp compatibility
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https: wss: ws:; media-src 'self' https: data: blob:; frame-src 'self' https://*.walletconnect.org https://*.walletconnect.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests;"
+    # Enhanced CSP for Web3 DApp compatibility with Trusted Types and monitoring
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https: wss: ws:; media-src 'self' https: data: blob:; frame-src 'self' https://*.walletconnect.org https://*.walletconnect.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'; upgrade-insecure-requests;"
+    
+    # CSP Report-Only for monitoring violations (safe - only logs, doesn't block)
+    Content-Security-Policy-Report-Only = "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https: wss: ws:; media-src 'self' https: data: blob:; frame-src 'self' https://*.walletconnect.org https://*.walletconnect.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; require-trusted-types-for 'script'; upgrade-insecure-requests; report-uri https://crazycube.report-uri.com/r/d/csp/reportOnly;"
 
 # API routes are handled by Next.js plugin automatically
 
