@@ -1,6 +1,6 @@
 [build]
   command = "npm install --legacy-peer-deps && npm run build"
-  publish = "out"
+  publish = ".next"
 
 [build.environment]
   NODE_VERSION = "20"
@@ -8,9 +8,9 @@
   CI = "true"
   NPM_FLAGS = "--legacy-peer-deps"
 
-# Static export для Next.js не требует плагина
-# [[plugins]]
-#   package = "@netlify/plugin-nextjs"
+# Use Next.js plugin for full functionality including API routes
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
 
 [[headers]]
   for = "/*"
@@ -21,13 +21,7 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
 
-[[redirects]]
-  from = "/api/*"
-  to = "/api/:splat"
-  status = 200
-
-[functions]
-  # путь по умолчанию — "netlify/functions" (можно не указывать)
+# API routes are handled by Next.js plugin automatically
 
 [functions."oracle-push"]
   schedule = "*/10 * * * *"  # каждые 10 минут 
