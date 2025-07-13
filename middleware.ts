@@ -79,30 +79,13 @@ export async function middleware(req: NextRequest) {
 
   const response = NextResponse.next()
   
-  // Set security headers for all requests
+  // Set basic security headers (CSP handled by next.config.mjs)
   response.headers.set('X-Content-Type-Options', 'nosniff')
   response.headers.set('X-Frame-Options', 'DENY')
   response.headers.set('X-XSS-Protection', '1; mode=block')
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
   
-  // Enhanced CSP for Web3 applications
-  const csp = [
-    "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com https://api.web3modal.org https://pulse.walletconnect.org",
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-    "font-src 'self' https://fonts.gstatic.com",
-    "img-src 'self' data: blob: https: http:",
-    "connect-src 'self' wss: https: http: https://api.web3modal.org https://pulse.walletconnect.org https://registry.walletconnect.org https://rpc.walletconnect.org",
-    "media-src 'self' data: blob:",
-    "object-src 'none'",
-    "base-uri 'self'",
-    "form-action 'self'",
-    "frame-ancestors 'none'",
-    "worker-src 'self' blob:",
-    "child-src 'self' blob:"
-  ].join('; ')
-  
-  response.headers.set('Content-Security-Policy', csp)
+  // CSP is now handled by next.config.mjs to avoid conflicts
   
   // Set correct rate limit headers for API routes
   if (pathname.startsWith('/api')) {
