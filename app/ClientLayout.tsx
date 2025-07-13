@@ -33,27 +33,31 @@ function WalletEventHandler({ children }: { children: React.ReactNode }) {
   return <>{children}</>
 }
 
-// Initialize Web3Modal immediately in client env so hooks work on first render
+// Initialize Web3Modal only if enabled and has valid project ID
 if (typeof window !== 'undefined' && !(window as any).web3modal_initialized) {
   const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'crazycube-project-id'
-  createWeb3Modal({
-    wagmiConfig: config,
-    projectId,
-    enableAnalytics: false,
-    enableOnramp: false,  // Purchase crypto with fiat
-    enableSwaps: true,    // 🔥 ENABLE SWAP FUNCTION
-    themeMode: 'dark',
-    themeVariables: {
-      '--w3m-accent': '#0EA5E9',
-      '--w3m-border-radius-master': '8px',
-    },
-    // Settings for recommended wallets
-    featuredWalletIds: [
-      'c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96', // MetaMask
-      '4622a2b2d6af1c9844944291e5e7351a6aa24cd7b23099efac1b2fd875da31a0', // Trust Wallet
-    ]
-  })
-  ;(window as any).web3modal_initialized = true
+  const isEnabled = process.env.NEXT_PUBLIC_WEB3_MODAL_ENABLED !== 'false' && projectId !== 'disabled'
+  
+  if (isEnabled && projectId !== 'crazycube-project-id') {
+    createWeb3Modal({
+      wagmiConfig: config,
+      projectId,
+      enableAnalytics: false,
+      enableOnramp: false,  // Purchase crypto with fiat
+      enableSwaps: true,    // 🔥 ENABLE SWAP FUNCTION
+      themeMode: 'dark',
+      themeVariables: {
+        '--w3m-accent': '#0EA5E9',
+        '--w3m-border-radius-master': '8px',
+      },
+      // Settings for recommended wallets
+      featuredWalletIds: [
+        'c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96', // MetaMask
+        '4622a2b2d6af1c9844944291e5e7351a6aa24cd7b23099efac1b2fd875da31a0', // Trust Wallet
+      ]
+    })
+    ;(window as any).web3modal_initialized = true
+  }
 }
 
 export default function ClientLayout({
