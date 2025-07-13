@@ -46,7 +46,7 @@ export function useClaimableLedgerRewards(refreshIntervalMs = 60000) {
 
       let list: ClaimableRewardLedger[] = []
 
-      // ---- 1) Пробуем через Subgraph
+      // ---- 1) Try through Subgraph
       try {
         const sgQuery = `query($player: Bytes!) {
           player(id: $player) {
@@ -76,7 +76,7 @@ export function useClaimableLedgerRewards(refreshIntervalMs = 60000) {
         }
       } catch {}
 
-      // ---- 2) Если Subgraph пустой – REST ledger
+      // ---- 2) If Subgraph is empty – REST ledger
       if (list.length === 0) {
         const res = await fetch(`/api/ledger/claimable/${address}`)
         if (res.ok) {
@@ -107,7 +107,8 @@ export function useClaimableLedgerRewards(refreshIntervalMs = 60000) {
         timer.current && clearInterval(timer.current)
       }
     }
-  }, [fetchOnce, refreshIntervalMs, address])
+    return undefined
+  }, [address, refreshIntervalMs])
 
   return { rewards, loading, error, refresh: fetchOnce }
 } 

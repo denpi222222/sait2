@@ -14,7 +14,7 @@ export function GoldTreasure({ className = "" }: { className?: string }) {
 
   return (
     <div className={`relative ${className}`}>
-      {/* Основная куча золота */}
+      {/* Main pile of gold */}
       <motion.div
         className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full h-full"
         initial={{ scale: 0.8, opacity: 0 }}
@@ -99,7 +99,7 @@ export function GoldTreasure({ className = "" }: { className?: string }) {
           )
         })}
 
-        {/* Сверкающие блики */}
+        {/* Sparkling highlights */}
         {Array.from({ length: 15 }).map((_, i) => (
           <motion.div
             key={`sparkle-${i}`}

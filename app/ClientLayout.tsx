@@ -40,12 +40,18 @@ if (typeof window !== 'undefined' && !(window as any).web3modal_initialized) {
     wagmiConfig: config,
     projectId,
     enableAnalytics: false,
-    enableOnramp: false,
+    enableOnramp: false,  // Purchase crypto with fiat
+    enableSwaps: true,    // 🔥 ENABLE SWAP FUNCTION
     themeMode: 'dark',
     themeVariables: {
       '--w3m-accent': '#0EA5E9',
       '--w3m-border-radius-master': '8px',
     },
+    // Settings for recommended wallets
+    featuredWalletIds: [
+      'c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96', // MetaMask
+      '4622a2b2d6af1c9844944291e5e7351a6aa24cd7b23099efac1b2fd875da31a0', // Trust Wallet
+    ]
   })
   ;(window as any).web3modal_initialized = true
 }
@@ -81,12 +87,14 @@ export default function ClientLayout({
       const originalError = console.error
       console.error = (...args) => {
         const message = args.join(' ')
-        // Suppress known wallet extension conflicts
+        // Suppress known wallet extension conflicts and WebSocket errors
         if (
           message.includes('Cannot read properties of undefined (reading \'global\')') ||
           message.includes('provider - this is likely due to another Ethereum wallet extension') ||
           message.includes('Unchecked runtime.lastError') ||
           message.includes('Could not establish connection') ||
+          message.includes('Connection interrupted while trying to subscribe') ||
+          message.includes('WebSocket connection failed') ||
           message.includes('InternalRpcError') ||
           message.includes('ContractFunctionExecutionError') ||
           message.includes('RpcRequestError')

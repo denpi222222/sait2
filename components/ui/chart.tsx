@@ -72,35 +72,35 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
     ([_, config]) => config.theme || config.color
   )
 
+  // Sanitize ID to prevent CSS injection
+  const sanitizedId = id.replace(/[^a-zA-Z0-9-_]/g, '')
+
+  // Create CSS variables safely using React's style prop instead of dangerouslySetInnerHTML
+  const cssVariables = React.useMemo(() => {
+    const variables: Record<string, string> = {}
+    
+    colorConfig.forEach(([key, itemConfig]) => {
+      const color = itemConfig.theme?.dark || itemConfig.color
+      // Sanitize color value to prevent CSS injection
+      const sanitizedColor = color?.replace(/[^a-zA-Z0-9#%().,\s-]/g, '')
+      if (sanitizedColor) {
+        const sanitizedKey = key.replace(/[^a-zA-Z0-9-_]/g, '')
+        variables[`--color-${sanitizedKey}`] = sanitizedColor
+      }
+    })
+    
+    return variables
+  }, [colorConfig])
+
   if (!colorConfig.length) {
     return null
   }
 
-  // Sanitize ID to prevent CSS injection
-  const sanitizedId = id.replace(/[^a-zA-Z0-9-_]/g, '')
-
   return (
-    <style
-      dangerouslySetInnerHTML={{
-        __html: Object.entries(THEMES)
-          .map(
-            ([theme, prefix]) => `
-${prefix} [data-chart=${sanitizedId}] {
-${colorConfig
-  .map(([key, itemConfig]) => {
-    const color =
-      itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ||
-      itemConfig.color
-    // Sanitize color value to prevent CSS injection
-    const sanitizedColor = color?.replace(/[^a-zA-Z0-9#%().,\s-]/g, '')
-    return sanitizedColor ? `  --color-${key.replace(/[^a-zA-Z0-9-_]/g, '')}: ${sanitizedColor};` : null
-  })
-  .join("\n")}
-}
-`
-          )
-          .join("\n"),
-      }}
+    <div 
+      data-chart={sanitizedId}
+      style={cssVariables}
+      className="[&_*]:inherit-chart-colors"
     />
   )
 }
@@ -144,6 +144,7 @@ const ChartTooltipContent = React.forwardRef<
       }
 
       const [item] = payload
+      if (!item) return null
       const key = `${labelKey || item.dataKey || item.name || "value"}`
       const itemConfig = getPayloadConfigFromPayload(config, item, key)
       const value =

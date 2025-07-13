@@ -17,7 +17,7 @@ export function LazyLoad({ children, placeholder = null, rootMargin = "100px" }:
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry && entry.isIntersecting) {
           setVisible(true)
           observer.disconnect()
         }

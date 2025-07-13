@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react"
 import { motion } from "framer-motion"
 
-// Массив изображений кубиков
+// Array of cube images
 const cubeImages = [
   '/images/cube1.png',
   '/images/cube2.png', 
@@ -36,7 +36,7 @@ const cubeImages = [
   '/images/d5.png',
 ]
 
-// Компонент звездного поля с улучшенной графикой
+// Component for star field with improved graphics
 const Starfield = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   
@@ -47,7 +47,7 @@ const Starfield = () => {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
     
-    // Устанавливаем размер canvas
+    // Set canvas size
     const resize = () => {
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
@@ -55,7 +55,7 @@ const Starfield = () => {
     resize()
     window.addEventListener('resize', resize)
     
-    // Создаем звезды разных типов
+    // Create stars of different types
     const stars: Array<{x: number, y: number, size: number, speed: number, type: string, color: string}> = []
     const colors = ['#00ffff', '#ff00ff', '#ffff00', '#0088ff', '#ff0088']
     
@@ -71,18 +71,18 @@ const Starfield = () => {
       })
     }
     
-    // Метеориты
+    // Meteors
     const meteors: Array<{x: number, y: number, length: number, speed: number}> = []
     
-    // Анимация
+    // Animation
     const animate = () => {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
       
-      // Рисуем звезды
+      // Draw stars
       stars.forEach(star => {
         if (star.type === 'pulse') {
-          // Пульсирующие звезды
+          // Pulsating stars
           const pulse = Math.sin(Date.now() * 0.001 * star.speed) * 0.5 + 0.5
           ctx.fillStyle = star.color
           ctx.shadowBlur = star.size * 10 * pulse
@@ -99,7 +99,7 @@ const Starfield = () => {
         ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2)
         ctx.fill()
         
-        // Движение
+        // Movement
         star.y += star.speed
         if (star.y > canvas.height) {
           star.y = -10
@@ -107,7 +107,7 @@ const Starfield = () => {
         }
       })
       
-      // Добавляем метеориты случайно
+      // Add meteors randomly
       if (Math.random() < 0.02) {
         meteors.push({
           x: Math.random() * canvas.width,
@@ -117,7 +117,7 @@ const Starfield = () => {
         })
       }
       
-      // Рисуем метеориты
+      // Draw meteors
       ctx.globalAlpha = 1
       meteors.forEach((meteor, index) => {
         const gradient = ctx.createLinearGradient(
@@ -161,7 +161,7 @@ const Starfield = () => {
   )
 }
 
-// Компонент молний
+// Component for lightning
 const LightningEffect = () => {
   const [lightning, setLightning] = useState<Array<{id: number, x: number}>>([])
   
@@ -203,7 +203,7 @@ const LightningEffect = () => {
   )
 }
 
-// Компонент частиц вокруг текста
+// Component for particles around text
 const ParticleField = ({ centerX = 50, centerY = 50 }) => {
   const particles = Array.from({ length: 50 }, (_, i) => ({
     id: i,
@@ -239,7 +239,7 @@ const ParticleField = ({ centerX = 50, centerY = 50 }) => {
   )
 }
 
-// Компонент осколка куба
+// Component for cube fragment
 const CubeFragment = ({ position, velocity, rotation, color }: {
   position: { x: number, y: number, z: number }
   velocity: { x: number, y: number, z: number }
@@ -252,7 +252,7 @@ const CubeFragment = ({ position, velocity, rotation, color }: {
     const interval = setInterval(() => {
       setPos(prev => ({
         x: prev.x + velocity.x,
-        y: prev.y + velocity.y + 0.5, // гравитация
+        y: prev.y + velocity.y + 0.5, // gravity
         z: prev.z + velocity.z
       }))
     }, 50)
@@ -287,7 +287,7 @@ const CubeFragment = ({ position, velocity, rotation, color }: {
   )
 }
 
-// Компонент куба для текста с улучшенной графикой
+// Component for text cube with improved graphics
 const TextCube = ({ char, index, position }: { 
   char: string, 
   index: number,
@@ -307,9 +307,9 @@ const TextCube = ({ char, index, position }: {
   const handleClick = () => {
     if (isDestroyed) return
     
-    // Создаем осколки
+    // Create fragments
     const newFragments = []
-    const fragmentCount = Math.floor(Math.random() * 4) + 2 // 2-5 осколков
+    const fragmentCount = Math.floor(Math.random() * 4) + 2 // 2-5 fragments
     const colors = ['#ff00ff', '#00ffff', '#ffff00', '#ff0088']
     
     for (let i = 0; i < fragmentCount; i++) {
@@ -336,7 +336,7 @@ const TextCube = ({ char, index, position }: {
   }
   
   useEffect(() => {
-    // Задержка для эффекта сборки
+    // Delay for assembly effect
     const timer = setTimeout(() => {
       setMounted(true)
     }, index * 100)
@@ -344,12 +344,12 @@ const TextCube = ({ char, index, position }: {
     return () => clearTimeout(timer)
   }, [index])
   
-  // Рандомное начальное положение
+  // Random initial position
   const startX = (Math.random() - 0.5) * window.innerWidth * 2
   const startY = (Math.random() - 0.5) * window.innerHeight * 2
   const startRotate = Math.random() * 720 - 360
   
-  // Выбираем изображения для граней куба
+  // Choose images for cube faces
   const faceImages = [
     cubeImages[(index * 6) % cubeImages.length],
     cubeImages[(index * 6 + 1) % cubeImages.length],
@@ -418,9 +418,9 @@ const TextCube = ({ char, index, position }: {
         transformOrigin: "center center"
       }}
     >
-      {/* Куб с 6 гранями и голографическим эффектом */}
+      {/* Cube with 6 faces and holographic effect */}
       <div className="relative w-20 h-20 md:w-24 md:h-24" style={{ transformStyle: "preserve-3d" }}>
-        {/* Трещины перед разрушением */}
+        {/* Cracks before destruction */}
         {isHovered && (
           <div className="absolute inset-0 pointer-events-none z-20">
             <svg className="w-full h-full" viewBox="0 0 100 100">
@@ -435,7 +435,7 @@ const TextCube = ({ char, index, position }: {
           </div>
         )}
         
-        {/* Голографический слой */}
+        {/* Holographic layer */}
         {isHovered && (
           <div className="absolute inset-0 rounded-lg animate-pulse"
             style={{
@@ -446,7 +446,7 @@ const TextCube = ({ char, index, position }: {
           />
         )}
         
-        {/* Передняя грань - оставляем с буквой */}
+        {/* Front face - keep with letter */}
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-pink-500 to-cyan-500 border-2 border-white/30 flex items-center justify-center text-white font-black text-4xl md:text-5xl shadow-lg overflow-hidden"
           style={{ 
             transform: "translateZ(40px)",
@@ -457,7 +457,7 @@ const TextCube = ({ char, index, position }: {
             letterSpacing: '-0.05em',
             WebkitTextStroke: '1px rgba(255,255,255,0.3)'
           }}>{char}</span>
-          {/* Анимированный блик */}
+          {/* Animated glare */}
           <motion.div
             className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
             animate={{
@@ -471,7 +471,7 @@ const TextCube = ({ char, index, position }: {
           />
         </div>
         
-        {/* Задняя грань - изображение */}
+        {/* Back face - image */}
         <div className="absolute inset-0 border-2 border-white/30"
           style={{ 
             transform: "rotateY(180deg) translateZ(40px)",
@@ -482,7 +482,7 @@ const TextCube = ({ char, index, position }: {
           <div className="absolute inset-0 bg-black/20" />
         </div>
         
-        {/* Верхняя грань - изображение */}
+        {/* Top face - image */}
         <div className="absolute inset-0 border-2 border-white/30"
           style={{ 
             transform: "rotateX(90deg) translateZ(40px)",
@@ -493,7 +493,7 @@ const TextCube = ({ char, index, position }: {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/30" />
         </div>
         
-        {/* Нижняя грань - изображение */}
+        {/* Bottom face - image */}
         <div className="absolute inset-0 border-2 border-white/30"
           style={{ 
             transform: "rotateX(-90deg) translateZ(40px)",
@@ -504,7 +504,7 @@ const TextCube = ({ char, index, position }: {
           <div className="absolute inset-0 bg-gradient-to-t from-transparent to-black/30" />
         </div>
         
-        {/* Левая грань - изображение */}
+        {/* Left face - image */}
         <div className="absolute inset-0 border-2 border-white/30"
           style={{ 
             transform: "rotateY(-90deg) translateZ(40px)",
@@ -515,7 +515,7 @@ const TextCube = ({ char, index, position }: {
           <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/30" />
         </div>
         
-        {/* Правая грань - изображение */}
+        {/* Right face - image */}
         <div className="absolute inset-0 border-2 border-white/30"
           style={{ 
             transform: "rotateY(90deg) translateZ(40px)",
@@ -526,7 +526,7 @@ const TextCube = ({ char, index, position }: {
           <div className="absolute inset-0 bg-gradient-to-l from-transparent to-black/30" />
         </div>
         
-        {/* Энергетические частицы вокруг куба при наведении */}
+        {/* Energy particles around cube on hover */}
         {isHovered && (
           <>
             {[...Array(6)].map((_, i) => (
@@ -555,7 +555,7 @@ const TextCube = ({ char, index, position }: {
   )
 }
 
-// Компонент лазерной сетки
+// Component for laser grid
 const LaserGrid = () => {
   return (
     <div className="fixed inset-0 pointer-events-none z-5 opacity-30">
@@ -573,7 +573,7 @@ const LaserGrid = () => {
         <rect width="100%" height="100%" fill="url(#grid)" />
       </svg>
       
-      {/* Сканирующая линия */}
+      {/* Scanning line */}
       <motion.div
         className="absolute left-0 right-0 h-1 bg-gradient-to-r from-transparent via-purple-400 to-transparent"
         style={{ filter: 'blur(2px)' }}
@@ -618,7 +618,7 @@ export default function GamePage() {
     }
   }, [])
   
-  // Расчет позиций для букв
+  // Position calculations for letters
   const getLetterPositions = (text: string, lineY: number, spacing: number) => {
     const positions: Array<{char: string, x: number, y: number}> = []
     const totalWidth = text.length * spacing
@@ -642,19 +642,19 @@ export default function GamePage() {
   
   return (
     <div className="relative min-h-screen overflow-hidden bg-black">
-      {/* Звездное поле */}
+      {/* Star field */}
       <Starfield />
       
-      {/* Лазерная сетка */}
+      {/* Laser grid */}
       <LaserGrid />
       
-      {/* Молнии */}
+      {/* Lightning */}
       <LightningEffect />
       
-      {/* Частицы вокруг центра */}
+      {/* Particles around center */}
       <ParticleField centerX={window.innerWidth / 2} centerY={window.innerHeight / 2} />
       
-      {/* 3D текст */}
+      {/* 3D text */}
       <div className="relative z-10 min-h-screen flex items-center justify-center perspective-1000">
         <motion.div 
           className="relative" 
@@ -671,7 +671,7 @@ export default function GamePage() {
             ease: "easeInOut"
           }}
         >
-          {/* Основной текст */}
+          {/* Main text */}
           {mainTextPositions.map((pos, index) => (
             <TextCube
               key={`main-${index}`}
@@ -681,7 +681,7 @@ export default function GamePage() {
             />
           ))}
           
-          {/* Подзаголовок */}
+          {/* Subtitle */}
           {subtitlePositions.map((pos, index) => (
             <TextCube
               key={`sub-${index}`}
@@ -691,7 +691,7 @@ export default function GamePage() {
             />
           ))}
           
-          {/* Центральная энергетическая сфера */}
+          {/* Central energy sphere */}
           <motion.div
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
             animate={{
@@ -713,9 +713,9 @@ export default function GamePage() {
         </motion.div>
       </div>
       
-      {/* Дополнительные эффекты свечения */}
+      {/* Additional glow effects */}
       <div className="fixed inset-0 pointer-events-none">
-        {/* Следящее свечение за мышью */}
+        {/* Mouse-following glow */}
         <motion.div
           className="absolute w-96 h-96 -translate-x-1/2 -translate-y-1/2"
           style={{
@@ -726,7 +726,7 @@ export default function GamePage() {
           }}
         />
         
-        {/* Пульсирующее свечение в центре */}
+        {/* Pulsating glow in center */}
         <motion.div 
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px]"
           animate={{
@@ -742,7 +742,7 @@ export default function GamePage() {
           <div className="w-full h-full bg-gradient-radial from-cyan-500/20 via-purple-500/10 to-transparent blur-3xl" />
       </motion.div>
 
-        {/* Радужные блики */}
+        {/* Rainbow highlights */}
         {[...Array(5)].map((_, i) => (
           <motion.div
             key={i}
@@ -767,7 +767,7 @@ export default function GamePage() {
         ))}
       </div>
       
-      {/* Нижний туман */}
+      {/* Bottom fog */}
       <div className="fixed bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-purple-900/50 via-purple-900/20 to-transparent pointer-events-none" />
     </div>
   )

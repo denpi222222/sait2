@@ -9,18 +9,18 @@ import { sanitizeUrl } from "@/lib/urlUtils"
 gsap.registerPlugin(Physics2DPlugin)
 
 /**
- * ShatterImage — плавный «раскол» без швов и без голов‑черепов.
- * 1. Держит картинку N секунд.
- * 2. Меняет на сетку осколков (без видимой сетки).
- * 3. Осколки разлетаются, карточка остаётся чёрной.
+ * ShatterImage — smooth «shatter» without seams and without heads‑heads.
+ * 1. Holds the image for N seconds.
+ * 2. Changes to a grid of fragments (no visible grid).
+ * 3. Fragments fly apart, the card remains black.
  */
 interface ShatterImageProps {
   src: string
   alt?: string
   className?: string
-  grid?: number        // делим сторону на N×N
-  stillDelay?: number  // сколько картинка стоит целой (с)
-  explodeDuration?: number // макс‑время для последнего осколка (с)
+  grid?: number        // divide side into N×N
+  stillDelay?: number  // how long the image stays whole (s)
+  explodeDuration?: number // max time for last fragment (s)
   priority?: boolean
 }
 
@@ -38,29 +38,43 @@ export function ShatterImage({
   const wrapRef = useRef<HTMLDivElement>(null)
   const imgRef  = useRef<HTMLImageElement | null>(null)
   const [ready, setReady] = useState(false)
-  // Sanitize the URL on component initialization to prevent XSS.
-  const safeSrc = sanitizeUrl(src)
+  const [isSecureForEffect, setIsSecureForEffect] = useState(false)
+  const [safeSrc, setSafeSrc] = useState("")
+
+  useEffect(() => {
+    const sanitized = sanitizeUrl(src)
+    // [SECURITY FIX] Disallow data: URIs for background images to prevent SVG-based XSS.
+    // The shatter effect will be disabled for such URIs, but the image will still render safely via the <Image> component.
+    if (sanitized.toLowerCase().startsWith('data:')) {
+      console.warn(`Security Warning: Data URI blocked for shatter effect. src: ${src.substring(0, 100)}...`)
+      setIsSecureForEffect(false)
+    } else {
+      setIsSecureForEffect(true)
+    }
+    setSafeSrc(sanitized)
+  }, [src])
 
   /* ───────────────────────── build shards */
   const build = () => {
-    const wrap = wrapRef.current
-    const img  = imgRef.current
-    if (!wrap || !img) return
+    const wrap = wrapRef.current;
+    const img = imgRef.current;
+    // Do not build shards if the source is not secure for this effect
+    if (!wrap || !img || !isSecureForEffect) return;
 
-    /* если обёртка ещё не получила размеры — подождём следующего кадра */
+    /* if wrapper hasn't received dimensions yet — wait for next frame */
     let { width, height } = wrap.getBoundingClientRect()
     if (width < 10 || height < 10) {
       requestAnimationFrame(build)
       return
     }
 
-    /* удаляем старые осколки (и их анимации) только внутри текущего контейнера */
+    /* remove old fragments (and their animations) only inside current container */
     wrap.querySelectorAll<HTMLDivElement>(".shard").forEach(el => {
       gsap.killTweensOf(el)
       el.remove()
     })
 
-    /* если размеры всё ещё нулевые – дадим время layout и повторим */
+    /* if dimensions are still zero – give time for layout and retry */
     if (width < 10 || height < 10) {
       requestAnimationFrame(build)
       return
@@ -76,7 +90,7 @@ export function ShatterImage({
         const shard = document.createElement("div")
         shard.className = "shard absolute will-change-transform pointer-events-none"
 
-        /* +1 px перекрытия вокруг куска → швов не видно */
+        /* +1 px overlap around piece → no visible seams */
         const w  = bw + 2
         const h  = bh + 2
         const lx = c * bw - 1
@@ -112,8 +126,8 @@ export function ShatterImage({
     const tl = gsap.timeline({
       defaults: { ease: "power2.out" },
       onComplete: () => {
-        shards.forEach(s => s.remove()) // чистим DOM
-        // плавно прячем базовое изображение, чтобы карточка осталась пустой
+        shards.forEach(s => s.remove()) // clean DOM
+        // smoothly hide base image so card remains empty
         gsap.to(img, { opacity: 0, duration: 0.3 })
       },
     })
@@ -121,7 +135,7 @@ export function ShatterImage({
     tl.to(img, { opacity: 1, duration: stillDelay })
       // show shards overlay
       .set(shards, { opacity: 1 })
-      // dim base image slightly so она остаётся видимой силуэтом, но не чёрный квадрат
+      // dim base image slightly so it remains visible as silhouette, but not black square
       .to(img, { opacity: 0.25, duration: 0.4 }, "<")
 
     shards.forEach(shard => {
@@ -146,24 +160,13 @@ export function ShatterImage({
 
   /* ───────────────────────── hook */
   useEffect(() => {
-    if (!ready) return
-    build()
-    const onResize = () => build()
-    const ro = new ResizeObserver(build)
-    wrapRef.current && ro.observe(wrapRef.current)
-    window.addEventListener("resize", onResize)
-    return () => {
-      window.removeEventListener("resize", onResize)
-      ro.disconnect()
-    }
-  }, [ready, grid, safeSrc]) // Add safeSrc to dependencies
-  useEffect(() => {
-    if (!ready) return
-    build()
-    const onResize = () => build()
-    window.addEventListener("resize", onResize)
-    return () => window.removeEventListener("resize", onResize)
-  }, [ready, grid, safeSrc]) // Add safeSrc to dependencies
+    if (!ready || !isSecureForEffect) return;
+    build();
+    // Using ResizeObserver is more performant than a global window resize listener
+    const ro = new ResizeObserver(build);
+    if (wrapRef.current) ro.observe(wrapRef.current);
+    return () => ro.disconnect();
+  }, [ready, grid, safeSrc, isSecureForEffect]); // Add isSecureForEffect dependency
 
   /* ───────────────────────── render */
   return (

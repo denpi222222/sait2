@@ -59,7 +59,7 @@ export default function BridgePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-900 p-4">
-      {/* Добавляем анимацию сердечек вместо частиц */}
+      {/* Add heart animation instead of particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {Array.from({ length: isMobile ? 15 : 30 }).map((_, i) => (
           <motion.div

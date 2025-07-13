@@ -17,14 +17,14 @@ export const useLiveBredCubes = () => {
   const [isWatching, setIsWatching] = useState(false)
 
   useEffect(() => {
-    if (!client || !address) return
+    if (!client || !address) return undefined
 
-    // Throttle event watching - только включать когда пользователь активно на странице
+    // Throttle event watching - only enable when user is actively on the page
     if (isWatching) {
       const unwatch = client.watchEvent({
         address: GAME_ADDR,
         event: NFTBRED_ITEM,
-        onLogs: (logs:any) => {
+        onLogs: (logs: any[]) => {
           // [SECURITY/UX-NOTE] Relying solely on events for critical UI updates can be misleading.
           // A block reorganization could revert the transaction, but the UI would have already
           // shown a "success" state.
@@ -34,15 +34,17 @@ export const useLiveBredCubes = () => {
 
           logs.forEach((log) => {
             const { args } = decodeEventLog({ abi: [NFTBRED_ITEM], eventName: "NFTBred", ...log })
-            if ((args.requester as string).toLowerCase() === address.toLowerCase()) {
-              setRevived((prev) => prev.includes(Number(args.revivedId)) ? prev : [...prev, Number(args.revivedId)])
+            if (args && typeof args === 'object' && 'requester' in args && 'revivedId' in args) {
+              if ((args.requester as string).toLowerCase() === address.toLowerCase()) {
+                setRevived((prev) => prev.includes(Number(args.revivedId)) ? prev : [...prev, Number(args.revivedId)])
+              }
             }
           })
-        }
+        },
       })
-
-      return () => unwatch?.()
+      return () => unwatch()
     }
+    return undefined
   }, [client, address, isWatching])
 
   // Methods for controlling watching

@@ -4,13 +4,11 @@ import { Abi, parseAbi, decodeEventLog, formatEther, Address } from 'viem'
 import { GAME_CONTRACT_ADDRESS } from '../config/wagmi'
 import { toast } from 'sonner'
 
-// ------------------------------------------------------------------
-// КОНФИГУРАЦИЯ И ПРАВИЛЬНЫЙ ABI
-// ------------------------------------------------------------------
-// Адрес прокси-контракта игры берём из центральной конфигурации wagmi.ts
+// CONFIGURATION AND CORRECT ABI
+// Proxy contract address of the game from central wagmi.ts configuration
 // (config/wagmi.ts → GAME_CONTRACT_ADDRESS)
 
-// Используем parseAbi из viem для большей безопасности и авто-типизации
+// Use parseAbi from viem for better safety and auto-typing
 const GameContractABI = parseAbi([
     "event NFTBurned(address indexed player, uint256 indexed tokenId, uint256 amountToClaim, uint256 waitHours)",
     "function burnRecords(uint256 tokenId) view returns (address owner, uint256 totalAmount, uint256 claimAvailableTime, uint256 graveyardReleaseTime, bool claimed, uint8 waitPeriod)",
@@ -19,7 +17,7 @@ const GameContractABI = parseAbi([
     "function nftContract() view returns (address)"
 ]);
 
-// Типизация для данных, которые мы будем хранить в состоянии
+// Typing for data we'll store in state
 export interface BurnedNftInfo {
     tokenId: string;
     record: {
@@ -58,25 +56,39 @@ export const useBurnedNfts = () => {
             return
         }
 
+        // [SECURITY/PERFORMANCE FIX] Check for cached data to prevent DoS on RPC fallback
+        const cacheKey = `burnedNfts-${address}`;
+        const cachedData = localStorage.getItem(cacheKey);
+
         const abortController = new AbortController();
 
         const fetchBurnedNfts = async () => {
             setIsLoading(true)
             setError(null)
             try {
-                // текущий timestamp сети, по-умолчанию локальное время; обновим позже
+                if (cachedData) {
+                    const { data, timestamp } = JSON.parse(cachedData);
+                    // Use cache if it's less than 5 minutes old to prevent spamming RPC
+                    if (Date.now() - timestamp < 5 * 60 * 1000) {
+                        console.log("✅ [useBurnedNfts] Using cached data.");
+                        setBurnedNfts(data);
+                        setIsLoading(false);
+                        return;
+                    }
+                }
+                // current network timestamp, default to local time; will update later
                 let chainNow = Math.floor(Date.now()/1000)
 
-                // Попытаемся получить время последнего блока сразу
+                // Try to get last block time immediately
                 try {
                     const latestBlock0 = await publicClient.getBlock()
                     chainNow = Number(latestBlock0.timestamp)
-                } catch(_e) { /* ignore – fallback на локальное время */ }
+                } catch(_e) { /* ignore – fallback to local time */ }
 
-                console.log("✅ [useBurnedNfts] Поиск сожжённых NFT для:", address);
+                console.log("✅ [useBurnedNfts] Searching for burned NFTs for:", address);
 
                 // ------------------------------------------------------------
-                // 1) Быстрый путь — Subgraph (моментально отдаёт события)
+                // 1) Fast path — Subgraph (instantly returns events)
                 // ------------------------------------------------------------
                 let tokenIds: string[] = [];
                 try {
@@ -93,16 +105,16 @@ export const useBurnedNfts = () => {
                         tokenIds = (sgJson.data?.player?.burnEvents || []).map((ev: any) => ev.tokenId.toString());
                     }
                 } catch (sgErr) {
-                    console.warn('⚠️ Subgraph недоступен, fallback на логи', sgErr);
+                    console.warn('⚠️ Subgraph is unavailable, falling back to logs', sgErr);
                 }
 
                 // ------------------------------------------------------------
-                // 2) Медленный путь — getLogs (если Subgraph пустой)
+                // 2) Slow path — getLogs (if Subgraph is empty)
                 // ------------------------------------------------------------
                 if (tokenIds.length === 0) {
                     const latestBlock = await publicClient.getBlock()
                     chainNow = Number(latestBlock.timestamp)
-                    const DEPLOY_BLOCK = 18087243n; // блок деплоя контракта
+                    const DEPLOY_BLOCK = 18087243n; // contract deploy block
 
                     let allLogs: any[] = [];
                     try {
@@ -123,7 +135,7 @@ export const useBurnedNfts = () => {
                             toBlock: latestBlock.number,
                         });
                     } catch (bigRangeErr) {
-                        console.warn('⚠️ RPC ограничил диапазон, батч-поиск', bigRangeErr);
+                        console.warn('⚠️ RPC limited range, batch search', bigRangeErr);
                         const STEP = 50000n;
                         let toBlock = latestBlock.number;
                         let iterations = 0;
@@ -157,14 +169,14 @@ export const useBurnedNfts = () => {
 
                 const uniqueIds = [...new Set(tokenIds)].reverse();
 
-                console.log(`✅ [useBurnedNfts] Уникальных NFT: ${uniqueIds.length}`);
+                console.log(`✅ [useBurnedNfts] Unique NFTs: ${uniqueIds.length}`);
 
                 const nftsInfo: BurnedNftInfo[] = []
 
-                // Кэш для split-параметров (по waitPeriod) – чтобы не дергать контракт по 16 раз
+                // Cache for split-parameters (by waitPeriod) – to avoid hitting contract 16 times
                 const splitCache = new Map<number, { playerBps: number; poolBps: number; burnBps: number }>()
 
-                // Чанк-размер одновременных запросов
+                // Chunk size for simultaneous requests
                 const CHUNK = 8
 
                 for (let i = 0; i < uniqueIds.length; i += CHUNK) {
@@ -183,7 +195,7 @@ export const useBurnedNfts = () => {
 
                             if (owner.toLowerCase() !== address.toLowerCase()) return null
                            
-                            // Получаем сплит либо из кэша, либо из контракта
+                            // Get split either from cache or from contract
                             let split = splitCache.get(Number(waitPeriod))
                             if (!split) {
                             const splitResult = await publicClient.readContract({
@@ -216,7 +228,7 @@ export const useBurnedNfts = () => {
                             }
                             return info
                         } catch (err) {
-                            console.error(`❌ [useBurnedNfts] Ошибка при загрузке данных для NFT #${tokenId}:`, err)
+                            console.error(`❌ [useBurnedNfts] Error loading data for NFT #${tokenId}:`, err)
                             return null
                         }
                     }))
@@ -227,8 +239,14 @@ export const useBurnedNfts = () => {
                 nftsInfo.sort((a, b) => (b.isReadyToClaim ? 1 : 0) - (a.isReadyToClaim ? 1 : 0));
                 setBurnedNfts(nftsInfo);
 
+                // Cache the new data with a timestamp
+                localStorage.setItem(cacheKey, JSON.stringify({
+                    data: nftsInfo,
+                    timestamp: Date.now()
+                }));
+
             } catch (e) {
-                console.error("❌ [useBurnedNfts] Глобальная ошибка при загрузке событий:", e)
+                console.error("❌ [useBurnedNfts] Global error loading events:", e)
                 setError("Failed to load burn history. Please refresh the page.")
                 toast.error("Failed to load burn history.")
             } finally {
@@ -252,7 +270,7 @@ export const useClaimReward = (tokenId: string) => {
 
     const { isLoading: isTxLoading, isSuccess: isTxSuccess, error: txError } = useWaitForTransactionReceipt({ 
         hash: txHash,
-        confirmations: 2, // Ожидаем 2 подтверждения для надежности
+        confirmations: 2, // Wait for 2 confirmations for reliability
     });
 
     const claim = async () => {
@@ -270,7 +288,7 @@ export const useClaimReward = (tokenId: string) => {
         }
     }
 
-    // Обновляем тосты по статусу транзакции
+    // Update toasts based on transaction status
     useEffect(() => {
         if(isTxLoading) {
             toast.loading('Transaction in progress...', { id: `claim-${tokenId}` });

@@ -131,7 +131,7 @@ export const getBestEndpoint = (): { url: string; type: 'alchemy' | 'rpc' | 'wag
   if (currentTier === 1) {
     const rpcIdx = Math.floor(Math.random() * PUBLIC_RPC_ENDPOINTS.length)
     return {
-      url: PUBLIC_RPC_ENDPOINTS[rpcIdx],
+      url: PUBLIC_RPC_ENDPOINTS[rpcIdx] || PUBLIC_RPC_ENDPOINTS[0] || 'https://rpc.ankr.com/apechain',
       type: 'rpc'
     }
   }

@@ -9,6 +9,8 @@
     "target": "es2020",
     "skipLibCheck": true,
     "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
@@ -44,12 +46,14 @@
   "exclude": [
     "node_modules",
     "subgraph/**",
+    "subgraph-denis-3/**",
     "**/generated/**",
     "**/*.assembly.ts",
     "contracts/**",
     "kontrakt 6-1/**",
     "scripts/**",
     "floor-oracle-bot/**",
-    "bots/**"
+    "bots/**",
+    "cra-token/**"
   ]
 }

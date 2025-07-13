@@ -37,7 +37,7 @@ export default function BurnPage() {
   if (!mounted) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-red-900 via-orange-900 to-red-900 flex items-center justify-center">
-        <div className="text-white">Loading...</div>
+        <div className="text-white">{t("common.loading", "Loading...")}</div>
       </div>
     )
   }
@@ -64,7 +64,7 @@ export default function BurnPage() {
           <Link href="/">
             <Button variant="outline" className="border-red-500/30 bg-black/20 text-red-300 hover:bg-black/40">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Return to Home
+              {t("navigation.returnHome", "Return to Home")}
             </Button>
           </Link>
           {!isMobile && <TabNavigation color="red" />}
@@ -75,10 +75,10 @@ export default function BurnPage() {
           {/* Title like in breed */}
           <div className="mt-0 flex flex-col sm:flex-row items-center justify-center gap-1.5 text-center">
             <h1 className="text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400 whitespace-nowrap">
-              Burn NFT (Roast the Cube!) 🔥
+              {t("sections.burn.title", "Burn NFT (Roast the Cube!) 🔥")}
             </h1>
           </div>
-          <p className="text-center text-red-300 mt-1 mb-2 text-sm md:text-base">Burn the cube — get CRA. Easy money! 💰</p>
+          <p className="text-center text-red-300 mt-1 mb-2 text-sm md:text-base">{t("burn.description", "Burn the cube — get CRA. Easy money! 💰")}</p>
 
           {/* Guide accordion - reduced spacing */}
           <div className="flex justify-center my-2">
@@ -121,19 +121,19 @@ export default function BurnPage() {
               <div className="inline-flex items-center justify-center w-16 h-16 bg-orange-500/20 rounded-full mb-4 animate-spin">
                 <Flame className="h-8 w-8 text-orange-500" />
               </div>
-              <h3 className="text-xl font-semibold text-white mb-2">Loading NFTs...</h3>
-              <p className="text-gray-300">Fetching your CrazyCube collection</p>
+              <h3 className="text-xl font-semibold text-white mb-2">{t("common.loadingNFTs", "Loading NFTs...")}</h3>
+              <p className="text-gray-300">{t("common.fetchingCollection", "Fetching your CrazyCube collection")}</p>
           </div>
           ) : nfts.length === 0 ? (
             <div className="text-center py-8">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-500/20 rounded-full mb-4">
                 <Flame className="h-8 w-8 text-gray-500" />
               </div>
-              <h3 className="text-xl font-semibold text-white mb-2">No NFTs Found</h3>
-              <p className="text-gray-300">You don't have any CrazyCube NFTs to burn</p>
+              <h3 className="text-xl font-semibold text-white mb-2">{t("common.noNFTsFound", "No NFTs Found")}</h3>
+              <p className="text-gray-300">{t("burn.noNFTsDescription", "You don't have any CrazyCube NFTs to burn")}</p>
               <Link href="/" className="mt-4 inline-block">
                 <Button className="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500">
-                  Go to Collection
+                  {t("common.goToCollection", "Go to Collection")}
                 </Button>
               </Link>
             </div>
@@ -148,7 +148,7 @@ export default function BurnPage() {
           <div className="mt-8 text-center">
             <Link href="/">
             <Button className="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500">
-              Return to Home
+              {t("navigation.returnHome", "Return to Home")}
             </Button>
           </Link>
         </div>

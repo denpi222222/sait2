@@ -16,7 +16,7 @@ type Props = {
 
 interface CubeState {
   shown: boolean;
-  delay: number;
+  delay?: number;
 }
 
 export const ShyCubes = ({ active }: Props) => {
@@ -55,6 +55,7 @@ export const ShyCubes = ({ active }: Props) => {
     }
     // choose pattern
     const pattern = patterns[Math.floor(Math.random() * patterns.length)];
+    if (!pattern) return; // Safety check
     const newStates: CubeState[] = cubes.map((_, i) => ({
       shown: false,
       delay: pattern[i] ?? pattern[pattern.length - 1] ?? 0,
@@ -73,7 +74,7 @@ export const ShyCubes = ({ active }: Props) => {
         if (idx === 0) {
           setBubbleIdx(idx);
         }
-      }, c.delay);
+      }, c.delay || 0);
     });
   }, [active]);
 
@@ -100,7 +101,7 @@ export const ShyCubes = ({ active }: Props) => {
           key={idx}
           variants={variants}
           initial="hidden"
-          animate={cubes[idx].shown ? "peek" : "hidden"}
+          animate={cubes[idx]?.shown ? "peek" : "hidden"}
         >
           <img src={src} alt="shy cube" className="w-60 h-60" />
           {bubbleIdx === idx && (

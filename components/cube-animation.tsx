@@ -16,8 +16,14 @@ const SpeechBubble = React.memo(function SpeechBubble({ text, className = "" }: 
     <div className={`relative ${className}`}>
       {/* The arrow points upward since the bubble will now be at the bottom */}
       <div className="absolute w-4 h-4 bg-white rotate-45 top-[-8px] left-1/2 transform -translate-x-1/2"></div>
-      <div className="bg-white text-black px-4 py-3 rounded-xl shadow-md min-w-[120px] max-w-[200px] z-10 relative">
-        <p className="text-center text-sm font-medium">{text}</p>
+      {/*
+        • max-w-[80vw] — on mobile devices, the bubble expands to a maximum of 80% of the screen width,
+          so long phrases do not go beyond the window.
+        • sm:max-w-[220px] — on desktops, the limit remains the same.
+        • break-words — break long words.
+      */}
+      <div className="bg-white text-black px-4 py-3 rounded-xl shadow-md min-w-[120px] max-w-[80vw] sm:max-w-[220px] break-words z-10 relative">
+        <p className="text-center text-sm font-medium whitespace-pre-line">{text}</p>
       </div>
     </div>
   )
@@ -33,7 +39,7 @@ type MusicTrack = {
   cubeIndices: number[] // Cube indices for this track
 }
 
-// Включаем аудио – пользователь сообщил, что ссылки рабочие
+// Enable audio - user confirmed that links are working
 const AUDIO_DISABLED = false
 
 const musicTracks: MusicTrack[] = [

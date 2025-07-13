@@ -15,10 +15,13 @@ const GECKO_POOLS = [
 
 export async function fetchFloorApe() {
   try {
-    const { data } = await axios.get(RES_URL, { 
-      timeout: 15000, 
-      headers: process.env.RESERVOIR_API_KEY ? { 'x-api-key': String(process.env.RESERVOIR_API_KEY) } : undefined 
-    })
+    const config = {
+      timeout: 15000,
+      ...(process.env.RESERVOIR_API_KEY && { 
+        headers: { 'x-api-key': String(process.env.RESERVOIR_API_KEY) } 
+      })
+    }
+    const { data } = await axios.get(RES_URL, config)
     const prices: number[] = Object.values(data.tokens || {}).map(Number).filter(Boolean)
     if (!prices.length) throw new Error('No floor data')
     return Math.min(...prices)

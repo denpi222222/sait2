@@ -44,12 +44,26 @@ export default function CubeObservers({ selectionCount, phase }: CubeObserversPr
   const { t } = useTranslation()
   const [observers, setObservers] = useState<Observer[]>([])
 
+  // Get phrases from translations – memoized so reference is stable between renders
+  const { i18n } = useTranslation()
+  const idlePhrases = useMemo(() => {
+    return t('cubeObservers.idlePhrases', { returnObjects: true }) as string[]
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i18n.resolvedLanguage])
+
+  const successPhrases = useMemo(() => {
+    return t('cubeObservers.successPhrases', { returnObjects: true }) as string[]
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i18n.resolvedLanguage])
+
   // regenerate observers whenever selection count changes (1 or 2) or phase resets to idle
   useEffect(() => {
     if (selectionCount === 0) {
       setObservers([])
       return
     }
+    if (!idlePhrases || idlePhrases.length === 0) return // Wait for translations to load
+    
     // number of walkers: 1-3 (slightly calmer)
     const cnt = 1 + Math.floor(Math.random() * 3)
     const sides: Observer["dir"][] = ["left","right","bottom","top"]
@@ -64,17 +78,17 @@ export default function CubeObservers({ selectionCount, phase }: CubeObserversPr
       }
     })
     setObservers(arr)
-  }, [selectionCount]) // Remove idlePhrases from dependencies
+  }, [selectionCount, idlePhrases])
 
   // on success – update phrases & after few seconds clear
   useEffect(() => {
-    if (phase !== "success" || observers.length === 0) return
+    if (phase !== "success" || observers.length === 0 || !successPhrases || successPhrases.length === 0) return
     setObservers((prev) =>
       prev.map((o) => ({ ...o, phrase: successPhrases[Math.floor(Math.random() * successPhrases.length)] || "Congrats on your new cube!" }))
     )
-    const t = setTimeout(() => setObservers([]), 4000)
-    return () => clearTimeout(t)
-  }, [phase, observers.length]) // Remove successPhrases from dependencies
+    const timer = setTimeout(() => setObservers([]), 4000)
+    return () => clearTimeout(timer)
+  }, [phase, observers.length, successPhrases])
 
   if (selectionCount === 0 && phase !== "success") return null
 
@@ -109,7 +123,7 @@ export default function CubeObservers({ selectionCount, phase }: CubeObserversPr
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 1 + idx * 0.3 }}
-                className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-white/90 text-gray-900 rounded px-3 py-2 text-sm font-semibold shadow whitespace-nowrap min-w-[90px] max-w-[160px] text-center"
+                className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-white/90 text-gray-900 rounded px-3 py-2 text-sm font-semibold shadow whitespace-normal break-words max-w-[220px] text-center"
               >
                 {c.phrase}
                 <span className="absolute top-full left-1/2 -translate-x-1/2 -mt-0.5 border-8 border-b-white/90 border-x-transparent border-t-transparent" />

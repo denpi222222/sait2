@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-// GeckoTerminal API для конкретного пула CRA на ApeChain
+// GeckoTerminal API for specific CRA pool on ApeChain
 const GECKO_TERMINAL_API = 'https://api.geckoterminal.com/api/v2'
 const CRA_TOKEN_ADDRESS = '0x0A5b48dB89Bf94466464DE3e70F9c86aa27b9495'
 const CRA_POOL_ADDRESS = '0xc9c2f86e542620daf12107d4b6eda37936efb903'
@@ -107,23 +107,23 @@ export async function GET() {
   try {
     console.log('🦎 Fetching CRA data from GeckoTerminal...')
     
-    // Получаем данные о пуле
+    // Get pool data
     const poolResponse = await fetch(
       `${GECKO_TERMINAL_API}/networks/${APECHAIN_NETWORK}/pools/${CRA_POOL_ADDRESS}?include=base_token,quote_token`,
       {
-        // Используем встроенный Data Cache от Next.js, который надежно работает в serverless.
+        // Use built-in Data Cache from Next.js, which reliably works in serverless
         headers: {
           'Accept': 'application/json',
         },
-        next: { revalidate: 60 } // Кешируем на 60 секунд
+        next: { revalidate: 60 } // Cache for 60 seconds
       }
     )
 
     if (!poolResponse.ok) {
-      // Логируем ошибку с деталями для отладки
+      // Log error with details for debugging
       const errorBody = await poolResponse.text()
       console.error(`GeckoTerminal API error: ${poolResponse.status}`, { errorBody })
-      // Выбрасываем ошибку, чтобы попасть в блок catch и вернуть fallback-данные
+      // Throw error to catch block and return fallback data
       throw new Error(`Failed to fetch from GeckoTerminal API with status: ${poolResponse.status}`)
     }
 
@@ -139,7 +139,7 @@ export async function GET() {
       priceUSD: pool.attributes.base_token_price_usd
     })
 
-    // Парсинг данных
+    // Data parsing
     const craInfo: CRATokenInfo = {
       price_usd: parseFloat(pool.attributes.base_token_price_usd || '0'),
       price_ape: parseFloat(pool.attributes.base_token_price_native_currency || '0'),
@@ -172,7 +172,7 @@ export async function GET() {
   } catch (error: any) {
     console.error('❌ Error fetching CRA data:', error)
     
-    // Возвращаем fallback данные в случае ошибки
+    // Return fallback data in case of error
     return NextResponse.json({
       success: false,
       error: error.message,

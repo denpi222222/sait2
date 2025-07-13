@@ -49,9 +49,9 @@ export const useCRATokenStat = () => {
             dexLiquidity: BigInt(data.dexLiquidity || 0),
             airdrop: BigInt(data.airdrop || 0),
             rewards: BigInt(data.rewards || 0),
-            priceUsd: data.priceUsd ? Number(data.priceUsd) : undefined,
-            marketCapUsd: data.marketCapUsd ? Number(data.marketCapUsd) : undefined,
-            volume24hUsd: data.volume24hUsd ? Number(data.volume24hUsd) : undefined,
+            ...(data.priceUsd !== undefined && { priceUsd: data.priceUsd }),
+            ...(data.marketCapUsd !== undefined && { marketCapUsd: data.marketCapUsd }),
+            ...(data.volume24hUsd !== undefined && { volume24hUsd: data.volume24hUsd }),
           };
           setStat(parsed);
         }

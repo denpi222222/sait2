@@ -266,7 +266,7 @@ export default function BurnCard({ nft, index, onActionComplete }: BurnCardProps
           </div>
         )}
         <div className="mt-2 text-xs text-gray-400 break-all overflow-hidden text-ellipsis max-h-12">
-          {/* Пример длинного числа */}
+          {/* Example of long number */}
           {data && data.lockedCRA && (
             <span>{Number(data.lockedCRA).toLocaleString()}</span>
           )}

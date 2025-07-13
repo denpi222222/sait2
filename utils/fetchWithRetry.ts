@@ -23,7 +23,11 @@ export async function fetchWithRetry(
 
   while (attempt <= retries) {
     try {
-      const res = await fetch(url, { signal, ...init });
+      const fetchOptions = { ...init } as RequestInit;
+      if (signal) {
+        fetchOptions.signal = signal;
+      }
+      const res = await fetch(url, fetchOptions);
       if (res.ok) return res;
 
       // Do not retry for other 4xx (except 429)

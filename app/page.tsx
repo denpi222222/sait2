@@ -10,6 +10,7 @@ import Image from "next/image"
 import { useTranslation } from "react-i18next"
 import { TabNavigation } from "@/components/tab-navigation"
 import dynamic from "next/dynamic"
+import { withIdleImport } from "@/components/withIdleImport"
 import { WalletConnectNoSSR as WalletConnect } from "@/components/web3/wallet-connect.no-ssr"
 import { SocialSidebar } from "@/components/social-sidebar"
 import { UserNFTsPreview } from "@/components/UserNFTsPreview"
@@ -26,31 +27,16 @@ const I18nLanguageSwitcher = dynamic(
 )
 
 // Dynamic imports of heavy animations with conditional loading
-const CubeAnimation = dynamic(() => import("@/components/cube-animation").then((m) => m.CubeAnimation), {
-  ssr: false,
-  loading: () => null,
-})
-
-const FireAnimation = dynamic(() => import("@/components/fire-animation"), { 
-  ssr: false,
-  loading: () => null
-})
-
-const CoinsAnimation = dynamic(() => import("@/components/coins-animation").then((m) => m.CoinsAnimation), { 
-  ssr: false,
-  loading: () => null
-})
-
-const StatsAnimation = dynamic(() => import("@/components/stats-animation").then((m) => m.StatsAnimation), { 
-  ssr: false,
-  loading: () => null
-})
-
+// @ts-ignore - Complex type resolution for dynamic imports
+const CubeAnimation = withIdleImport(() => import("@/components/cube-animation").then(m=>({default:m.CubeAnimation})))
+const FireAnimation = withIdleImport(() => import("@/components/fire-animation"))
+// @ts-ignore - Complex type resolution for dynamic imports
+const CoinsAnimation = withIdleImport(() => import("@/components/coins-animation").then(m=>({default:m.CoinsAnimation})))
+// @ts-ignore - Complex type resolution for dynamic imports  
+const StatsAnimation = withIdleImport(() => import("@/components/stats-animation").then(m=>({default:m.StatsAnimation})))
 // Lazy-loaded particle effect with performance check
-const ParticleEffect = dynamic(() => import("@/components/particle-effect").then((m) => m.ParticleEffect), {
-  ssr: false,
-  loading: () => null
-})
+// @ts-ignore - Complex type resolution for dynamic imports
+const ParticleEffect = withIdleImport(() => import("@/components/particle-effect").then(m=>({default:m.ParticleEffect})))
 
 export default function HomePage() {
   // Use translation hook

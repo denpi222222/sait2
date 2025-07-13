@@ -6,6 +6,47 @@
     "connectWallet": "Connect MetaMask",
     "walletNotDetected": "MetaMask not detected. Install MetaMask"
   },
+  "navigation": {
+    "home": "Home",
+    "returnHome": "Return to Home"
+  },
+  "common": {
+    "loading": "Loading...",
+    "loadingNFTs": "Loading NFTs...",
+    "fetchingCollection": "Fetching your CrazyCube collection",
+    "noNFTsFound": "No NFTs Found",
+    "goToCollection": "Go to Collection",
+    "retry": "Retry"
+  },
+  "graveyard": {
+    "loading": "Loading your NFTs from the graveyard...",
+    "empty": {
+      "title": "GRAVEYARD IS EMPTY",
+      "description": "No burned cubes found."
+    },
+    "showingFirst": "Showing first 20 cubes. Total: {count}"
+  },
+  "burn": {
+    "description": "Burn the cube — get CRA. Easy money! 💰",
+    "noNFTsDescription": "You don't have any CrazyCube NFTs to burn"
+  },
+  "stats": {
+    "analytics": "Analytics",
+    "yourNFTs": "Your NFTs",
+    "bridgeNFT": "Bridge NFT"
+  },
+  "info": {
+    "title": "Info & Analytics",
+    "nalaPhrases": [
+      "📊 Data is slightly off, but we'll fix everything! Give us time ⏰",
+      "🔧 System debugging in progress, everything will work perfectly soon! ✨",
+      "📈 Numbers don't match yet, but the team is working on fixes 🛠️",
+      "⚡ Testing new features, please be patient - it'll be awesome! 🚀",
+      "🎯 Tuning algorithms for maximum data accuracy 📊",
+      "🌟 All temporary discrepancies will be fixed soon! 💫",
+      "🔄 System is updating, everything will work like clockwork soon! ⏰"
+    ]
+  },
   "sections": {
     "bridge": {
       "title": "Bridge (Bring Back Cube!)",
@@ -64,13 +105,20 @@
       "button": "View Statistics"
     },
     "ping": {
-      "title": "Ping Cubes (Keep Them Alive)",
-      "description": "Send heartbeat to your cubes so they don't drift into the void.",
-      "button": "Ping",
-      "readyToPing": "Ready to Ping",
-      "cooldown": "Cooldown:",
-      "waitingForWallet": "Waiting for wallet confirmation...",
-      "processingPing": "Processing ping..."
+      "title": "Ping NFTs",
+      "description": "Ping your NFTs every 10 days to earn CRA tokens! Your bonus grows with consistent pinging.",
+      "connectWallet": "Connect wallet to view your cubes",
+      "noNFTs": "No CrazyCube NFTs found.",
+      "sentFor": "Ping sent for",
+      "error": "Ping error",
+      "interval": "Ping Interval: 10 days",
+      "bonusGrowth": "Bonus grows +2.7% every 10 days",
+      "maxBonus": "Maximum bonus: +97.2%",
+      "penaltyReset": "Miss 20+ days = bonus resets to -18.9%",
+      "activate": "Activate",
+      "pingNow": "Ping Now",
+      "cooldown": "Cooldown",
+      "ready": "Ready"
     },
     "graveyard": {
       "title": "Graveyard",
@@ -180,7 +228,11 @@
     "balance": "Balance:",
     "notConnected": "Wallet not connected",
     "connectFirst": "Please connect your wallet first",
-    "connected": "Connected"
+    "connected": "Connected",
+    "instruction": "Instruction",
+    "gameGuide": "CrazyCube Game Guide",
+    "gameGuideContent": "🎮 CrazyCube Game Guide\n\n🔹 Getting Started\n• Get CRA tokens — for gas fees and game actions\n• Buy CrazyCube NFTs on the marketplace\n\n🔹 How to Start Playing\n• Go to the Ping tab — you'll see your NFTs\n• For a new cube, press Activate — this is the first Ping, it doesn't give CRA but starts the timer\n• After activation, you can ping (click Ping). Default is once every 10 days, rewards start accumulating\n• Each successful Ping brings CRA — amount depends on:\n  - Cube rarity (Common, Rare, Mystic, etc.)\n  - Your experience bonus — grows every 10 days without missing pings\n  - Time between pings (if more periods passed, more CRA)\n\n🔹 What is Experience Bonus\n• Initially all cubes have -18.9% penalty\n• Every 10 days without missing — +2.7%\n• Maximum you can reach +97.2%\n• If you miss more than 10 days — bonus won't increase\n• If you miss 20+ days — bonus resets to -18.9%\n\n🔹 How to Get CRA\n• CRA doesn't drop to wallet immediately, but accumulates inside the cube (this way each NFT has real value)\n• To collect — you need to burn the cube (Burn) (your cube goes to graveyard section and no longer belongs to you, you get CRA coins in the claim section)\n\n🔹 How to Burn\n• Go to Burn section\n• Choose cube and waiting time:\n  - 12 hours → 60% to player\n  - 24 hours → 70%\n  - 48 hours → 80%\n• The rest is split between pool and permanent burning (goes to official dead wallet)\n• After chosen time, go and press Claim — CRA will come to your wallet\n\n🔹 How to Revive Cube (Breed)\n• Go to Breed section\n• Choose 2 living cubes (that have stars and are not in cooldown)\n• Pay CRA (8% of minimum marketplace price, constantly updated)\n• Random NFT from graveyard will return to you as new, with all stars but no coins:\n  - Bonus is reset (back to -18.9%)\n  - Stars are restored\n  - Can ping again from scratch\n\n🔹 Where CRA is in the System\n• CRA for Ping comes from monthly reward pool\n• CRA spent on Breed returns to this pool\n• CRA from Burn burns forever\n• Everything burned goes to special wallet 0x...dead and disappears forever\n\n🔹 Example Strategy\nYou have three cubes:\n• Common (regular) — ping it, bonus grows by 2.7% every 10 days up to 97%, then stops. Can sell, transfer NFT, bonus is preserved\n• Rare — use for Breed or accumulate CRA\n• Mystic — rare, brings more CRA, better not to burn\n\nPlay calmly:\n• Once every 10 days log in and press Ping\n• Periodically burn weak cubes → get tokens\n• Or revive dead ones — get chance for rarer one\n\n💡 Tips\nWant maximum profit — ping regularly and don't burn rare cubes too early.\n💥 Burned tokens won't return — this increases the value of remaining CRA.\n\n🚀 Our Vision\nOur plans within 1-2 months are to adjust the gameplay and renounce admin rights on NFT and token contracts. We want to conduct a social experiment and create fully social gameplay where there are no possibilities to change anything — only market and people decide.\n\nThe team has no bonuses in the contract in the form of CRA coins. You can create a wallet, for example, in Rabby wallet in 1 minute and play our game.\n\nSoon our game will be 100% decentralized with market self-regulation.",
+    "switchNetwork": "Switch Network"
   },
   "userNFTs": {
     "title": "Your NFTs",
@@ -258,16 +310,6 @@
     "graveyard": "Graveyard",
     "ping": "Ping"
   },
-  "navigation": {
-    "home": "Home"
-  },
-  "ping": {
-    "description": "Ping your NFTs every 3 minutes to earn CRA tokens! Ping once every 3 minutes or once every 15 days, accumulation up to 15 days.",
-    "connectWallet": "Connect wallet to view your cubes",
-    "noNFTs": "No CrazyCube NFTs found.",
-    "sentFor": "Ping sent for",
-    "error": "Ping error"
-  },
   "tokenInfo": {
     "priceUSD": "Price USD",
     "marketCap": "Market Cap",
@@ -280,12 +322,6 @@
     "overview": "CRA Token Overview",
     "holders": "Holders",
     "comingSoon": "metric coming soon"
-  },
-  "common": {
-    "retry": "Retry",
-    "loading": "Loading...",
-    "loadingNFTs": "Loading NFTs...",
-    "total": "total"
   },
   "market": {
     "loading": "Loading market data...",
@@ -317,108 +353,6 @@
     "processing": "PROCESSING...",
     "claim": "CLAIM REWARD",
     "claimed": "REWARD CLAIMED"
-  },
-  "info": {
-    "nftInspector": "⏱️ NFT Cooldown Inspector",
-    "lockedCra": "Locked CRA",
-    "enterNftId": "Enter NFT ID to check",
-    "connectWallet": "Connect wallet to check NFT",
-    "connectWalletNfts": "Connect wallet to see your NFTs",
-    "noNfts": "You don't have CrazyCube NFTs",
-    "yourNfts": "Your NFTs",
-    "live": "live",
-    "inGraveyard": "in graveyard",
-    "activeNfts": "Active NFTs",
-    "nftsInGraveyard": "NFTs in Graveyard",
-    "noStars": "No Stars",
-    "totalCraLocked": "Total CRA locked in your NFTs",
-    "nftCollection": "NFT Collection",
-    "totalNfts": "Total NFTs",
-    "craSupply": "CRA Supply",
-    "rarity": "Rarity",
-    "stars": "Stars",
-    "status": "Status",
-    "graveyard": "Graveyard",
-    "active": "Active",
-    "locked": "Locked",
-    "timeLeft": "Time Left",
-    "guide": {
-      "title": "How to Play CrazyCube",
-      "subtitle": "Complete guide to game mechanics"
-    },
-    "tabs": {
-      "overview": "Overview",
-      "craToken": "CRA Token",
-      "contract": "Contract",
-      "contractData": "Contract Data",
-      "liveAnalytics": "Live Analytics"
-    },
-    "features": {
-      "title": "⚡ Unique Game Features",
-      "accumulate": {
-        "title": "Accumulated coins don't burn",
-        "desc": "Your CRA tokens are locked and accumulate, they don't burn forever!"
-      },
-      "future": {
-        "title": "Decentralized Future",
-        "desc": "After debugging (1-2 months) the team will disable admin rights and transfer control to autonomous agent"
-      },
-      "autonomy": {
-        "title": "Full Autonomy",
-        "desc": "NFT collection will transition to fully decentralized market governance"
-      }
-    },
-    "actions": {
-      "title": "📊 Game Actions and Timers",
-      "timeLabel": "Time:",
-      "burn": {
-        "title": "Burn NFT",
-        "time": "12/24/48 hours",
-        "desc": "Burn NFT and lock CRA tokens for rewards"
-      },
-      "graveyard": {
-        "title": "Graveyard",
-        "desc": "Burned NFTs go to graveyard with 48h cooldown"
-      },
-      "breed": {
-        "title": "Breeding",
-        "desc": "Create new NFTs from graveyard",
-        "note": "After breeding NFT cannot participate in actions"
-      },
-      "ping": {
-        "title": "Ping",
-        "desc": "Activate NFT for rewards",
-        "time": "7-day interval",
-        "note": "NFTs accumulate and don't burn!"
-      },
-      "rewards": {
-        "title": "Pool Rewards",
-        "desc": "Get CRA tokens from reward pool",
-        "time": "30-day interval"
-      },
-      "other": {
-        "title": "Other Actions",
-        "desc": "Various game mechanics",
-        "time": "24h cooldown"
-      },
-      "cooldown48": "48h cooldown"
-    },
-    "roadmap": {
-      "title": "Road to decentralization",
-      "phase1": {
-        "title": "Phase 1: Debugging",
-        "desc": "1-2 months of testing and optimizing all game mechanics"
-      },
-      "phase2": {
-        "title": "Phase 2: Autonomy",
-        "desc": "Connect autonomous agent and remove admin rights"
-      },
-      "phase3": {
-        "title": "Phase 3: Freedom",
-        "desc": "Fully decentralized management only by market"
-      },
-      "tagline": "🚀 CrazyCube - first NFT collection with full decentralization plan!"
-    }
   },
   "distribution": {
     "activeVsGraveyard": "Active vs In graveyard by rarity",
@@ -481,7 +415,9 @@
       "confirmBurn": "Confirm burn",
       "burnWarning": "Warning: burning is irreversible!",
       "nftWillBeDestroyed": "NFT will be destroyed forever",
-      "craWillBeTransferred": "CRA will be transferred to your wallet"
+      "craWillBeTransferred": "CRA will be transferred to your wallet",
+      "description": "Burn the cube — get CRA. Easy money! 💰",
+      "noNFTsDescription": "You don't have any CrazyCube NFTs to burn"
     },
     "ping": {
       "title": "Cube Ping",
@@ -514,7 +450,13 @@
       "restInPeace": "Rest in peace",
       "someStillWhisper": "Some still whisper from the ashes",
       "totalBurned": "Total burned",
-      "viewBurnedNft": "View burned NFT"
+      "viewBurnedNft": "View burned NFT",
+      "loading": "Loading your NFTs from the graveyard...",
+      "empty": {
+        "title": "GRAVEYARD IS EMPTY",
+        "description": "No burned cubes found."
+      },
+      "showingFirst": "Showing first 20 cubes. Total: {count}"
     },
     "stats": {
       "title": "Game Statistics",
@@ -526,7 +468,10 @@
       "lockedCra": "Locked CRA",
       "burnedCra": "Burned CRA",
       "gameActivity": "Game Activity",
-      "recentTransactions": "Recent Transactions"
+      "recentTransactions": "Recent Transactions",
+      "analytics": "Analytics",
+      "yourNFTs": "Your NFTs",
+      "bridgeNFT": "Bridge NFT"
     },
     "info": {
       "title": "Information",

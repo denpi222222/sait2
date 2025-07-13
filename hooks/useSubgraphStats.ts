@@ -69,7 +69,7 @@ export interface GlobalStats {
   lastUpdated: string // BigInt as string
 }
 
-// GraphQL запросы
+// GraphQL queries
 const CONTRACT_STATS_QUERY = `
   query GetContractStats {
     contractStats(id: "contract") {

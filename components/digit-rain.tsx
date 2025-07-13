@@ -23,9 +23,6 @@ export default function DigitRain({
   className = "",
   sizeRange = [10, 24],
 }: DigitRainProps) {
-  // Respect user reduced-motion setting
-  if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return null
-
   // Store the generated digits in state so the first render (SSR + hydration) is deterministic (empty array)
   const [digits, setDigits] = useState<
     Array<{
@@ -39,6 +36,9 @@ export default function DigitRain({
       rotate: number
     }>
   >([])
+
+  // Respect user reduced-motion setting
+  const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
   // Generate digits only after the component is mounted on the client to avoid SSR ↔ hydration mismatch
   useEffect(() => {
@@ -57,6 +57,9 @@ export default function DigitRain({
     setDigits(generated)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // Respect user reduced-motion setting
+  if (prefersReducedMotion) return null
 
   return (
     <div className={`fixed inset-0 overflow-hidden pointer-events-none z-0 ${className}`}>

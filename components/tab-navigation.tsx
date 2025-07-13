@@ -1,11 +1,11 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { useTranslation } from "react-i18next"
 import { motion } from "framer-motion"
-import { Flame, Heart, Coins, BarChart3, Bell, Skull, Info } from "lucide-react"
+import { Flame, Heart, Coins, BarChart3, Bell, Skull, Info, Loader2 } from "lucide-react"
 import { useMobile } from "@/hooks/use-mobile"
 
 interface TabNavigationProps { color?: 'cyan' | 'pink' | 'amber' | 'red' | 'sky' | 'gray' }
@@ -16,6 +16,8 @@ export function TabNavigation({ color = 'cyan' }: TabNavigationProps) {
   const router = useRouter()
   const { t } = useTranslation()
   const [mounted, setMounted] = useState(false)
+  const [isNavigating, setIsNavigating] = useState(false)
+  const [targetPath, setTargetPath] = useState<string | null>(null)
 
   useEffect(() => { setMounted(true) }, [])
 
@@ -40,6 +42,25 @@ export function TabNavigation({ color = 'cyan' }: TabNavigationProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // Reset navigation state when pathname changes
+  useEffect(() => {
+    setIsNavigating(false)
+    setTargetPath(null)
+  }, [pathname])
+
+  // Debounced navigation to prevent multiple clicks
+  const handleNavigation = useCallback((path: string) => {
+    if (isNavigating || pathname === path) return
+    
+    setIsNavigating(true)
+    setTargetPath(path)
+    
+    // Use setTimeout to ensure smooth transition
+    setTimeout(() => {
+      router.push(path)
+    }, 50)
+  }, [router, pathname, isNavigating])
+
   const palette: Record<string, {border:string,text:string,active:string,hoverBg:string}> = {
     cyan:   { border:'border-cyan-500/30', text:'text-cyan-300', active:'from-cyan-600 to-blue-600', hoverBg:'bg-cyan-900/30' },
     pink:   { border:'border-pink-500/30', text:'text-pink-300', active:'from-pink-600 to-purple-600', hoverBg:'bg-pink-900/30' },
@@ -61,6 +82,7 @@ export function TabNavigation({ color = 'cyan' }: TabNavigationProps) {
         <div className="flex space-x-2">
           {tabs.map((tab) => {
             const isActive = pathname === tab.path
+            const isLoading = isNavigating && targetPath === tab.path
             return (
               <motion.div key={tab.path} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
@@ -69,10 +91,15 @@ export function TabNavigation({ color = 'cyan' }: TabNavigationProps) {
                     isActive
                       ? `neon-button neon-outline`
                       : `text-foreground/70 hover:text-foreground hover:bg-card/50`
-                  }`}
-                  onClick={() => router.push(tab.path)}
+                  } ${isLoading ? 'opacity-70' : ''}`}
+                  onClick={() => handleNavigation(tab.path)}
+                  disabled={isLoading}
                 >
-                  {tab.icon}
+                  {isLoading ? (
+                    <Loader2 className="w-4 h-4 mr-1 animate-spin" />
+                  ) : (
+                    tab.icon
+                  )}
                   <span suppressHydrationWarning>{tab.label}</span>
                   {isActive && (
                     <motion.div

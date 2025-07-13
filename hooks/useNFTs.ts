@@ -140,6 +140,7 @@ export function useNFTs() {
         attributes: metadata.attributes,
         rewardBalance: 0,
         frozen: false,
+        rarity: "Common", // Default rarity
       }
     } catch (err) {
       if ((err as Error).name !== 'AbortError') {

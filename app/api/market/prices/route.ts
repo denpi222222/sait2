@@ -8,7 +8,7 @@ export async function GET() {
     const data = await fetchMarketData()
     return NextResponse.json(data, { headers: { 'Cache-Control': 'public, max-age=180' } })
   } catch (e: any) {
-    // Если цены недоступны, отдаём "пустой" ответ, чтобы фронт не падал
+    // If prices are unavailable, return "empty" response so frontend doesn't crash
     return NextResponse.json({ floorApe: null, craUsd: null, apeUsd: null, floorCra: null, error: e.message })
   }
 } 

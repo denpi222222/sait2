@@ -36,7 +36,7 @@ export default function useCRAStats(){
       }
     }
     fetchData()
-    const iv = setInterval(fetchData,180000) // 3 minutes (было 60s)
+    const iv = setInterval(fetchData,180000) // 3 minutes (was 60s)
     return ()=>clearInterval(iv)
   },[])
 

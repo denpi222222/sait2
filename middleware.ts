@@ -1,77 +1,105 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-// Serverless-friendly rate limiter
-// Does not use in-memory storage, works through heuristics and headers
-const RATE_LIMIT = 10 // requests per window
-const WINDOW_MS = 60000 // 1 minute
-const STRICT_ENDPOINTS = ['/api/cra-token', '/api/market/prices'] // Highly protected endpoints
+// Simple in-memory rate limiting
+const requests = new Map<string, { count: number; resetTime: number }>()
 
-export function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl
-  
-  // Apply rate limiting only to API routes
-  if (!pathname.startsWith('/api')) return NextResponse.next()
+const STRICT_ENDPOINTS = ['/api/cra-token', '/api/market/prices']
 
-  // Get IP address
-  const ip = req.headers.get('x-real-ip') || 
-    req.headers.get('x-forwarded-for')?.split(',')[0] || 
-    req.headers.get('cf-connecting-ip') || // Cloudflare
-    'unknown'
-  
-  const userAgent = req.headers.get('user-agent') || 'unknown'
+function cleanupOldEntries() {
   const now = Date.now()
-  
-  // Simple heuristics: check request frequency through headers
-  const lastRequestTime = req.headers.get('x-last-request-time')
-  if (lastRequestTime) {
-    const timeDiff = now - parseInt(lastRequestTime)
-    if (timeDiff < 1000) { // Less than 1 second between requests
-      console.warn(`🚨 Potential DoS detected from ${ip}: requests too frequent (${timeDiff}ms)`)
-      return createRateLimitResponse('Requests too frequent. Please wait at least 1 second between requests.')
+  for (const [key, value] of requests.entries()) {
+    if (now > value.resetTime) {
+      requests.delete(key)
     }
   }
+}
+
+function checkRateLimit(ip: string, maxRequests = 100, windowMs = 60000) {
+  cleanupOldEntries()
   
-  // Additional protection for critical endpoints
+  const now = Date.now()
+  const key = ip
+  const current = requests.get(key)
+  
+  if (!current || now > current.resetTime) {
+    requests.set(key, { count: 1, resetTime: now + windowMs })
+    return { success: true, limit: maxRequests, remaining: maxRequests - 1, reset: now + windowMs }
+  }
+  
+  if (current.count >= maxRequests) {
+    return { success: false, limit: maxRequests, remaining: 0, reset: current.resetTime }
+  }
+  
+  current.count++
+  return { success: true, limit: maxRequests, remaining: maxRequests - current.count, reset: current.resetTime }
+}
+
+export async function middleware(req: NextRequest) {
+  const { pathname } = req.nextUrl
+  
+  // Apply only to API routes
+  if (!pathname.startsWith('/api')) return NextResponse.next()
+
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0] ?? req.headers.get('x-real-ip') ?? '127.0.0.1'
+
+  // Check rate limits
+  const burstCheck = checkRateLimit(ip + ':burst', 20, 10000) // 20 requests per 10 seconds
+  if (!burstCheck.success) {
+    console.warn(`🚨 Burst rate limit exceeded from ${ip}`)
+    const retryAfter = Math.ceil((burstCheck.reset - Date.now()) / 1000)
+    return createRateLimitResponse('Too many requests in a short time. Please slow down.', retryAfter, burstCheck.limit)
+  }
+
+  const mainCheck = checkRateLimit(ip, 100, 60000) // 100 requests per minute
+  if (!mainCheck.success) {
+    console.warn(`🚨 Main rate limit exceeded from ${ip}`)
+    const retryAfter = Math.ceil((mainCheck.reset - Date.now()) / 1000)
+    return createRateLimitResponse('Rate limit exceeded. Please try again later.', retryAfter, mainCheck.limit)
+  }
+  
+  // Basic bot protection for critical endpoints
   if (STRICT_ENDPOINTS.some(endpoint => pathname.startsWith(endpoint))) {
-    // Block if no User-Agent (likely bot)
+    const userAgent = req.headers.get('user-agent') || 'unknown'
+    // Block requests without proper User-Agent
     if (!userAgent || userAgent === 'unknown' || userAgent.length < 10) {
       console.warn(`🚨 Blocked request without proper User-Agent from ${ip}`)
-      return createRateLimitResponse('Missing or invalid User-Agent header')
+      return createRateLimitResponse('Missing or invalid User-Agent header', 60, mainCheck.limit)
     }
     
     // Block obvious bots
     const botPatterns = ['curl', 'wget', 'python-requests', 'bot', 'crawler', 'spider', 'scraper']
     if (botPatterns.some(pattern => userAgent.toLowerCase().includes(pattern))) {
       console.warn(`🚨 Blocked bot request from ${ip}: ${userAgent}`)
-      return createRateLimitResponse('Automated requests not allowed')
+      return createRateLimitResponse('Automated requests not allowed', 60, mainCheck.limit)
     }
   }
-  
-  // Add headers for tracking next request
+
   const response = NextResponse.next()
-  response.headers.set('x-last-request-time', now.toString())
-  response.headers.set('x-rate-limit-limit', RATE_LIMIT.toString())
-  response.headers.set('x-client-ip', ip)
+  
+  // Set correct rate limit headers for the client
+  response.headers.set('X-RateLimit-Limit', mainCheck.limit.toString())
+  response.headers.set('X-RateLimit-Remaining', mainCheck.remaining.toString())
+  response.headers.set('X-RateLimit-Reset', mainCheck.reset.toString())
   
   return response
 }
 
-function createRateLimitResponse(message: string) {
+function createRateLimitResponse(message: string, retryAfter: number, limit: number) {
   return new NextResponse(
     JSON.stringify({ 
-      error: 'Rate limit exceeded', 
+      error: 'Too Many Requests', 
       message,
-      retryAfter: 60,
+      retryAfter,
       timestamp: new Date().toISOString()
     }), 
     { 
       status: 429,
       headers: {
         'Content-Type': 'application/json',
-        'Retry-After': '60',
-        'X-RateLimit-Limit': RATE_LIMIT.toString(),
-        'X-RateLimit-Remaining': '0',
+        'Retry-After': retryAfter.toString(),
+        'X-RateLimit-Limit': limit.toString(),
+        'X-RateLimit-Remaining': '0', // Remaining is 0 because the request was denied
         'Cache-Control': 'no-store, no-cache, must-revalidate',
       }
     }

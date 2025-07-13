@@ -34,7 +34,7 @@ export function DistributionChart() {
   ];
   
   // Function to request data from Subgraph
-  async function fetchDistributionData() {
+  async function fetchDistributionData(): Promise<void> {
     try {
       // Request to Subgraph
       const query = `{
@@ -58,7 +58,8 @@ export function DistributionChart() {
       
       // If Subgraph is not configured yet, use test data
       if (!data) {
-        return generateMockData();
+        setData(generateMockData());
+        return;
       }
       
       // Group NFTs by rarity
@@ -104,7 +105,7 @@ export function DistributionChart() {
         count: stats.total,
         inGraveyard: stats.inGraveyard,
         active: stats.total - stats.inGraveyard,
-        color: rarityColors[parseInt(rarity) - 1] || "#6366f1"
+        color: rarityColors[parseInt(rarity) - 1] || rarityColors[0] || "#6366f1"
       }))
       .sort((a, b) => a.rarity - b.rarity);
   }
@@ -117,12 +118,12 @@ export function DistributionChart() {
   // Generate test data
   function generateMockData(): RarityDistribution[] {
     return [
-      { rarity: 1, count: 2000, inGraveyard: 400, active: 1600, color: rarityColors[0] },
-      { rarity: 2, count: 1500, inGraveyard: 300, active: 1200, color: rarityColors[1] },
-      { rarity: 3, count: 800, inGraveyard: 150, active: 650, color: rarityColors[2] },
-      { rarity: 4, count: 400, inGraveyard: 80, active: 320, color: rarityColors[3] },
-      { rarity: 5, count: 200, inGraveyard: 40, active: 160, color: rarityColors[4] },
-      { rarity: 6, count: 100, inGraveyard: 20, active: 80, color: rarityColors[5] }
+      { rarity: 1, count: 2000, inGraveyard: 400, active: 1600, color: rarityColors[0] || "#6366f1" },
+      { rarity: 2, count: 1500, inGraveyard: 300, active: 1200, color: rarityColors[1] || "#6366f1" },
+      { rarity: 3, count: 800, inGraveyard: 150, active: 650, color: rarityColors[2] || "#6366f1" },
+      { rarity: 4, count: 400, inGraveyard: 80, active: 320, color: rarityColors[3] || "#6366f1" },
+      { rarity: 5, count: 200, inGraveyard: 40, active: 160, color: rarityColors[4] || "#6366f1" },
+      { rarity: 6, count: 100, inGraveyard: 20, active: 80, color: rarityColors[5] || "#6366f1" }
     ];
   }
   

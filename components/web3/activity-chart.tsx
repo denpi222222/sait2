@@ -5,7 +5,7 @@ import { ChartCard } from "./chart-card"
 import { Activity } from "lucide-react"
 import { motion } from "framer-motion"
 
-// Базовый URL для запросов к Subgraph
+// Base URL for Subgraph requests
 const SUBGRAPH_URL = '/api/subgraph';
 
 interface ActivityData {
@@ -20,10 +20,10 @@ export function ActivityChart() {
   const [data, setData] = useState<ActivityData[]>([])
   const [range, setRange] = useState<'24h' | '7d' | '30d'>('7d')
   
-  // Функция для запроса данных из Subgraph
-  async function fetchActivityData() {
+  // Function to fetch data from Subgraph
+  async function fetchActivityData(): Promise<void> {
     try {
-      // Определяем временной диапазон
+      // Define time range
       const now = Math.floor(Date.now() / 1000);
       const timeRanges = {
         '24h': now - 24 * 60 * 60,
@@ -33,7 +33,7 @@ export function ActivityChart() {
       
       const startTime = timeRanges[range];
       
-      // Запрос к Subgraph
+      // Query Subgraph
       const query = `{
         nftPings: nftPings(
           where: {timestamp_gt: "${startTime}"}, 
@@ -63,12 +63,13 @@ export function ActivityChart() {
       
       const { data } = await response.json();
       
-      // Если Subgraph еще не настроен, используем тестовые данные
+      // If Subgraph is not configured, use mock data
       if (!data) {
-        return generateMockData(range);
+        setData(generateMockData(range));
+        return;
       }
       
-      // Группируем события по дням
+      // Group events by date
       const groupedData = groupEventsByDate(
         data.nftPings || [],
         data.nftBurns || [],
@@ -79,41 +80,41 @@ export function ActivityChart() {
       setData(groupedData);
     } catch (error) {
       console.error("Error fetching activity data:", error);
-      // Используем тестовые данные при ошибке
+      // Use mock data on error
       setData(generateMockData(range));
     } finally {
       setIsLoading(false);
     }
   }
   
-  // Загрузка данных при изменении диапазона
+  // Load data when range changes
   useEffect(() => {
     setIsLoading(true);
     fetchActivityData();
   }, [range]);
   
-  // Группировка событий по датам
+  // Group events by date
   function groupEventsByDate(pings: any[], burns: any[], breeds: any[], range: string): ActivityData[] {
-    // Определяем формат даты в зависимости от диапазона
+    // Define date format based on range
     const dateFormat = range === '24h' ? 'HH:00' : 'MM-DD';
     const result: ActivityData[] = [];
     
-    // Если данных нет, возвращаем тестовые данные
+    // If no data, return mock data
     if (pings.length === 0 && burns.length === 0 && breeds.length === 0) {
       return generateMockData(range);
     }
     
-    // Создаем временные метки для группировки
+    // Create time stamps for grouping
     const timestamps = [...pings, ...burns, ...breeds].map(e => parseInt(e.timestamp));
     const minTime = Math.min(...timestamps);
     const maxTime = Math.max(...timestamps);
     
-    // Определяем интервал группировки
-    let interval = 3600; // 1 час для 24h
-    if (range === '7d') interval = 86400; // 1 день для 7d
-    if (range === '30d') interval = 86400 * 2; // 2 дня для 30d
+    // Define grouping interval
+    let interval = 3600; // 1 hour for 24h
+    if (range === '7d') interval = 86400; // 1 day for 7d
+    if (range === '30d') interval = 86400 * 2; // 2 days for 30d
     
-    // Создаем временные группы
+    // Create time groups
     for (let t = minTime; t <= maxTime; t += interval) {
       const date = new Date(t * 1000);
       const dateStr = range === '24h' 
@@ -121,7 +122,7 @@ export function ActivityChart() {
         : (date.getMonth() + 1).toString().padStart(2, '0') + '-' + 
           date.getDate().toString().padStart(2, '0');
       
-      // Считаем события в этой группе
+      // Count events in this group
       const pingCount = pings.filter(p => {
         const ts = parseInt(p.timestamp);
         return ts >= t && ts < t + interval;
@@ -148,7 +149,7 @@ export function ActivityChart() {
     return result;
   }
   
-  // Генерация тестовых данных
+  // Generate mock data
   function generateMockData(range: string): ActivityData[] {
     const count = range === '24h' ? 24 : range === '7d' ? 7 : 15;
     const result: ActivityData[] = [];
@@ -178,7 +179,7 @@ export function ActivityChart() {
     return result;
   }
   
-  // Находим максимальное значение для масштабирования
+  // Find maximum value for scaling
   const maxValue = data.length > 0 
     ? Math.max(...data.map(d => Math.max(d.pings, d.burns, d.breeds)))
     : 100;
@@ -199,7 +200,7 @@ export function ActivityChart() {
       </div>
       
       <div className="h-64 relative">
-        {/* Линии сетки */}
+        {/* Grid lines */}
         {[0, 25, 50, 75, 100].map((percent) => (
           <div
             key={`grid-${percent}`}
@@ -208,11 +209,11 @@ export function ActivityChart() {
           ></div>
         ))}
         
-        {/* Столбцы активности */}
+        {/* Activity bars */}
         <div className="absolute inset-0 flex items-end">
           {data.map((item, index) => (
             <div key={index} className="flex-1 flex flex-col items-center justify-end h-full">
-              {/* Разведения (синий) */}
+              {/* Breeds (blue) */}
               <motion.div 
                 initial={{ height: 0 }} 
                 animate={{ height: `${(item.breeds / maxValue) * 100}%` }} 
@@ -222,7 +223,7 @@ export function ActivityChart() {
                 <div className="h-full w-full bg-gradient-to-t from-blue-600/80 to-blue-400/80" />
               </motion.div>
               
-              {/* Сжигания (оранжевый) */}
+              {/* Burns (orange) */}
               <motion.div 
                 initial={{ height: 0 }} 
                 animate={{ height: `${(item.burns / maxValue) * 100}%` }} 
@@ -232,7 +233,7 @@ export function ActivityChart() {
                 <div className="h-full w-full bg-gradient-to-t from-orange-600/80 to-orange-400/80" />
               </motion.div>
               
-              {/* Пинги (фиолетовый) */}
+              {/* Pings (purple) */}
               <motion.div 
                 initial={{ height: 0 }} 
                 animate={{ height: `${(item.pings / maxValue) * 100}%` }} 
@@ -249,7 +250,7 @@ export function ActivityChart() {
           ))}
         </div>
         
-        {/* Метки значений */}
+        {/* Value labels */}
         <div className="absolute right-0 inset-y-0 flex flex-col justify-between text-xs text-slate-400 pr-2">
           <div>{maxValue}</div>
           <div>{Math.round(maxValue / 2)}</div>

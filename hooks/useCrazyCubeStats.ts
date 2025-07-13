@@ -146,7 +146,7 @@ export const useCrazyCubeStats = () => {
     }
     
     fetch()
-    const id = setInterval(fetch, 120000) // refresh every 2 minutes (было 30s)
+    const id = setInterval(fetch, 120000) // refresh every 2 minutes (was 30s)
     return () => { mounted = false; clearInterval(id) }
   }, [publicClient])
 

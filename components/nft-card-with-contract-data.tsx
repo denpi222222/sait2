@@ -64,7 +64,7 @@ export function NFTCard({ nft, isSelected, onSelect, onBurn, isBurning }: NFTCar
             </div>
           )}
 
-          {/* Loading overlay для данных контракта */}
+          {/* Loading overlay for contract data */}
           {isLoadingContractInfo && (
             <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
               <div className="animate-spin text-orange-500">
@@ -73,7 +73,7 @@ export function NFTCard({ nft, isSelected, onSelect, onBurn, isBurning }: NFTCar
             </div>
           )}
 
-          {/* Rarity Badge - ЖИВЫЕ ДАННЫЕ ИЗ КОНТРАКТА */}
+          {/* Rarity Badge - LIVE DATA FROM CONTRACT */}
           {nftInfo && (
             <Badge className={`absolute top-2 right-2 ${getColorByStars(initialStars)} text-white text-xs px-1`}>
               {getRarityByStars(initialStars)}
@@ -87,7 +87,7 @@ export function NFTCard({ nft, isSelected, onSelect, onBurn, isBurning }: NFTCar
             </div>
           )}
 
-          {/* Stars display - ЖИВЫЕ ДАННЫЕ */}
+          {/* Stars display - LIVE DATA */}
           {nftInfo && (
             <div className="absolute bottom-2 left-2 flex items-center space-x-1 bg-black/70 px-2 py-1 rounded">
               <Star className="w-4 h-4 text-yellow-400" fill="currentColor" />

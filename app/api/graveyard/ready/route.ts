@@ -55,7 +55,7 @@ export async function GET() {
     const notReadyTokens: string[] = []
     const currentTime = Math.floor(Date.now() / 1000)
 
-    // Проверяем каждый токен в кладбище
+    // Check each token in graveyard
     for (let i = 0; i < size; i++) {
       try {
         const tokenIdBn = (await client.readContract({
@@ -68,7 +68,7 @@ export async function GET() {
         const tokenId = tokenIdBn.toString()
         
         try {
-          // Проверяем burn record
+          // Check burn record
           const burnRecord = (await client.readContract({
             address: GAME_ADDRESS,
             abi: GAME_ABI,
@@ -81,14 +81,14 @@ export async function GET() {
           const claimTime = Number(claimAvailableTime)
           const releaseTime = Number(graveyardReleaseTime)
           
-          // Определяем готовность
+          // Determine readiness
           let isReady = false
           
           if (!claimed) {
             if (releaseTime > 0 && releaseTime <= currentTime) {
-              isReady = true // новый контракт >=v3
+              isReady = true // new contract >=v3
             } else if (releaseTime === 0 && claimTime > 0 && claimTime <= currentTime) {
-              isReady = true // старые записи
+              isReady = true // old records
             }
           }
           
@@ -99,7 +99,7 @@ export async function GET() {
           }
           
         } catch (burnError) {
-          // Если не можем прочитать burn record, считаем токен не готовым
+          // If we can't read burn record, consider token not ready
           notReadyTokens.push(tokenId)
         }
         

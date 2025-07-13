@@ -190,7 +190,7 @@ export default function BreedPage() {
       return
     }
 
-    // Проверяем что у обоих NFT есть звезды
+    // Check that both NFTs have stars
     for (const tokenId of selectedNFTs) {
       const nftData = selectedNFTsData[tokenId]
       if (!nftData || nftData.currentStars === 0) {

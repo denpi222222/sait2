@@ -101,6 +101,10 @@ export default function NFTShowcase() {
 
   const currentNFT = nftData[currentIndex]
 
+  if (!currentNFT) {
+    return null
+  }
+
   return (
     <div className="w-full max-w-6xl mx-auto p-6 space-y-12">
       {/* Header */}

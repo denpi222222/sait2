@@ -24,6 +24,15 @@ pnpm-debug.log*
 .env*.local
 .env.production
 
+# Security-sensitive files
+*.key
+*.pem
+*.p12
+*.pfx
+secrets.json
+private-key*
+wallet-backup*
+
 # Vercel
 .vercel
 
@@ -97,3 +106,53 @@ jspm_packages/
 
 # Optional stylelint cache
 .stylelintcache
+
+# Test and deployment scripts (contain sensitive data)
+# Keep only essential scripts
+*test*.js
+*breed*.js
+*deploy*.js
+*reset*.js
+*rollback*.js
+*debug*.js
+*fix*.js
+*quick*.js
+*final*.js
+*extract*.js
+*restore*.js
+*transfer*.js
+*simulate*.js
+*check*.js
+*analyze*.js
+hardhat.config.js
+deploy-log.txt
+deploy.bat
+
+# Scripts folder (mostly admin tools)
+scripts/
+!scripts/check-i18n.js
+
+# Contract artifacts and build files
+artifacts/
+cache/
+.openzeppelin/
+subgraph-denis-3/
+cra-token/
+
+# Backup and versioned contracts
+contracts/*_*.sol
+contracts/CrazyCubeUltimate3_*.sol
+!contracts/CrazyCubeUltimate3.sol
+
+# Documentation and reports
+*REPORT.md
+*SECURITY*.md
+*SETUP.md
+layout-*.json
+
+# Security audit and config files
+security-audit.js
+eslint.config.mjs
+.eslintignore
+.eslintrc.*
+clean-scripts.js

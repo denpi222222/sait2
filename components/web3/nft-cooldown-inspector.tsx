@@ -19,6 +19,8 @@ import {
 import { motion } from 'framer-motion';
 import { useCrazyCubeGame } from '@/hooks/useCrazyCubeGame';
 import { useTranslation } from 'react-i18next';
+import { createPublicClient, http, formatEther } from 'viem'
+import { apeChain } from '@/config/chains'
 
 interface NFTCooldownData {
   tokenId: string;
@@ -35,6 +37,9 @@ interface NFTCooldownData {
   pingCooldownLeft: number;
   breedCooldownLeft: number;
   expectedReward: string;
+  pendingPeriods: number;
+  pendingCRA: string;
+  rarityBonusPct: number;
   burnLockedAmount?: string | undefined;
   burnTimeLeft?: number | undefined;
   canClaim?: boolean | undefined;
@@ -72,14 +77,44 @@ export default function NFTCooldownInspector() {
       const pingCooldownLeft = Math.max(0, pingInterval - (now - gameData.lastPingTime));
       const breedCooldownLeft = Math.max(0, breedCooldown - (now - gameData.lastBreedTime));
       
-      // Calculate expected reward
-      const baseReward = 1931412793049873561040n;
-      // ✅ SAFE: gameData.rarity comes from smart contract, not from NFT metadata
-      // Attacker cannot fake this data
-      const rarityBonuses = [0, 0, 5, 10, 20, 35, 50];
-      const bonus = rarityBonuses[gameData.rarity] || 0;
-      const expectedReward = baseReward + (baseReward * BigInt(bonus) / 100n);
+      // --- NEW REWARD CALCULATION (matches Ping section) ---
+      // Minimal ABI for only the required functions
+      const MINI_ABI = [
+        { name: 'sharePerPing', type: 'function', stateMutability: 'view', inputs: [], outputs: [{ type: 'uint256' }] },
+        { name: 'rarityBonusBps', type: 'function', stateMutability: 'view', inputs: [{ type: 'uint8' }], outputs: [{ type: 'uint256' }] },
+        { name: 'currentMultiplierBps', type: 'function', stateMutability: 'view', inputs: [{ type: 'uint256' }], outputs: [{ type: 'uint256' }] },
+      ] as const
 
+      const GAME_ADDR = apeChain.contracts.gameProxy.address as `0x${string}`
+
+      const client = createPublicClient({ chain: apeChain, transport: http() })
+
+      const [sharePerPingWei, rarityBps, multiplierBps] = await Promise.all([
+        client.readContract({ address: GAME_ADDR, abi: MINI_ABI, functionName: 'sharePerPing' }) as Promise<bigint>,
+        client.readContract({ address: GAME_ADDR, abi: MINI_ABI, functionName: 'rarityBonusBps', args: [gameData.rarity] }) as Promise<bigint>,
+        client.readContract({ address: GAME_ADDR, abi: MINI_ABI, functionName: 'currentMultiplierBps', args: [BigInt(tokenId)] }) as Promise<bigint>,
+      ])
+
+      // Base reward per ping
+      const basePerPingWei = sharePerPingWei
+      // Apply rarity bonus
+      const withRarityWei = basePerPingWei + (basePerPingWei * rarityBps) / 10000n
+      // Apply streak multiplier
+      const totalPerPingWei = (withRarityWei * multiplierBps) / 10000n
+
+      const expectedRewardWei = totalPerPingWei
+
+      // Calculate pending periods & CRA since last ping
+      const periodsSinceLastPing = Math.floor((now - gameData.lastPingTime) / pingInterval);
+      const pendingPeriods = Math.max(0, periodsSinceLastPing);
+      const pendingCRAWei = expectedRewardWei * BigInt(pendingPeriods);
+      const pendingCRA = Number(formatEther(pendingCRAWei)).toFixed(2);
+
+      // Bonus percentage (rarity + streak)
+      const rarityPercent = Number(rarityBps) / 100;
+      const streakPercent = (Number(multiplierBps) - 10000) / 100;
+      const bonus = rarityPercent + streakPercent;
+       
       const burn = await getBurnRecord(tokenId);
 
       const cooldownData: NFTCooldownData = {
@@ -96,7 +131,10 @@ export default function NFTCooldownInspector() {
         canBreed: breedCooldownLeft === 0,
         pingCooldownLeft,
         breedCooldownLeft,
-        expectedReward: (Number(expectedReward) / 1e18).toFixed(0),
+        expectedReward: Number(formatEther(expectedRewardWei)).toFixed(2),
+        pendingPeriods,
+        pendingCRA,
+        rarityBonusPct: bonus,
         burnLockedAmount: burn ? (Number(burn.lockedAmount)/1e18).toFixed(2) : undefined,
         burnTimeLeft: burn ? burn.timeLeft : undefined,
         canClaim: burn ? burn.canClaim : undefined,
@@ -276,6 +314,18 @@ export default function NFTCooldownInspector() {
                 <span className="text-slate-400 text-xs">{t('info.lockedCra', 'Locked CRA')}</span>
               </div>
               <p className="text-base font-bold text-white">{nftData.lockedCRA}</p>
+            </div>
+          </div>
+
+          {/* Ping Analytics */}
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="bg-cyan-900/20 rounded-lg p-4 border border-cyan-500/30">
+              <h4 className="text-sm font-semibold text-cyan-300 mb-1 flex items-center"><Zap className="h-4 w-4 mr-1" />Pending CRA</h4>
+              <p className="text-lg font-mono text-white text-center">{nftData.pendingCRA} CRA</p>
+            </div>
+            <div className="bg-purple-900/20 rounded-lg p-4 border border-purple-500/30">
+              <h4 className="text-sm font-semibold text-purple-300 mb-1 flex items-center"><Timer className="h-4 w-4 mr-1" />Periods</h4>
+              <p className="text-lg font-mono text-white text-center">{nftData.pendingPeriods}</p>
             </div>
           </div>
 

@@ -81,10 +81,11 @@ export function useNetwork() {
     if (isConnected && !isApeChain && !isSwitching) {
       const timer = setTimeout(() => {
         forceSwitchToApeChain()
-      }, 1000)
+      }, 1500)
       
       return () => clearTimeout(timer)
     }
+    return undefined
   }, [isConnected, isApeChain, isSwitching])
 
   // Force network switch with multiple attempts

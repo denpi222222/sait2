@@ -1,10 +1,10 @@
 {
   "home": {
     "title": "CrazyCube",
-    "subtitle": "큐브가 울고 웃는 곳!",
+    "subtitle": "큐브가 울고 농담하는 곳!",
     "balance": "잔액:",
     "connectWallet": "MetaMask 연결",
-    "walletNotDetected": "MetaMask가 감지되지 않았습니다. 먼저 설치하세요"
+    "walletNotDetected": "MetaMask가 감지되지 않았습니다. MetaMask를 설치하세요"
   },
   "sections": {
     "bridge": {
@@ -25,7 +25,7 @@
     },
     "burn": {
       "title": "NFT 소각 (큐브를 구워요!)",
-      "description": "NFT를 소각하고 CRA 토큰을 받으세요! 불타는 그릴에서 큐브들이 날아다니며 외칩니다: \"엄마한테 사랑한다고 전해줘!\"",
+      "description": "큐브를 태워서 CRA를 얻으세요. 쉬운 돈! 💰",
       "button": "NFT 소각",
       "feeBox": {
         "title": "🔥 소각 수수료 및 단계",
@@ -47,7 +47,8 @@
           "pingLock": "핑할 때 CRA는 지갑으로 가지 않고 NFT 내에 잠겨 있습니다. 소각으로만 인출할 수 있습니다.",
           "bridgeNote": "'브릿지' 섹션에서 묘지의 NFT를 부활시킵니다. 큐브 수는 5000개로 제한되며 절대 변하지 않습니다. 각 행동에서 소각되는 CRA는 영원히 데드지갑으로 가며 누구도 되찾을 수 없습니다."
         }
-      }
+      },
+      "noNFTsDescription": "태울 CrazyCube NFT가 없습니다"
     },
     "claim": {
       "title": "보상 청구 (내 CRA 어디에?)",
@@ -61,11 +62,12 @@
     "stats": {
       "title": "통계 (눈물과 고통 카운터)",
       "description": "얼마나 많은 NFT가 소각되었고, 묘지에서 돌아왔으며, 풀에 얼마나 많은 CRA가 있는지 보여줍니다",
-      "button": "통계 보기"
+      "button": "통계 보기",
+      "analytics": "분석"
     },
     "ping": {
       "title": "큐브 핑 (살려 두세요)",
-      "description": "큐브들이 허공으로 떠다니지 않도록 심장박동을 보내세요.",
+      "description": "CRA 토큰을 얻기 위해 10일마다 NFT를 ping하세요! 큐브를 활성화하고 보상을 누적하세요, 최대 30일까지 누적 가능.",
       "button": "핑",
       "readyToPing": "핑 준비됨",
       "cooldown": "쿨다운:",
@@ -84,7 +86,13 @@
         "재는 재로…",
         "엄마에게 괜찮다고 전해줘!",
         "여기 꽤 아늑한데… 아마도?"
-      ]
+      ],
+      "loading": "묘지에서 NFT를 로딩하는 중...",
+      "empty": {
+        "title": "묘지가 비어있음",
+        "description": "태운 큐브를 찾을 수 없습니다."
+      },
+      "showingFirst": "처음 20개 큐브 표시. 총: {count}"
     },
     "breed": {
       "title": "NFT 교배 (큐브 사랑!)",
@@ -180,7 +188,11 @@
     "balance": "잔액:",
     "notConnected": "지갑이 연결되지 않음",
     "connectFirst": "먼저 지갑을 연결하세요",
-    "connected": "연결됨"
+    "connected": "연결됨",
+    "instruction": "설명서",
+    "gameGuide": "CrazyCube 게임 가이드",
+    "gameGuideContent": "🎮 CrazyCube 게임 가이드\n\n🔹 시작하기\n• CRA 토큰 획득 — 가스비 및 게임 액션용\n• 마켓플레이스에서 CrazyCube NFT 구매\n\n🔹 게임 시작 방법\n• Ping 탭으로 이동 — NFT를 볼 수 있습니다\n• 새 큐브의 경우 활성화 버튼 클릭 — 이것은 첫 번째 Ping으로, CRA를 주지 않지만 타이머를 시작합니다\n• 활성화 후 ping 가능 (Ping 클릭). 기본값은 10일마다 한 번, 보상이 누적되기 시작합니다\n• 성공적인 각 Ping은 CRA를 가져옵니다 — 양은 다음에 따라 달라집니다:\n  - 큐브 희귀도 (Common, Rare, Mystic 등)\n  - 경험 보너스 — ping을 놓치지 않고 10일마다 증가\n  - ping 간격 (더 많은 기간이 지나면 더 많은 CRA)\n\n🔹 경험 보너스란 무엇인가\n• 처음에는 모든 큐브가 -18.9% 페널티를 가집니다\n• 10일마다 놓치지 않으면 — +2.7%\n• 최대 +97.2%까지 달성 가능\n• 10일 이상 놓치면 — 보너스가 증가하지 않습니다\n• 20일 이상 놓치면 — 보너스가 -18.9%로 리셋됩니다\n\n🔹 CRA 획득 방법\n• CRA는 지갑에 즉시 떨어지지 않고 큐브 내부에 누적됩니다 (이렇게 각 NFT가 실제 가치를 가집니다)\n• 수집하려면 — 큐브를 태워야 합니다 (Burn) (큐브가 묘지 섹션으로 가서 더 이상 당신 것이 아니며, claim 섹션에서 CRA 코인을 받습니다)\n\n🔹 태우는 방법\n• Burn 섹션으로 이동\n• 큐브와 대기 시간 선택:\n  - 12시간 → 플레이어에게 60%\n  - 24시간 → 70%\n  - 48시간 → 80%\n• 나머지는 풀과 영구 소각 사이에 분배됩니다 (공식 데드 지갑으로 이동)\n• 선택한 시간 후 Claim 버튼 클릭 — CRA가 지갑으로 옵니다\n\n🔹 큐브 부활 방법 (Breed)\n• Breed 섹션으로 이동\n• 2개의 살아있는 큐브 선택 (별이 있고 쿨다운 중이 아닌)\n• CRA 지불 (마켓플레이스 최저가의 8%, 지속적으로 업데이트)\n• 묘지의 랜덤 NFT가 새것으로 돌아옵니다. 모든 별이 있지만 코인은 없습니다:\n  - 보너스 리셋 (-18.9%로 돌아감)\n  - 별 복원\n  - 처음부터 다시 ping 가능\n\n🔹 시스템에서 CRA의 위치\n• Ping용 CRA는 월간 보상 풀에서 나옵니다\n• Breed에 소비된 CRA는 이 풀로 돌아갑니다\n• Burn의 CRA는 영원히 소각됩니다\n• 모든 소각된 것은 특별한 지갑 0x...dead로 가서 영원히 사라집니다\n\n🔹 전략 예시\n세 개의 큐브가 있습니다:\n• Common (일반) — ping하세요, 보너스가 10일마다 2.7%씩 97%까지 증가한 후 멈춥니다. NFT 판매, 전송 가능, 보너스 보존됩니다\n• Rare — Breed에 사용하거나 CRA 누적\n• Mystic — 희귀, 더 많은 CRA 제공, 태우지 않는 것이 좋습니다\n\n차분하게 플레이:\n• 10일마다 한 번 로그인해서 Ping 클릭\n• 주기적으로 약한 큐브 태우기 → 토큰 획득\n• 또는 죽은 것들 부활 — 더 희귀한 것을 얻을 기회\n\n💡 팁\n최대 이익을 원한다면 — 정기적으로 ping하고 희귀한 큐브를 너무 일찍 태우지 마세요.\n💥 태워진 토큰은 돌아오지 않습니다 — 이는 남은 CRA의 가치를 증가시킵니다.\n\n🚀 우리의 비전\n1-2개월 내에 게임플레이를 조정하고 NFT 및 토큰 계약의 관리자 권한을 포기할 계획입니다. 우리는 사회적 실험을 수행하고 아무것도 변경할 수 없는 완전한 사회적 게임플레이를 만들고 싶습니다 — 시장과 사람들만이 결정합니다.\n\n팀은 CRA 코인 형태의 계약 보너스가 없습니다. 예를 들어 Rabby 지갑에서 1분 만에 지갑을 만들고 우리 게임을 플레이할 수 있습니다.\n\n곧 우리 게임은 시장 자체 조절로 100% 탈중앙화될 것입니다.",
+    "switchNetwork": "네트워크 변경"
   },
   "userNFTs": {
     "title": "내 NFT",
@@ -259,10 +271,11 @@
     "ping": "핑"
   },
   "navigation": {
-    "home": "홈"
+    "home": "홈",
+    "returnHome": "홈으로 돌아가기"
   },
   "ping": {
-    "description": "CRA 토큰을 얻기 위해 3분마다 NFT를 ping하세요! 3분마다 한 번 또는 15일마다 한 번 ping, 최대 15일까지 누적.",
+    "description": "CRA 토큰을 얻기 위해 10일마다 NFT를 ping하세요! 큐브를 활성화하고 보상을 누적하세요, 최대 30일까지 누적 가능.",
     "connectWallet": "큐브를 보려면 지갑을 연결하세요",
     "noNFTs": "CrazyCube NFT를 찾을 수 없습니다."
   },
@@ -280,7 +293,10 @@
     "retry": "다시 시도",
     "loading": "로딩 중...",
     "loadingNFTs": "NFT 로딩 중...",
-    "total": "총계"
+    "total": "총계",
+    "fetchingCollection": "CrazyCube 컬렉션을 가져오는 중",
+    "noNFTsFound": "NFT를 찾을 수 없음",
+    "goToCollection": "컬렉션으로 이동"
   },
   "market": {
     "loading": "시장 데이터 로딩 중...",
@@ -413,7 +429,8 @@
         "desc": "NFT 컬렉션과 게임 계약이 완전히 탈중앙화되고, CRA 토큰이 자율적이 됩니다"
       },
       "callout": "🚀 CrazyCube - 완전한 탈중앙화 계획을 가진 첫 번째 NFT 컬렉션!"
-    }
+    },
+    "title": "정보 및 분석"
   },
   "status": {
     "ready": "준비됨",
@@ -521,6 +538,15 @@
     },
     "info": {
       "title": "정보",
+      "nalaPhrases": [
+        "📊 데이터가 약간 맞지 않지만, 모든 것을 고칠 거예요! 시간을 주세요 ⏰",
+        "🔧 시스템 디버깅 진행 중, 곧 모든 것이 완벽하게 작동할 거예요! ✨",
+        "📈 숫자가 아직 일치하지 않지만, 팀이 수정 작업 중이에요 🛠️",
+        "⚡ 새로운 기능 테스트 중, 조금만 기다려주세요 - 멋질 거예요! 🚀",
+        "🎯 최대 데이터 정확도를 위해 알고리즘 조정 중 📊",
+        "🌟 모든 임시 불일치가 곧 수정될 거예요! 💫",
+        "🔄 시스템 업데이트 중, 곧 모든 것이 시계처럼 작동할 거예요! ⏰"
+      ],
       "subtitle": "NFT와 게임에 대한 자세한 정보",
       "overview": "개요",
       "yourCollection": "컬렉션",
@@ -648,5 +674,14 @@
     "byRarity": "희귀도별",
     "byStatus": "상태별",
     "nfts": "NFT"
+  },
+  "burn": {
+    "description": "Burn the cube — get CRA. Easy money! 💰",
+    "noNFTsDescription": "You don't have any CrazyCube NFTs to burn"
+  },
+  "stats": {
+    "analytics": "Analytics",
+    "yourNFTs": "Your NFTs",
+    "bridgeNFT": "Bridge NFT"
   }
 }

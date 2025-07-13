@@ -56,6 +56,13 @@ contract CrazyCubeUltimate3 is
     bytes32 public constant UNLOCKER_ROLE = keccak256("UNLOCKER_ROLE");
     bytes32 public constant FUND_MANAGER_ROLE = keccak256("FUND_MANAGER_ROLE");
 
+    // ────────────────────────────────────────────────────────────────
+    // Progressive bonus / malus constants
+    // ────────────────────────────────────────────────────────────────
+    uint256 public constant BONUS_PERIOD = 10 days;          // 10-day window
+    uint16  public constant BONUS_STEP_BPS = 270;            // +2.7 % each step
+    uint16  public constant BONUS_MAX_BPS  = 9_720;          // +97.2 % cap
+    int16   public constant PENALTY_BPS    = -1_890;         // –18.9 % malus
 
     uint256 public constant MAX_SUPPLY = 5000;
     uint256 private constant ACCURACY = 1e18;
@@ -112,18 +119,18 @@ contract CrazyCubeUltimate3 is
     uint256 public totalStars;  // 🔴 new – sum of stars of all live NFTs
 
     // ══════════════════════════════════════════════════════════════════════
-    // ДИНАМИЧЕСКИЙ CAP ДЛЯ PING
+    // NEW SHARE / CAP VARIABLES (restored)
     // ══════════════════════════════════════════════════════════════════════
-    /// @notice Делитель для cap-ограничения per-ping. По умолчанию 5000 (1/MAX_SUPPLY)
-    uint256 public perPingCapDivisor;
+    uint256 public perPingCapDivisor;     // dynamic cap divisor
+    uint256 public monthlySharePerNFT;    // CRA share per NFT per month
 
-    // ══════════════════════════════════════════════════════════════════════
-    // НОВЫЕ ПЕРЕМЕННЫЕ ДЛЯ «SHARE»
-    // ══════════════════════════════════════════════════════════════════════
-    /// @notice Сколько CRA приходится на один NFT за весь месяц
-    uint256 public monthlySharePerNFT;
-    /// @notice Сколько CRA полагается одному NFT за один ping (sharePerPing)
     uint256 public sharePerPing;
+
+    // 🔴 how many successful pings performed per NFT
+    mapping(uint256 => uint32) public pingsDone;
+
+    // 🔴 progressive bonus / malus (-1 890 … +9 720 bps)
+    mapping(uint256 => int16) public bonusBps;
 
     // =================================================================================================
     // || СОБЫТИЯ                                                                                     ||
@@ -350,6 +357,16 @@ contract CrazyCubeUltimate3 is
         
         NFTState storage state = nftState[tokenId];
         
+        // ────────────────────────────────────────────────────────────────
+        // 🔸 FREE FIRST PING – just activates the NFT, no reward
+        // ────────────────────────────────────────────────────────────────
+        if (state.lastPingTime == 0) {
+            state.lastPingTime = block.timestamp;
+            unchecked { pingsDone[tokenId] += 1; }
+            emit Ping(msg.sender, tokenId, 0);
+            return;
+        }
+        
         if (state.lastPingTime > 0 && block.timestamp < state.lastPingTime + pingInterval) {
             revert CooldownActive(state.lastPingTime + pingInterval - block.timestamp);
         }
@@ -368,8 +385,12 @@ contract CrazyCubeUltimate3 is
         // ✅ LOW-002: Кешируем rarity для экономии газа
         uint8 rarity = nftData[tokenId].rarity;
         uint256 baseReward = sharePerPing * periodCount;
-        uint256 bonus = (baseReward * rarityBonusBps[rarity]) / 10_000;
-        uint256 totalReward = baseReward + bonus;
+        uint256 rarityBonus = (baseReward * rarityBonusBps[rarity]) / 10_000;
+        uint256 totalReward = baseReward + rarityBonus;
+
+        // Apply progressive bonus / penalty multiplier
+        int256 multiplierBps = int256(10_000 + bonusBps[tokenId]); // always >= 0
+        totalReward = (totalReward * uint256(multiplierBps)) / 10_000;
 
         // безопасность: никогда не превысим месячный пул
         if (totalReward > monthlyRewardPool) {
@@ -381,11 +402,22 @@ contract CrazyCubeUltimate3 is
         monthlyRewardPool -= totalReward;
         state.lockedCRA += totalReward;
         state.lastPingTime = block.timestamp;
-        
+        unchecked { pingsDone[tokenId] += 1; }
+
+        // Grow bonus if player kept the rhythm (<= 10 days since last ping)
+        if (timeSinceLastPing <= BONUS_PERIOD) {
+            int16 curr = bonusBps[tokenId];
+            if (curr < int16(uint16(BONUS_MAX_BPS))) {
+                int16 next = curr + int16(uint16(BONUS_STEP_BPS));
+                if (next > int16(uint16(BONUS_MAX_BPS))) next = int16(uint16(BONUS_MAX_BPS));
+                bonusBps[tokenId] = next;
+            }
+        }
+
         emit Ping(msg.sender, tokenId, totalReward);
     }
 
-    function requestBreed(uint256 parent1Id, uint256 parent2Id, bytes32 userRandom) external whenNotPaused nonReentrant {
+    function requestBreed(uint256 parent1Id, uint256 parent2Id, bytes32 userRandom) external virtual whenNotPaused nonReentrant {
         _autoUnlockIfNeeded(); // ✅ АВТОМАТИЧЕСКИЙ ТРИГГЕР
 
         _validateBreedPrerequisites(parent1Id, parent2Id);
@@ -553,7 +585,7 @@ contract CrazyCubeUltimate3 is
         _finalizeBreed(request.requester, request.parent1Id, request.parent2Id, revivedTokenId);
     }
 
-    function _finalizeBreed(address requester, uint256 parent1Id, uint256 parent2Id, uint256 revivedTokenId) internal {
+    function _finalizeBreed(address requester, uint256 parent1Id, uint256 parent2Id, uint256 revivedTokenId) internal virtual {
         NFTState storage parent1State = nftState[parent1Id];
         NFTState storage parent2State = nftState[parent2Id];
         parent1State.currentStars--;
@@ -564,8 +596,12 @@ contract CrazyCubeUltimate3 is
         NFTState storage revivedState = nftState[revivedTokenId];
         revivedState.isInGraveyard = false;
         revivedState.currentStars = nftData[revivedTokenId].initialStars;
-        revivedState.lastPingTime = block.timestamp;
+        // ⚡️ newborn starts un-activated: first ping will be free (reward=0)
+        revivedState.lastPingTime = 0;
         revivedState.lastBreedTime = block.timestamp;
+        // Reset ping counter for revived cube
+        pingsDone[revivedTokenId] = 0;
+        bonusBps[revivedTokenId] = PENALTY_BPS; // apply malus after revive
 
         _removeFromGraveyard(revivedTokenId);
         nftContract.safeTransferFrom(address(this), requester, revivedTokenId, "");
@@ -686,7 +722,23 @@ contract CrazyCubeUltimate3 is
         nftState[tokenId].isInGraveyard = isDead;
     }
 
-
+    /**
+     * @notice Полный «hard reset» NFT: сбросить lockedCRA и вернуть в состояние «не активирован»
+     * @dev ADMIN_ROLE only.  Устанавливает lockedCRA = 0, lastPingTime = 0, pingsDone = 0.
+     *      Звёзды и другие поля не трогаем.
+     * @param tokenIds Список ID для сброса.
+     */
+    function adminResetLockedCRAToZero(uint256[] calldata tokenIds) external onlyRole(ADMIN_ROLE) {
+        unchecked {
+            for (uint256 i = 0; i < tokenIds.length; ++i) {
+                uint256 id = tokenIds[i];
+                nftState[id].lockedCRA = 0;
+                nftState[id].lastPingTime = 0;
+                pingsDone[id] = 0;
+                bonusBps[id] = PENALTY_BPS;
+            }
+        }
+    }
 
     // =================================================================================================
     // || КОНФИГУРАЦИЯ                                                                                ||
@@ -701,6 +753,8 @@ contract CrazyCubeUltimate3 is
         maxAccumulationPeriod = _maxAccumulationPeriod;
         breedCooldown = _breedCooldown;
         graveyardCooldown = _graveyardCooldown;
+        // 🔸 Safety: accumulation cap must be at least 2× interval to avoid zero periods
+        require(_maxAccumulationPeriod >= _pingInterval * 2, "cap<2x");
     }
 
     function configureBreedCostBps(uint256 _breedCostBps) external onlyRole(CONFIGURATOR_ROLE) {
@@ -809,8 +863,6 @@ contract CrazyCubeUltimate3 is
         }
     }
 
-    uint256[50] private __gap;
-
     // =================================================================================================
     // || VIEW ФУНКЦИИ                                                                               ||
     // =================================================================================================
@@ -829,5 +881,17 @@ contract CrazyCubeUltimate3 is
         bytes calldata data
     ) external pure override returns (bytes4) {
         return IERC721Receiver.onERC721Received.selector;
+    }
+
+    /// @notice Returns true if NFT has been activated by at least one ping
+    function isActivated(uint256 tokenId) external view returns (bool) {
+        return nftState[tokenId].lastPingTime != 0;
+    }
+
+    /// @notice Returns current multiplier (base 10 000 bps)
+    function currentMultiplierBps(uint256 tokenId) external view returns (uint16) {
+        int16 b = bonusBps[tokenId];
+        int16 total = int16(10_000) + b;
+        return uint16(uint256(int256(total)));
     }
 }

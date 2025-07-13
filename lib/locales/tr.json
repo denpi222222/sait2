@@ -1,10 +1,10 @@
 {
   "home": {
     "title": "CrazyCube",
-    "subtitle": "Küplerin ağlayıp şakalaştığı yer!",
+    "subtitle": "Küplerin ağladığı ve şaka yaptığı yer!",
     "balance": "Bakiye:",
-    "connectWallet": "MetaMask Bağla",
-    "walletNotDetected": "MetaMask bulunamadı. Lütfen MetaMask kurun"
+    "connectWallet": "MetaMask'ı Bağla",
+    "walletNotDetected": "MetaMask bulunamadı. MetaMask'ı yükleyin"
   },
   "sections": {
     "bridge": {
@@ -47,7 +47,8 @@
           "pingLock": "Ping sırasında CRA cüzdana gitmez — NFT içinde kilitli kalır. Sadece yakarak çekilebilir.",
           "bridgeNote": "Mezarlıktan NFT'yi 'Köprü' bölümünde dirilt. Küp sayısı 5000 ile sınırlı ve asla değişmez. Her eylemde yakılan CRA sonsuza dek ölü cüzdana gider — kimse geri alamaz."
         }
-      }
+      },
+      "noNFTsDescription": "Yakacak CrazyCube NFT'niz yok"
     },
     "claim": {
       "title": "Ödül Talep Et (CRA Nerede?)",
@@ -61,11 +62,14 @@
     "stats": {
       "title": "İstatistikler (Gözyaşı ve Acı Sayacı)",
       "description": "Kaç NFT yakıldı, mezarlıktan döndü ve havuzda ne kadar CRA var gösterir",
-      "button": "İstatistikleri Gör"
+      "button": "İstatistikleri Gör",
+      "analytics": "Analitik",
+      "yourNFTs": "NFT'leriniz",
+      "bridgeNFT": "Köprü NFT"
     },
     "ping": {
       "title": "Küp Ping (Canlı Tut)",
-      "description": "Küplerinize kalp atışı gönderin ki boşluğa sürüklenmesinler.",
+      "description": "CRA token kazanmak için NFT'nizi her 10 günde bir pinleyin! Küplerinizi aktive edin ve ödülleri biriktirin, maksimum 30 gün biriktirme yapabilirsiniz.",
       "button": "Ping",
       "readyToPing": "Ping Hazır",
       "cooldown": "Bekleme:",
@@ -84,7 +88,13 @@
         "Külden küle…",
         "Anneme iyi olduğumu söyle!",
         "Burası oldukça rahat… belki?"
-      ]
+      ],
+      "loading": "Mezarlıktan NFT'leriniz yükleniyor...",
+      "empty": {
+        "title": "MEZARLIK BOŞ",
+        "description": "Yakılmış küp bulunamadı."
+      },
+      "showingFirst": "İlk 20 küp gösteriliyor. Toplam: {count}"
     },
     "breed": {
       "title": "NFT Çiftleştir (Küpsel Aşk!)",
@@ -159,7 +169,7 @@
   "construction": {
     "title": "YAPIM AŞAMASINDA",
     "message": "Bu bölüm hâlâ geliştirme aşamasındadır. Yakında burada birçok ilginç şey olacak!",
-    "returnHome": "Eve Dön",
+    "returnHome": "Ana Sayfaya Dön",
     "phrases": [
       "Burada çalışıyorum! Rahatsız etme!",
       "Yakında gelir, baretimi taktım!",
@@ -176,8 +186,12 @@
     "copyAddress": "Adresi Kopyala",
     "copied": "Kopyalandı!",
     "openExplorer": "Explorer'da Aç",
-    "disconnect": "Cüzdanı Ayır",
-    "balance": "Bakiye:",
+    "disconnect": "Bağlantıyı Kes",
+    "balance": "Bakiye",
+    "instruction": "Talimat",
+    "gameGuide": "CrazyCube Oyun Rehberi",
+    "gameGuideContent": "🎮 CrazyCube Oyun Rehberi\n\n🔹 Başlangıç\n• CRA token edinin — gas ücretleri ve oyun aksiyonları için\n• Pazarda CrazyCube NFT satın alın\n\n🔹 Oynamaya Nasıl Başlanır\n• Ping sekmesine gidin — NFT'lerinizi göreceksiniz\n• Yeni küp için Aktifleştir'e basın — bu ilk Ping'tir, CRA vermez ama zamanlayıcıyı başlatır\n• Aktivasyondan sonra ping yapabilirsiniz (Ping'e tıklayın). Varsayılan olarak 10 günde bir, ödüller birikmeye başlar\n• Her başarılı Ping CRA getirir — miktar şunlara bağlıdır:\n  - Küp nadir liği (Common, Rare, Mystic, vb.)\n  - Deneyim bonusunuz — ping kaçırmadan her 10 günde büyür\n  - Ping'ler arası süre (daha fazla dönem geçtiyse, daha fazla CRA)\n\n🔹 Deneyim Bonusu Nedir\n• Başlangıçta tüm küplerde -18.9% ceza vardır\n• Her 10 gün kaçırmadan — +2.7%\n• Maksimum +97.2%'ye ulaşabilirsiniz\n• 10 günden fazla kaçırırsanız — bonus artmaz\n• 20+ gün kaçırırsanız — bonus -18.9%'a sıfırlanır\n\n🔹 CRA Nasıl Alınır\n• CRA hemen cüzdana düşmez, küpün içinde birikir (böylece her NFT'nin gerçek değeri olur)\n• Toplamak için — küpü yakmanız gerekir (Burn) (küpünüz mezarlık bölümüne gider ve artık size ait olmaz, claim bölümünde CRA coin alırsınız)\n\n🔹 Nasıl Yakılır\n• Burn bölümüne gidin\n• Küp ve bekleme süresini seçin:\n  - 12 saat → oyuncuya %60\n  - 24 saat → %70\n  - 48 saat → %80\n• Geri kalanı havuz ve kalıcı yakma arasında bölünür (resmi ölü cüzdana gider)\n• Seçilen süre sonra gidip Claim'e basın — CRA cüzdanınıza gelecek\n\n🔹 Küp Nasıl Canlandırılır (Breed)\n• Breed bölümüne gidin\n• 2 canlı küp seçin (yıldızları olan ve soğuma süresinde olmayan)\n• CRA ödeyin (pazar minimum fiyatının %8'i, sürekli güncellenir)\n• Mezarlıktan rastgele NFT yeni olarak size geri dönecek, tüm yıldızları ile ama coin olmadan:\n  - Bonus sıfırlanır (-18.9%'a geri döner)\n  - Yıldızlar geri yüklenir\n  - Baştan ping yapabilir\n\n🔹 Sistemde CRA Nerede\n• Ping için CRA aylık ödül havuzundan gelir\n• Breed'de harcanan CRA bu havuza geri döner\n• Burn'dan CRA sonsuza kadar yanar\n• Yakılan her şey özel cüzdan 0x...dead'e gider ve sonsuza kadar kaybolur\n\n🔹 Strateji Örneği\nÜç küpünüz var:\n• Common (normal) — ping yapın, bonus her 10 günde %2.7 artarak %97'ye kadar çıkar, sonra durur. NFT satabilir, transfer edebilirsiniz, bonus korunur\n• Rare — Breed için kullanın veya CRA biriktirin\n• Mystic — nadir, daha fazla CRA getirir, yakmamak daha iyi\n\nSakin oynayın:\n• 10 günde bir giriş yapın ve Ping'e basın\n• Periyodik olarak zayıf küpleri yakın → token alın\n• Veya ölüleri canlandırın — daha nadir olanı alma şansı\n\n💡 İpuçları\nMaksimum kar istiyorsanız — düzenli ping yapın ve nadir küpleri çok erken yakmayın.\n💥 Yakılan tokenlar geri gelmez — bu kalan CRA'nın değerini artırır.\n\n🚀 Vizyonumuz\nPlanlarımız 1-2 ay içinde oyunu ayarlamak ve NFT ve token sözleşmelerinde admin haklarından vazgeçmek. Sosyal bir deney yapmak ve hiçbir şeyi değiştirme imkanı olmayan tamamen sosyal oyun yaratmak istiyoruz — sadece pazar ve insanlar karar verir.\n\nEkibin CRA coin şeklinde sözleşmede bonusu yoktur. Bir cüzdan oluşturabilirsiniz, örneğin Rabby cüzdanında 1 dakikada ve oyunumuzu oynayabilirsiniz.\n\nYakında oyunumuz pazar öz-düzenlemesi ile %100 merkezi olmayan olacak.",
+    "switchNetwork": "Ağ Değiştir",
     "notConnected": "Cüzdan bağlı değil",
     "connectFirst": "Önce cüzdan bağlayın",
     "connected": "Bağlandı"
@@ -218,7 +232,7 @@
       "En sevdiğim parça! 🎧",
       "DJ, ses ver! 🎚️",
       "Küpler burada! 🏠",
-      "Güneş doğana kadar parti! 🌅"
+      "Güneş doğana kadar parti! 🌞"
     ],
     "musicOn": "Müziği Kapat",
     "musicOff": "Müziği Aç"
@@ -263,11 +277,12 @@
     "claim": "Talep Et",
     "graveyard": "Mezarlık",
     "ping": "Ping",
-    "stats": "İstatistikler"
+    "stats": "İstatistikler",
+    "returnHome": "Ana Sayfaya Dön"
   },
   "ping": {
     "title": "NFT Ping",
-    "description": "CRA token kazanmak için NFT'lerinizi her 3 dakikada bir ping atın! Her 3 dakikada bir veya her 15 günde bir ping, 15 güne kadar birikim.",
+    "description": "CRA token kazanmak için NFT'nizi her 10 günde bir pinleyin! Küplerinizi aktive edin ve ödülleri biriktirin, maksimum 30 gün biriktirme yapabilirsiniz.",
     "connectWallet": "Küplerinizi görmek için cüzdan bağlayın",
     "noNFTs": "CrazyCube NFT bulunamadı.",
     "loadingNFTs": "NFT'ler yükleniyor...",
@@ -300,7 +315,10 @@
     "retry": "Tekrar Dene",
     "loading": "Yükleniyor...",
     "loadingNFTs": "NFT'ler yükleniyor...",
-    "total": "Toplam"
+    "total": "Toplam",
+    "fetchingCollection": "CrazyCube koleksiyonunuz alınıyor",
+    "noNFTsFound": "NFT bulunamadı",
+    "goToCollection": "Koleksiyona git"
   },
   "market": {
     "loading": "Pazar verileri yükleniyor...",
@@ -433,7 +451,8 @@
         "desc": "NFT koleksiyonu ve oyun sözleşmesi tamamen merkezi olmayan olacak, CRA token otonom hale gelecek"
       },
       "callout": "🚀 CrazyCube - tam merkezi olmayanlık planı olan ilk NFT koleksiyonu!"
-    }
+    },
+    "title": "Bilgi ve analitik"
   },
   "status": {
     "ready": "Hazır",
@@ -541,6 +560,15 @@
     },
     "info": {
       "title": "Bilgi",
+      "nalaPhrases": [
+        "📊 Veriler biraz uyuşmuyor, ama her şeyi düzelteceğiz! Bize zaman verin ⏰",
+        "🔧 Sistem hata ayıklama devam ediyor, yakında her şey mükemmel çalışacak! ✨",
+        "📈 Sayılar henüz eşleşmiyor, ama takım düzeltme üzerinde çalışıyor 🛠️",
+        "⚡ Yeni özellikler test ediliyor, biraz sabırlı olun - harika olacak! 🚀",
+        "🎯 Maksimum veri doğruluğu için algoritmalar ayarlanıyor 📊",
+        "🌟 Tüm geçici farklılıklar yakında düzeltilecek! 💫",
+        "🔄 Sistem güncelleniyor, yakında her şey saat gibi çalışacak! ⏰"
+      ],
       "subtitle": "NFT'leriniz ve oyun hakkında detaylı bilgi",
       "overview": "Genel Bakış",
       "yourCollection": "Koleksiyonunuz",
@@ -651,5 +679,31 @@
       "Hiçbir şey görmedik!",
       "Bakma!"
     ]
+  },
+  "graveyard": {
+    "claimedReward": "Claimed reward",
+    "claimError": "Claim error"
+  },
+  "burn": {
+    "description": "Burn the cube — get CRA. Easy money! 💰",
+    "noNFTsDescription": "You don't have any CrazyCube NFTs to burn"
+  },
+  "stats": {
+    "analytics": "Analytics",
+    "yourNFTs": "Your NFTs",
+    "bridgeNFT": "Bridge NFT"
+  },
+  "distribution": {
+    "activeVsGraveyard": "Active vs In graveyard by rarity",
+    "rarity": "Rarity",
+    "byRarity": "By Rarity",
+    "byStatus": "By Status",
+    "nfts": "NFTs"
+  },
+  "contractInteraction": {
+    "error": "Error",
+    "enterTokenId": "Please enter a token ID",
+    "enterTokenIdAndHours": "Please enter token ID and wait hours",
+    "enterBothParents": "Please enter both parent token IDs"
   }
 }

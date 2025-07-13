@@ -49,7 +49,7 @@ function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
         <link rel="manifest" href="/manifest.json" />
         {/* Trusted Types default policy must be defined before any JS executes */}
-        <script src="/trusted-types.js" />
+        <script src="/trusted-types.js" async />
       </head>
       <body className={inter.className}>
         <ClientLayout>{children}</ClientLayout>

@@ -18,7 +18,7 @@ interface HeartRainProps {
  */
 export default function HeartRain({ density = 6, color = "#fb7185", className = "" }: HeartRainProps) {
   const prefersReduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  if(prefersReduced) return null
+  
   // Pre-generate a list of hearts with random params; run only on first render (useMemo)
   const hearts = useMemo(() => {
     // For 1440 px width -> density hearts; scale with viewport width
@@ -32,7 +32,9 @@ export default function HeartRain({ density = 6, color = "#fb7185", className = 
       opacity: 0.4 + Math.random() * 0.4,
       sway: Math.random() > 0.5 ? 1 : -1, // direction of sway
     }))
-  }, [])
+  }, [density])
+
+  if(prefersReduced) return null
 
   return (
     <div className={`fixed inset-0 overflow-hidden pointer-events-none z-0 ${className}`}>

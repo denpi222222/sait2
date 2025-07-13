@@ -2,15 +2,25 @@ import { NextResponse } from 'next/server'
 import crypto from 'crypto'
 import { fetchWithRetry } from '../../../utils/fetchWithRetry'
 
-// URL для NFT-субграфа (denis)
+// URL for NFT subgraph (denis)
 const SUBGRAPH_URL = process.env.SUBGRAPH_URL || 'https://api.studio.thegraph.com/query/111010/denis-3/v0.0.1'
-const TTL = 120 // 2-минутное кэширование (≈ 30 запросов/ч)
+const TTL = 120 // 2-minute caching (≈ 30 requests/h)
 
-// Кэш в памяти
+// In-memory cache
 const memoryCache: Record<string, { ts: number; data: string }> = {}
 
 export async function POST(req: Request) {
+  // Read body only once
   const body = await req.text()
+  
+  // Check size after reading
+  const MAX_SIZE = 1_000_000 // 1 MB
+  if (body.length > MAX_SIZE) {
+    return new NextResponse(JSON.stringify({ error: 'Payload too large' }), {
+      status: 413,
+      headers: { 'content-type': 'application/json' },
+    })
+  }
   const cacheKey = crypto.createHash('sha1').update(body).digest('hex')
 
   const entry = memoryCache[cacheKey]
@@ -33,6 +43,11 @@ export async function POST(req: Request) {
     })
     
     const text = await sgRes.text()
+    // simple LRU cap 500
+    if (Object.keys(memoryCache).length > 500) {
+      const oldest = Object.entries(memoryCache).sort((a,b)=>a[1].ts-b[1].ts)[0]
+      if (oldest) delete memoryCache[oldest[0]]
+    }
     memoryCache[cacheKey] = { ts: now, data: text }
     
     return new NextResponse(text, {

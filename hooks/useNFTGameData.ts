@@ -235,7 +235,7 @@ export const useMultipleNFTGameInfo = (tokenIds: string[]) => {
       const dataResult = nftDataResults[index]
       const stateResult = nftStateResults[index]
 
-      if (dataResult.status !== 'success' || stateResult.status !== 'success') {
+      if (!dataResult || !stateResult || dataResult.status !== 'success' || stateResult.status !== 'success') {
         return null
       }
 

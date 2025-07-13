@@ -51,8 +51,8 @@ export function ParticleEffect({
   const particlesRef = useRef<Particle[]>([])
   const prefersReduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-  // Performance optimization: Only update dimensions when needed
-  const handleResize = useThrottledCallback(() => {
+  // Memoize resize handler so its identity stays stable across renders
+  const handleResize = useCallback(() => {
     if (canvasRef.current) {
       const canvas = canvasRef.current
       const rect = canvas.getBoundingClientRect()
@@ -60,18 +60,21 @@ export function ParticleEffect({
       canvas.height = rect.height
       setDimensions({ width: rect.width, height: rect.height })
     }
-  }, 200)
+  }, [])
+
+  // Stable throttled resize handler (must be declared at top level, hooks cannot be inside useMemo)
+  const throttledResize = useThrottledCallback(handleResize, 200)
 
   // Initialize on client side only
   useEffect(() => {
     setIsClient(true)
-    handleResize()
-    window.addEventListener("resize", handleResize)
+    throttledResize()
+    window.addEventListener("resize", throttledResize)
 
     return () => {
-      window.removeEventListener("resize", handleResize)
+      window.removeEventListener("resize", throttledResize)
     }
-  }, [handleResize])
+  }, [throttledResize])
 
   // Optimized particle creation function with useCallback
   const createParticle = useCallback((width: number, height: number, colors: string[], size: number): Particle => {
@@ -127,7 +130,7 @@ export function ParticleEffect({
       x,
       y,
       size: particleSize,
-      color: colors[Math.floor(Math.random() * colors.length)],
+      color: colors[Math.floor(Math.random() * colors.length)] || "#22d3ee",
       velocity: {
         x: Math.cos(angle) * speed,
         y: Math.sin(angle) * speed,

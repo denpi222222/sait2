@@ -20,6 +20,7 @@ export function useApeChainGuard() {
       
       return () => clearTimeout(timer)
     }
+    return undefined
   }, [isConnected, isApeChain])
 
   // Try to switch to ApeChain

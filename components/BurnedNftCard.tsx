@@ -8,6 +8,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Countdown } from '@/components/Countdown'
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
+import { IpfsImage } from "@/components/IpfsImage"
 
 interface BurnedNftCardProps {
     nft: BurnedNftInfo
@@ -65,53 +66,37 @@ export const BurnedNftCard = ({ nft }: BurnedNftCardProps) => {
     }
 
     return (
-        <motion.div variants={cardVariants} initial="hidden" animate="visible" className="w-72 mx-auto scale-[0.75]">
-            <Card className="group bg-gradient-to-br from-amber-900/80 to-yellow-900/70 border border-amber-600/40 hover:border-amber-400/60 rounded-xl overflow-hidden shadow-md hover:shadow-amber-500/30 transition-transform hover:-translate-y-2 duration-300 flex flex-col h-full p-4">
+        <motion.div variants={cardVariants} initial="hidden" animate="visible" className="scale-[0.75]">
+            <Card className={`bg-gradient-to-br from-yellow-900/80 to-amber-800/80 border-2 rounded-xl transition-all duration-300 hover:scale-105 ${isClaimReady ? 'border-yellow-500/60' : 'border-amber-600/50 hover:border-amber-500/60'} flex flex-col h-full w-full max-w-[220px]`}>
                 <div className="flex flex-col justify-between h-full">
                     <CardHeader className="p-0 mb-4">
-                        <div className="aspect-square w-full overflow-hidden rounded-md bg-slate-800">
-                            <img
-                                src={`https://d35a2j13p9i4c9.cloudfront.net/ipfs/QmdRAv2R2MNWEfT3kpostz13qVrDdD2j62jW2i2sra2aA1/${tokenId}.png`}
+                        <div className="aspect-square w-full overflow-hidden rounded-lg relative">
+                            <IpfsImage
+                                src={`https://nftstorage.link/ipfs/QmdRAv2R2MNWEfT3kpostz13qVrDdD2j62jW2i2sra2aA1/${tokenId}.png`}
                                 alt={`Cube #${tokenId}`}
+                                width={200}
+                                height={200}
                                 className="w-full h-full object-cover bg-slate-800"
-                                onError={(e)=>{
-                                    const img=e.currentTarget as HTMLImageElement
-                                    // 1) Попытка fallback на публичный IPFS шлюз (cloudflare)
-                                    if(!img.dataset.ipfs){
-                                        img.dataset.ipfs = '1'
-                                        img.src = `https://cloudflare-ipfs.com/ipfs/QmdRAv2R2MNWEfT3kpostz13qVrDdD2j62jW2i2sra2aA1/${tokenId}.png`
-                                        return
-                                    }
-
-                                    // 2) Локальный «зол» аватар
-                                    if(!img.dataset.alt1){
-                                    const idx=Number(tokenId)%7||7
-                                        img.dataset.alt1='1'
-                                        img.src=`/images/zol${idx}.png`
-                                        return
-                                    }
-
-                                    // 3) Финальный плейсхолдер
-                                    img.src='/placeholder-logo.png'
-                                }}
+                                tokenId={tokenId}
+                                fallbackSrc="/placeholder-logo.png"
                             />
                         </div>
                         <CardTitle className="mt-4 text-center text-xl font-bold text-white">{t('cube', 'Cube')} #{tokenId}</CardTitle>
                     </CardHeader>
                     
-                    <CardContent className="p-0 space-y-2 text-sm text-slate-300 border-t border-slate-700 pt-4">
+                    <CardContent className="pt-0 pb-2 px-2 text-[10px] space-y-1 text-yellow-200">
                         <div className="flex justify-between"><span>{t('rewards.accumulated', 'Accumulated:')}</span> <span className="font-medium text-white">{fmt(totalAmount)} CRA</span></div>
                         <div className="flex justify-between text-slate-400"><span>{t('rewards.toPool', 'To pool')} ({Number(split?.poolBps || 0) / 100}%):</span> <span className="text-rose-300">-{fmt(poolShare)} CRA</span></div>
                         <div className="flex justify-between text-slate-400"><span>{t('rewards.burned', 'Burned')} ({Number(split?.burnBps || 0) / 100}%):</span> <span className="text-rose-300">-{fmt(burnShare)} CRA</span></div>
 
                         {/* total payout highlight */}
-                        <div className="bg-slate-800/60 rounded-md py-2 px-3 mt-3 text-center shadow-inner border border-slate-700/40">
+                        <div className="bg-black/50 rounded-md py-1 px-2 mt-2 text-center shadow-inner border border-yellow-700/40">
                             <div className="text-[11px] uppercase tracking-wider text-slate-300">{t('rewards.toClaim', 'To claim')}</div>
                             <div className="text-2xl font-extrabold text-emerald-300 drop-shadow-md">{fmt(playerShare)} <span className="text-sm">CRA</span></div>
                         </div>
                     </CardContent>
 
-                    <CardFooter className="p-0 mt-6">
+                    <CardFooter className="px-2 pb-2 mt-auto">
                         {record.claimed || isSuccess ? (
                             <div className="w-full text-center font-bold text-lg py-3 rounded-lg bg-green-500/20 text-green-300">{t('rewards.claimed', 'REWARD CLAIMED')} ✅</div>
                         ) : (
@@ -130,4 +115,4 @@ export const BurnedNftCard = ({ nft }: BurnedNftCardProps) => {
     )
 }
 
-export default BurnedNftCard; 
+export default BurnedNftCard;

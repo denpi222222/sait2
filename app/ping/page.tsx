@@ -8,6 +8,9 @@ import { ParticleEffect } from "@/components/particle-effect"
 import dynamic from "next/dynamic"
 const CoinsAnimation = dynamic(() => import("@/components/coins-animation").then(m => m.CoinsAnimation), { ssr: false })
 import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { BookOpen } from "lucide-react"
 import { useMobile } from "@/hooks/use-mobile"
 import { useAlchemyNfts } from "@/hooks/useAlchemyNfts"
 import NFTPingCard from "@/components/NFTPingCard"
@@ -28,6 +31,7 @@ export default function PingPage() {
   const { connectors, connect } = useConnect()
   const { nfts, isLoading: isLoadingNFTs, error, refetch } = useAlchemyNfts()
   const [mounted, setMounted] = useState(false)
+  const [showGuide, setShowGuide] = useState(false)
   const { isMobile } = useMobile()
   const { pingInterval } = useCrazyCubeGame()
 
@@ -42,6 +46,94 @@ export default function PingPage() {
     // reset flag after evaluation to avoid repeated opens until next ping
     setTimeout(() => setPingedNow(false), 100)
   }
+
+  // Auto-show guide logic
+  useEffect(() => {
+    if (!isConnected || !address) return
+    
+    const GUIDE_STORAGE_KEY = `crazycube_guide_shown_${address}`
+    const lastShown = localStorage.getItem(GUIDE_STORAGE_KEY)
+    const now = Date.now()
+    const sevenDaysMs = 7 * 24 * 60 * 60 * 1000
+    
+    // Show if never shown or 7+ days passed
+    if (!lastShown || (now - parseInt(lastShown)) > sevenDaysMs) {
+      setShowGuide(true)
+      localStorage.setItem(GUIDE_STORAGE_KEY, now.toString())
+    }
+  }, [isConnected, address])
+
+  const gameGuideContent = `🎮 CrazyCube Game Guide
+
+🔹 Getting Started
+• Get CRA tokens — for gas fees and game actions
+• Buy CrazyCube NFTs on the marketplace
+
+🔹 How to Start Playing
+• Go to the Ping tab — you'll see your NFTs
+• For a new cube, press Activate — this is the first Ping, it doesn't give CRA but starts the timer
+• After activation, you can ping (click Ping). Default is once every 10 days, rewards start accumulating
+• Each successful Ping brings CRA — amount depends on:
+  - Cube rarity (Common, Rare, Mystic, etc.)
+  - Your experience bonus — grows every 10 days without missing pings
+  - Time between pings (if more periods passed, more CRA)
+
+🔹 What is Experience Bonus
+• Initially all cubes have -18.9% penalty
+• Every 10 days without missing — +2.7%
+• Maximum you can reach +97.2%
+• If you miss more than 10 days — bonus won't increase
+• If you miss 20+ days — bonus resets to -18.9%
+
+🔹 How to Get CRA
+• CRA doesn't drop to wallet immediately, but accumulates inside the cube (this way each NFT has real value)
+• To collect — you need to burn the cube (Burn) (your cube goes to graveyard section and no longer belongs to you, you get CRA coins in the claim section)
+
+🔹 How to Burn
+• Go to Burn section
+• Choose cube and waiting time:
+  - 12 hours → 60% to player
+  - 24 hours → 70%
+  - 48 hours → 80%
+• The rest is split between pool and permanent burning (goes to official dead wallet)
+• After chosen time, go and press Claim — CRA will come to your wallet
+
+🔹 How to Revive Cube (Breed)
+• Go to Breed section
+• Choose 2 living cubes (that have stars and are not in cooldown)
+• Pay CRA (8% of minimum marketplace price, constantly updated)
+• Random NFT from graveyard will return to you as new, with all stars but no coins:
+  - Bonus is reset (back to -18.9%)
+  - Stars are restored
+  - Can ping again from scratch
+
+🔹 Where CRA is in the System
+• CRA for Ping comes from monthly reward pool
+• CRA spent on Breed returns to this pool
+• CRA from Burn burns forever
+• Everything burned goes to special wallet 0x...dead and disappears forever
+
+🔹 Example Strategy
+You have three cubes:
+• Common (regular) — ping it, bonus grows by 2.7% every 10 days up to 97%, then stops. Can sell, transfer NFT, bonus is preserved
+• Rare — use for Breed or accumulate CRA
+• Mystic — rare, brings more CRA, better not to burn
+
+Play calmly:
+• Once every 10 days log in and press Ping
+• Periodically burn weak cubes → get tokens
+• Or revive dead ones — get chance for rarer one
+
+💡 Tips
+Want maximum profit — ping regularly and don't burn rare cubes too early.
+💥 Burned tokens won't return — this increases the value of remaining CRA.
+
+🚀 Our Vision
+Our plans within 1-2 months are to adjust the gameplay and renounce admin rights on NFT and token contracts. We want to conduct a social experiment and create fully social gameplay where there are no possibilities to change anything — only market and people decide.
+
+The team has no bonuses in the contract in the form of CRA coins. You can create a wallet, for example, in Rabby wallet in 1 minute and play our game.
+
+Soon our game will be 100% decentralized with market self-regulation.`
 
   useEffect(() => {
     setMounted(true)
@@ -79,7 +171,7 @@ export default function PingPage() {
         {/* Page Title and Info */}
         <div className="text-center mb-3">
           <p className="text-cyan-300/80 text-xs font-medium leading-relaxed max-w-xl mx-auto">
-            {t('ping.description', 'Ping your NFTs every 3 minutes to earn CRA tokens! Ping once every 3 minutes or once every 15 days, accumulation up to 15 days.')}
+            {t('ping.description', 'Ping your NFTs every 10 days to earn CRA tokens! Your bonus grows with consistent pinging.')}
           </p>
         </div>
 
@@ -103,6 +195,24 @@ export default function PingPage() {
           </LazyLoad>
         )}
       </div>
+      
+      {/* Auto-show Game Guide Modal */}
+      <Dialog open={showGuide} onOpenChange={setShowGuide}>
+        <DialogContent className="max-w-2xl max-h-[80vh] bg-slate-900 border-slate-700">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold text-white flex items-center">
+              <BookOpen className="w-5 h-5 mr-2 text-cyan-400" />
+              {t('wallet.gameGuide', 'CrazyCube Game Guide')}
+            </DialogTitle>
+          </DialogHeader>
+          <ScrollArea className="h-[60vh] pr-4">
+            <div className="text-slate-300 whitespace-pre-line text-sm leading-relaxed">
+              {gameGuideContent}
+            </div>
+          </ScrollArea>
+        </DialogContent>
+      </Dialog>
+      
       {show && <SocialPromptModal tweetId={process.env.NEXT_PUBLIC_PROMO_TWEET_ID || "1937267010896818686"} onClose={close} />}
     </div>
   )

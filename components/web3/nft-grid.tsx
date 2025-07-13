@@ -61,7 +61,7 @@ export function NFTGrid({ onSelect, selectable = false, maxDisplay, CardComponen
             transition={{ duration: 0.3 }}
           >
             {CardComponent ? (
-              <CardComponent nft={nft} delay={idx*0.05} onSelect={onSelect} selectable={selectable} />
+              <CardComponent nft={nft} delay={idx*0.05} {...(onSelect ? { onSelect } : {})} selectable={selectable} />
             ) : (
               <NFTCard nft={nft} selectable={selectable} onClick={() => onSelect?.(nft)} />
             )}

@@ -67,6 +67,13 @@ export function useAlchemyNfts() {
     }
   ] as const
 
+  const saveCache = (data: any[]) => {
+    if (!address) return
+    try {
+      localStorage.setItem(`${CACHE_KEY_PREFIX}${address}`, JSON.stringify({ ts: Date.now(), nfts: data }))
+    } catch {}
+  }
+
   const fetchNfts = async () => {
     if (!isConnected || !address) {
       setNfts([])
@@ -131,7 +138,7 @@ export function useAlchemyNfts() {
                 let img = metadata?.image 
                   || nft.image?.cachedUrl 
                   || nft.image?.originalUrl 
-                  || (nft.media && nft.media.length ? nft.media[0].gateway : '')
+                  || (nft.media && nft.media.length ? nft.media[0]?.gateway : '')
                   || '/favicon.ico';
                 return resolveIpfsUrl(img)
               })(),
@@ -139,6 +146,7 @@ export function useAlchemyNfts() {
               rewardBalance: 0,
               frozen: false,
               stars: 0, // Safe default value. Real stars will be loaded from contract.
+              rarity: "Common", // Default rarity
             }
           })
           
@@ -213,6 +221,7 @@ export function useAlchemyNfts() {
             
             // Only filter out NFTs that are not owned, keep graveyard NFTs
             setNfts(enrichedWithGameState.filter(Boolean) as any)
+            saveCache(enrichedWithGameState.filter(Boolean) as any)
           }
           return
         }
@@ -239,7 +248,7 @@ export function useAlchemyNfts() {
             let img = metadata?.image 
               || nft.image?.cachedUrl 
               || nft.image?.originalUrl 
-              || (nft.media && nft.media.length ? nft.media[0].gateway : '')
+              || (nft.media && nft.media.length ? nft.media[0]?.gateway : '')
               || '/favicon.ico';
             return resolveIpfsUrl(img)
           })(),
@@ -247,6 +256,7 @@ export function useAlchemyNfts() {
           rewardBalance: 0,
           frozen: false,
           stars: 0, // Safe default value.
+          rarity: "Common", // Default rarity
         }
       })
       
@@ -321,12 +331,32 @@ export function useAlchemyNfts() {
         
         // Only filter out NFTs that are not owned, keep graveyard NFTs
         setNfts(enrichedWithGameState.filter(Boolean) as any)
+        saveCache(enrichedWithGameState.filter(Boolean) as any)
       }
     } while (pageKey);
   }
 
-  // Fetch immediately on mount / dependency change
+  const CACHE_KEY_PREFIX = 'alchemy_nfts_'
+  const CACHE_TTL_MS = 60000 // 60 seconds
+
+  // Fetch immediately on mount / dependency change (with cache consideration)
   useEffect(() => {
+    if (!isConnected || !address) {
+      setNfts([])
+      return
+    }
+
+    const cacheKey = `${CACHE_KEY_PREFIX}${address}`
+    try {
+      const cachedStr = localStorage.getItem(cacheKey)
+      if (cachedStr) {
+        const cached = JSON.parse(cachedStr) as { ts: number; nfts: any[] }
+        if (Date.now() - cached.ts < CACHE_TTL_MS) {
+          setNfts(cached.nfts)
+        }
+      }
+    } catch {}
+
     fetchNfts()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address, isConnected])

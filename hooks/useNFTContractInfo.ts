@@ -132,7 +132,7 @@ export function useNFTContractInfo(tokenId: string | undefined) {
 
   const getRarityByStars = (stars: number): string => {
     const map = ['Common','Uncommon','Rare','Epic','Legendary','Mythic']
-    return map[Math.min(Math.max(stars,1),6)-1]
+    return map[Math.min(Math.max(stars,1),6)-1] || 'Common'
   }
 
   const getColorByStars = (stars:number): string => {

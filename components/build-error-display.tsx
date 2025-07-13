@@ -9,18 +9,20 @@ export function BuildErrorDisplay() {
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    // Check for build errors in localStorage
-    const storedErrors = localStorage.getItem("build_errors")
-    if (storedErrors) {
-      try {
+    // Only check for build errors in development
+    if (process.env.NODE_ENV !== 'development') return
+
+    try {
+      const storedErrors = localStorage.getItem("build_errors")
+      if (storedErrors) {
         const errors = JSON.parse(storedErrors)
         if (Array.isArray(errors) && errors.length > 0) {
           setBuildErrors(errors)
           setIsVisible(true)
         }
-      } catch (e) {
-        console.error("Failed to parse build errors:", e)
       }
+    } catch (e) {
+      console.error("Failed to parse build errors:", e)
     }
   }, [])
 
@@ -30,7 +32,7 @@ export function BuildErrorDisplay() {
     setIsVisible(false)
   }
 
-  if (!isVisible || buildErrors.length === 0) {
+  if (!isVisible || buildErrors.length === 0 || process.env.NODE_ENV !== 'development') {
     return null
   }
 
@@ -38,7 +40,7 @@ export function BuildErrorDisplay() {
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 overflow-auto p-4 flex items-center justify-center">
       <Card className="w-full max-w-3xl">
         <CardHeader className="bg-red-900/50">
-          <CardTitle className="text-white">Build Errors Detected</CardTitle>
+          <CardTitle className="text-white">Build Errors Detected (Dev Mode)</CardTitle>
         </CardHeader>
         <CardContent className="p-4">
           <div className="mb-4">
@@ -46,7 +48,8 @@ export function BuildErrorDisplay() {
             <div className="bg-black/50 p-4 rounded-md overflow-auto max-h-[60vh]">
               {buildErrors.map((error, index) => (
                 <div key={index} className="mb-2 text-white font-mono text-sm whitespace-pre-wrap">
-                  {error}
+                  {/* Safe text rendering - no HTML injection possible */}
+                  {String(error).replace(/</g, '&lt;').replace(/>/g, '&gt;')}
                 </div>
               ))}
             </div>

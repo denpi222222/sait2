@@ -2,11 +2,11 @@ import { NextResponse } from 'next/server'
 import crypto from 'crypto'
 import { fetchWithRetry } from '../../../utils/fetchWithRetry'
 
-// URL для токен-субграфа (moni)
+// URL for token subgraph (moni)
 const SUBGRAPH_URL = process.env.SUBGRAPH_URL_TOKEN || 'https://api.studio.thegraph.com/query/111010/moni/v0.0.1'
-const TTL = 120 // 2-минутное кэширование
+const TTL = 120 // 2-minute caching
 
-// Кэш в памяти
+// In-memory cache
 const memoryCache: Record<string, { ts: number; data: string }> = {}
 
 export async function POST(req: Request) {

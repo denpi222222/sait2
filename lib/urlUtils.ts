@@ -1,8 +1,9 @@
 /**
  * A list of allowed URL protocols.
  * We explicitly disallow 'javascript:' and other potentially harmful protocols.
+ * Only HTTPS and data URLs are allowed for security.
  */
-const ALLOWED_PROTOCOLS = ['https://', 'http://', 'data:']
+const ALLOWED_PROTOCOLS = ['https://', 'data:']
 
 /**
  * Sanitizes a URL to ensure it's safe to use in contexts like `src` or `backgroundImage`.

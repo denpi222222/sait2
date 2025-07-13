@@ -18,6 +18,7 @@ import MarketTicker from '@/components/MarketTicker';
 import { motion } from 'framer-motion';
 import { usePerformanceContext } from '@/hooks/use-performance-context';
 import { cn } from '@/lib/utils';
+const NalaInfoCube = dynamic(()=>import('@/components/NalaInfoCube').then(m=>({default:m.default})),{ssr:false})
 
 const DigitRain = dynamic(() => import('@/components/digit-rain').then(m => ({ default: m.default })), { ssr: false });
 const StatsGrid = dynamic(()=>import('@/components/web3/stats-grid').then(m=>m.StatsGrid),{ssr:false})
@@ -64,7 +65,7 @@ export default function InfoPage() {
           <Link href="/">
             <Button variant="outline" className="border-violet-500/30 bg-black/20 text-violet-300 hover:bg-black/40">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Return to Home
+              {t("navigation.returnHome", "Return to Home")}
             </Button>
           </Link>
           <TabNavigation color="cyan" />
@@ -72,10 +73,12 @@ export default function InfoPage() {
         </header>
 
         <main>
+          <NalaInfoCube />
+
           {/* Title like in breed */}
           <div className="mt-0 flex flex-col sm:flex-row items-center justify-center gap-1.5 text-center">
             <h1 className="text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-500 to-blue-400 whitespace-nowrap">
-              Info & Analytics
+              {t("info.title", "Info & Analytics")}
             </h1>
           </div>
 

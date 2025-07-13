@@ -13,6 +13,7 @@ import { formatEther, parseEther } from "viem"
 import { getColor, getLabel } from "@/lib/rarity"
 import { BurnEffect } from "@/components/burn-effect"
 import { useTranslation } from 'react-i18next'
+import CardBurnOverlay from "@/components/card-burn-overlay"
 
 interface NFTBurnCardProps {
   nft: AlchemyNFT
@@ -182,7 +183,7 @@ export default function NFTBurnCard({ nft, index, onActionComplete }: NFTBurnCar
       >
         <CardHeader className="pb-3">
           <div className="relative">
-            <div className="aspect-square bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg flex items-center justify-center mb-3 overflow-hidden">
+            <div className="aspect-square bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg flex items-center justify-center mb-3 overflow-hidden relative">
               {getNFTImage(nft) ? (
                 <Image
                   src={getNFTImage(nft)}
@@ -195,6 +196,11 @@ export default function NFTBurnCard({ nft, index, onActionComplete }: NFTBurnCar
                 <div className="w-full h-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
                   <span className="text-xl font-bold text-white">{tokenIdDecimal}</span>
                 </div>
+              )}
+
+              {/* 🔥 Overlay burn animation tied to current step */}
+              {step !== 'idle' && (
+                <CardBurnOverlay level={step === 'approvingCRA' ? 1 : step === 'approvingNFT' ? 2 : 3} />
               )}
             </div>
 

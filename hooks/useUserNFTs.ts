@@ -87,7 +87,7 @@ export const getTokenIdAsDecimal = (nft: AlchemyNFT): string => {
   // 1) Try to extract ID from name/title (e.g. "CrazyCube #3430")
   const nameField = nft.metadata?.name || nft.title || "";
   const match = nameField.match(/#(\d+)/);
-  if (match) {
+  if (match && match[1]) {
     return match[1];
   }
 
@@ -106,7 +106,7 @@ export const getNFTImage = (nft: AlchemyNFT): string => {
   let imageUrl = '';
   
   // Check media array
-  if (nft.media && nft.media.length > 0) {
+  if (nft.media && nft.media.length > 0 && nft.media[0]) {
     imageUrl = nft.media[0].gateway || nft.media[0].raw;
   }
   
