@@ -38,49 +38,78 @@ function checkRateLimit(ip: string, maxRequests = 100, windowMs = 60000) {
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
   
-  // Apply only to API routes
-  if (!pathname.startsWith('/api')) return NextResponse.next()
-
-  const ip = req.headers.get('x-forwarded-for')?.split(',')[0] ?? req.headers.get('x-real-ip') ?? '127.0.0.1'
-
-  // Check rate limits
-  const burstCheck = checkRateLimit(ip + ':burst', 20, 10000) // 20 requests per 10 seconds
-  if (!burstCheck.success) {
-    console.warn(`🚨 Burst rate limit exceeded from ${ip}`)
-    const retryAfter = Math.ceil((burstCheck.reset - Date.now()) / 1000)
-    return createRateLimitResponse('Too many requests in a short time. Please slow down.', retryAfter, burstCheck.limit)
-  }
-
-  const mainCheck = checkRateLimit(ip, 100, 60000) // 100 requests per minute
-  if (!mainCheck.success) {
-    console.warn(`🚨 Main rate limit exceeded from ${ip}`)
-    const retryAfter = Math.ceil((mainCheck.reset - Date.now()) / 1000)
-    return createRateLimitResponse('Rate limit exceeded. Please try again later.', retryAfter, mainCheck.limit)
-  }
+  let mainCheck = { success: true, limit: 100, remaining: 100, reset: Date.now() + 60000 }
   
-  // Basic bot protection for critical endpoints
-  if (STRICT_ENDPOINTS.some(endpoint => pathname.startsWith(endpoint))) {
-    const userAgent = req.headers.get('user-agent') || 'unknown'
-    // Block requests without proper User-Agent
-    if (!userAgent || userAgent === 'unknown' || userAgent.length < 10) {
-      console.warn(`🚨 Blocked request without proper User-Agent from ${ip}`)
-      return createRateLimitResponse('Missing or invalid User-Agent header', 60, mainCheck.limit)
+  // Apply rate limiting only to API routes
+  if (pathname.startsWith('/api')) {
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0] ?? req.headers.get('x-real-ip') ?? '127.0.0.1'
+
+    // Check rate limits
+    const burstCheck = checkRateLimit(ip + ':burst', 20, 10000) // 20 requests per 10 seconds
+    if (!burstCheck.success) {
+      console.warn(`🚨 Burst rate limit exceeded from ${ip}`)
+      const retryAfter = Math.ceil((burstCheck.reset - Date.now()) / 1000)
+      return createRateLimitResponse('Too many requests in a short time. Please slow down.', retryAfter, burstCheck.limit)
+    }
+
+    mainCheck = checkRateLimit(ip, 100, 60000) // 100 requests per minute
+    if (!mainCheck.success) {
+      console.warn(`🚨 Main rate limit exceeded from ${ip}`)
+      const retryAfter = Math.ceil((mainCheck.reset - Date.now()) / 1000)
+      return createRateLimitResponse('Rate limit exceeded. Please try again later.', retryAfter, mainCheck.limit)
     }
     
-    // Block obvious bots
-    const botPatterns = ['curl', 'wget', 'python-requests', 'bot', 'crawler', 'spider', 'scraper']
-    if (botPatterns.some(pattern => userAgent.toLowerCase().includes(pattern))) {
-      console.warn(`🚨 Blocked bot request from ${ip}: ${userAgent}`)
-      return createRateLimitResponse('Automated requests not allowed', 60, mainCheck.limit)
+    // Basic bot protection for critical endpoints
+    if (STRICT_ENDPOINTS.some(endpoint => pathname.startsWith(endpoint))) {
+      const userAgent = req.headers.get('user-agent') || 'unknown'
+      // Block requests without proper User-Agent
+      if (!userAgent || userAgent === 'unknown' || userAgent.length < 10) {
+        console.warn(`🚨 Blocked request without proper User-Agent from ${ip}`)
+        return createRateLimitResponse('Missing or invalid User-Agent header', 60, mainCheck.limit)
+      }
+      
+      // Block obvious bots
+      const botPatterns = ['curl', 'wget', 'python-requests', 'bot', 'crawler', 'spider', 'scraper']
+      if (botPatterns.some(pattern => userAgent.toLowerCase().includes(pattern))) {
+        console.warn(`🚨 Blocked bot request from ${ip}: ${userAgent}`)
+        return createRateLimitResponse('Automated requests not allowed', 60, mainCheck.limit)
+      }
     }
   }
 
   const response = NextResponse.next()
   
-  // Set correct rate limit headers for the client
-  response.headers.set('X-RateLimit-Limit', mainCheck.limit.toString())
-  response.headers.set('X-RateLimit-Remaining', mainCheck.remaining.toString())
-  response.headers.set('X-RateLimit-Reset', mainCheck.reset.toString())
+  // Set security headers for all requests
+  response.headers.set('X-Content-Type-Options', 'nosniff')
+  response.headers.set('X-Frame-Options', 'DENY')
+  response.headers.set('X-XSS-Protection', '1; mode=block')
+  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
+  
+  // Enhanced CSP for Web3 applications
+  const csp = [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com https://api.web3modal.org https://pulse.walletconnect.org",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com",
+    "img-src 'self' data: blob: https: http:",
+    "connect-src 'self' wss: https: http: https://api.web3modal.org https://pulse.walletconnect.org https://registry.walletconnect.org https://rpc.walletconnect.org",
+    "media-src 'self' data: blob:",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+    "worker-src 'self' blob:",
+    "child-src 'self' blob:"
+  ].join('; ')
+  
+  response.headers.set('Content-Security-Policy', csp)
+  
+  // Set correct rate limit headers for API routes
+  if (pathname.startsWith('/api')) {
+    response.headers.set('X-RateLimit-Limit', mainCheck.limit.toString())
+    response.headers.set('X-RateLimit-Remaining', mainCheck.remaining.toString())
+    response.headers.set('X-RateLimit-Reset', mainCheck.reset.toString())
+  }
   
   return response
 }
@@ -107,5 +136,7 @@ function createRateLimitResponse(message: string, retryAfter: number, limit: num
 }
 
 export const config = {
-  matcher: ['/api/:path*'],
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
 }
