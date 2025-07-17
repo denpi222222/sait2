@@ -1,18 +1,23 @@
-"use client"
+"use client";
 
-import React, { useState } from 'react';
-import { useUserNFTs, getTokenIdAsDecimal, getNFTImage, getNFTName } from '@/hooks/useUserNFTs';
-import { useMultipleNFTGameInfo } from '@/hooks/useNFTGameData';
-import { useCrazyCubeGame } from '@/hooks/useCrazyCubeGame';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Zap, Clock, Star, TrendingUp, AlertCircle } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { getRarityColor as rarityColor, getRarityLabel } from "@/lib/rarity"
-import { useTranslation } from 'react-i18next'
-import { useNetwork } from "@/hooks/use-network"
+import React, { useState } from "react";
+import {
+  useUserNFTs,
+  getTokenIdAsDecimal,
+  getNFTImage,
+  getNFTName,
+} from "@/hooks/useUserNFTs";
+import { useMultipleNFTGameInfo } from "@/hooks/useNFTGameData";
+import { useCrazyCubeGame } from "@/hooks/useCrazyCubeGame";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { motion, AnimatePresence } from "framer-motion";
+import { Zap, Clock, Star, TrendingUp, AlertCircle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { getRarityColor as rarityColor, getRarityLabel } from "@/lib/rarity";
+import { useTranslation } from "react-i18next";
+import { useNetwork } from "@/hooks/use-network";
 
 interface PingableNFTProps {
   nft: any;
@@ -21,22 +26,27 @@ interface PingableNFTProps {
   isLoading: boolean;
 }
 
-const PingableNFT = ({ nft, gameInfo, onPing, isLoading }: PingableNFTProps) => {
+const PingableNFT = ({
+  nft,
+  gameInfo,
+  onPing,
+  isLoading,
+}: PingableNFTProps) => {
   const { isApeChain, requireApeChain } = useNetwork();
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const formatTimeLeft = (seconds: number): string => {
-    if (seconds === 0) return t('status.ready', 'Ready!')
-    const minutes = Math.floor(seconds / 60)
-    const hours = Math.floor(minutes / 60)
-    if (hours > 0) return `${hours}h ${minutes % 60}m`
-    return `${minutes}m`
-  }
+    if (seconds === 0) return t("status.ready", "Ready!");
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    if (hours > 0) return `${hours}h ${minutes % 60}m`;
+    return `${minutes}m`;
+  };
 
   const getRarityBonus = (rarity: number) => {
-    const bonuses = [0, 0, 5, 10, 20, 35, 50]
-    return bonuses[rarity] || 0
-  }
+    const bonuses = [0, 0, 5, 10, 20, 35, 50];
+    return bonuses[rarity] || 0;
+  };
 
   const canPing = gameInfo?.canPing && !isLoading;
 
@@ -45,22 +55,22 @@ const PingableNFT = ({ nft, gameInfo, onPing, isLoading }: PingableNFTProps) => 
       whileHover={{ scale: canPing ? 1.02 : 1 }}
       whileTap={{ scale: canPing ? 0.98 : 1 }}
     >
-      <Card 
+      <Card
         className={`transition-all duration-200 ${
           canPing
-            ? 'border-blue-500/30 bg-slate-900/50 hover:border-blue-500/50 cursor-pointer'
-            : 'border-slate-600/30 bg-slate-800/30 opacity-60'
+            ? "border-blue-500/30 bg-slate-900/50 hover:border-blue-500/50 cursor-pointer"
+            : "border-slate-600/30 bg-slate-800/30 opacity-60"
         }`}
         onClick={requireApeChain(() => onPing(nft.id.tokenId))}
       >
         <CardContent className="p-4">
           <div className="relative">
-            <img 
-              src={getNFTImage(nft)} 
-              alt={getNFTName(nft)} 
+            <img
+              src={getNFTImage(nft)}
+              alt={getNFTName(nft)}
               className="w-full h-40 object-cover rounded-lg mb-3"
             />
-            
+
             {/* Status badges */}
             <div className="absolute top-2 left-2 flex flex-col gap-1">
               {gameInfo?.isActivated && (
@@ -69,7 +79,9 @@ const PingableNFT = ({ nft, gameInfo, onPing, isLoading }: PingableNFTProps) => 
                   Active
                 </Badge>
               )}
-              <Badge className={`${rarityColor(gameInfo?.rarity || 1)}/80 text-white text-xs`}>
+              <Badge
+                className={`${rarityColor(gameInfo?.rarity || 1)}/80 text-white text-xs`}
+              >
                 {getRarityLabel(gameInfo?.rarity || 1)}
               </Badge>
             </div>
@@ -81,9 +93,10 @@ const PingableNFT = ({ nft, gameInfo, onPing, isLoading }: PingableNFTProps) => 
               </Badge>
               {gameInfo && parseFloat(gameInfo.lockedCRAFormatted) > 0 && (
                 <Badge className="bg-green-500/80 text-white text-xs">
-                  💰 {new Intl.NumberFormat('en-US', { 
-                    minimumFractionDigits: 1, 
-                    maximumFractionDigits: 1 
+                  💰{" "}
+                  {new Intl.NumberFormat("en-US", {
+                    minimumFractionDigits: 1,
+                    maximumFractionDigits: 1,
                   }).format(parseFloat(gameInfo.lockedCRAFormatted))}
                 </Badge>
               )}
@@ -91,22 +104,39 @@ const PingableNFT = ({ nft, gameInfo, onPing, isLoading }: PingableNFTProps) => 
           </div>
 
           <div className="space-y-2">
-            <h4 className="font-semibold text-blue-100 text-sm truncate">{getNFTName(nft)}</h4>
-            
+            <h4 className="font-semibold text-blue-100 text-sm truncate">
+              {getNFTName(nft)}
+            </h4>
+
             <div className="flex justify-between text-xs">
               <span className="text-slate-400">Rarity:</span>
               <span className="text-blue-300">
-                {gameInfo?.rarity || 'N/A'} (+{getRarityBonus(gameInfo?.rarity || 1)}%)
+                {gameInfo?.rarity || "N/A"} (+
+                {getRarityBonus(gameInfo?.rarity || 1)}%)
               </span>
             </div>
 
             <div className="flex justify-between text-xs">
               <span className="text-slate-400">Locked CRA:</span>
               <span className="text-green-300">
-                {gameInfo ? new Intl.NumberFormat('en-US', { 
-                  minimumFractionDigits: 2, 
-                  maximumFractionDigits: 2 
-                }).format(parseFloat(gameInfo.lockedCRAFormatted)) : '0.00'}
+                {gameInfo
+                  ? new Intl.NumberFormat("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    }).format(parseFloat(gameInfo.lockedCRAFormatted))
+                  : "0.00"}
+              </span>
+            </div>
+
+            <div className="flex justify-between text-xs">
+              <span className="text-slate-400">Earned CRA:</span>
+              <span className="text-blue-300">
+                {gameInfo
+                  ? new Intl.NumberFormat("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    }).format(parseFloat(gameInfo.lockedCRAFormatted) * 0.92)
+                  : "0.00"}
               </span>
             </div>
 
@@ -124,7 +154,11 @@ const PingableNFT = ({ nft, gameInfo, onPing, isLoading }: PingableNFTProps) => 
                   {isLoading ? (
                     <motion.div
                       animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      transition={{
+                        duration: 1,
+                        repeat: Infinity,
+                        ease: "linear",
+                      }}
                       className="w-3 h-3 border-2 border-white border-t-transparent rounded-full mr-2"
                     />
                   ) : (
@@ -154,12 +188,13 @@ const PingableNFT = ({ nft, gameInfo, onPing, isLoading }: PingableNFTProps) => 
 export const PingSection = () => {
   const { nfts, loading: isLoadingNfts, error: nftsError } = useUserNFTs();
   const { toast } = useToast();
-  const { t } = useTranslation()
-  
+  const { t } = useTranslation();
+
   // Get game info for all NFTs
-  const tokenIds = nfts.map(nft => nft.id.tokenId);
-  const { nftInfos, isLoading: isLoadingGameInfo } = useMultipleNFTGameInfo(tokenIds);
-  
+  const tokenIds = nfts.map((nft) => nft.id.tokenId);
+  const { nftInfos, isLoading: isLoadingGameInfo } =
+    useMultipleNFTGameInfo(tokenIds);
+
   const {
     pingNFT,
     craBalance,
@@ -169,7 +204,7 @@ export const PingSection = () => {
     isTxError,
     txHash,
     writeError,
-    txError
+    txError,
   } = useCrazyCubeGame();
 
   const handlePing = async (tokenId: string) => {
@@ -189,8 +224,8 @@ export const PingSection = () => {
   };
 
   // Filter pingable NFTs
-  const pingableNfts = nfts.filter(nft => {
-    const gameInfo = nftInfos.find(info => info.tokenId === nft.id.tokenId);
+  const pingableNfts = nfts.filter((nft) => {
+    const gameInfo = nftInfos.find((info) => info.tokenId === nft.id.tokenId);
     return gameInfo?.isActivated && !gameInfo?.isInGraveyard;
   });
 
@@ -221,20 +256,26 @@ export const PingSection = () => {
     <div className="space-y-6">
       <div className="text-center">
         <p className="text-slate-400 mb-4">
-          Ping your NFTs every 3 minutes to earn CRA tokens! Ping once every 3 minutes or once every 15 days, accumulation up to 15 days.
+          Ping your NFTs every 3 minutes to earn CRA tokens! Ping once every 3
+          minutes or once every 15 days, accumulation up to 15 days.
         </p>
-        
+
         {/* Game stats */}
         <div className="flex justify-center gap-6 text-sm">
           <div className="text-center">
-            <div className="text-blue-300 font-bold">{new Intl.NumberFormat('en-US', { 
-              minimumFractionDigits: 2, 
-              maximumFractionDigits: 2 
-            }).format(parseFloat(craBalance))} CRA</div>
+            <div className="text-blue-300 font-bold">
+              {new Intl.NumberFormat("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }).format(parseFloat(craBalance))}{" "}
+              CRA
+            </div>
             <div className="text-slate-400">Your Balance</div>
           </div>
           <div className="text-center">
-            <div className="text-green-300 font-bold">{pingableNfts.length}</div>
+            <div className="text-green-300 font-bold">
+              {pingableNfts.length}
+            </div>
             <div className="text-slate-400">Pingable NFTs</div>
           </div>
           <div className="text-center">
@@ -251,7 +292,9 @@ export const PingSection = () => {
         className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/20 rounded-lg p-4"
       >
         <div className="text-center">
-          <h3 className="text-lg font-semibold text-blue-300 mb-2">How Ping Works</h3>
+          <h3 className="text-lg font-semibold text-blue-300 mb-2">
+            How Ping Works
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
             <div>
               <TrendingUp className="w-5 h-5 text-green-400 mx-auto mb-1" />
@@ -276,7 +319,9 @@ export const PingSection = () => {
       {pingableNfts.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {pingableNfts.map((nft) => {
-            const gameInfo = nftInfos.find(info => info.tokenId === nft.id.tokenId);
+            const gameInfo = nftInfos.find(
+              (info) => info.tokenId === nft.id.tokenId,
+            );
             return (
               <PingableNFT
                 key={nft.id.tokenId}
@@ -289,13 +334,15 @@ export const PingSection = () => {
           })}
         </div>
       ) : (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center py-12"
         >
           <div className="text-6xl mb-4">⚡</div>
-          <h3 className="text-xl font-semibold text-blue-300 mb-2">No Pingable NFTs</h3>
+          <h3 className="text-xl font-semibold text-blue-300 mb-2">
+            No Pingable NFTs
+          </h3>
           <p className="text-slate-400">
             Your NFTs need to be activated and not in the graveyard to ping.
           </p>
@@ -304,7 +351,7 @@ export const PingSection = () => {
 
       {/* Transaction status */}
       {(isWritePending || isTxLoading) && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="text-center bg-blue-500/10 border border-blue-500/20 rounded-lg p-4"
@@ -316,7 +363,12 @@ export const PingSection = () => {
               className="w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full"
             />
             <span className="text-blue-300">
-              {isWritePending ? t('sections.ping.waitingForWallet', 'Waiting for wallet confirmation...') : t('sections.ping.processingPing', 'Processing ping...')}
+              {isWritePending
+                ? t(
+                    "sections.ping.waitingForWallet",
+                    "Waiting for wallet confirmation...",
+                  )
+                : t("sections.ping.processingPing", "Processing ping...")}
             </span>
           </div>
           {txHash && (
@@ -328,18 +380,20 @@ export const PingSection = () => {
       )}
 
       {isTxSuccess && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           className="text-center bg-green-500/10 border border-green-500/20 rounded-lg p-4"
         >
           <div className="text-green-400 text-lg">⚡ Ping Successful!</div>
-          <p className="text-sm text-slate-400 mt-1">Your NFT has been pinged and CRA earned!</p>
+          <p className="text-sm text-slate-400 mt-1">
+            Your NFT has been pinged and CRA earned!
+          </p>
         </motion.div>
       )}
 
       {(writeError || txError || isTxError) && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           className="text-center bg-red-500/10 border border-red-500/20 rounded-lg p-4"
