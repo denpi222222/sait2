@@ -129,6 +129,7 @@ jspm_packages/
 *rollback*.js
 *debug*.js
 *fix*.js
+!public/js/fix-vh.js
 *quick*.js
 *final*.js
 *extract*.js
