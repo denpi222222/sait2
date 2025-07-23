@@ -101,9 +101,6 @@
   from = "/500"
   to = "/500.html"
   status = 500
-  Cross-Origin-Resource-Policy: same-origin
-  Cross-Origin-Opener-Policy: same-origin
-  Cross-Origin-Embedder-Policy: require-corp
 
 [context.production]
   [[plugins]]
