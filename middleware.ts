@@ -5,19 +5,8 @@ export function middleware(request: NextRequest) {
   // Генерируем nonce
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
 
-  // CSP с nonce
-  const csp = [
-    `default-src 'self'`,
-    `script-src 'self' 'nonce-${nonce}'`,
-    `style-src 'self' 'unsafe-inline'`,
-    `object-src 'none'`,
-    `base-uri 'self'`,
-    `frame-ancestors 'none'`,
-    `upgrade-insecure-requests`
-  ].join('; ');
-
+  // CSP полностью отключён для совместимости
   const response = NextResponse.next();
-  response.headers.set('Content-Security-Policy', csp);
   response.headers.set('x-nonce', nonce);
   response.headers.set('X-Frame-Options', 'DENY');
   response.headers.set('X-Content-Type-Options', 'nosniff');
