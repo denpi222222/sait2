@@ -1,0 +1,819 @@
+{
+  "home": {
+    "title": "CrazyCube",
+    "subtitle": "¡Donde los cubos lloran y bromean!",
+    "balance": "Saldo:",
+    "connectWallet": "Conectar MetaMask",
+    "walletNotDetected": "MetaMask no detectado. Instale MetaMask"
+  },
+  "sections": {
+    "bridge": {
+      "title": "Puente Intercadenas 🌉",
+      "description": "Transfiere tus tokens CRAA y CrazyCube NFTs entre ApeChain y Solana. Rápido, seguro y con tarifas mínimas. ¡Cross-chain para verdaderos coleccionistas!",
+      "connectWallet": "Conectar Billetera",
+      "connectWalletDesc": "Por favor conecta tu billetera para acceder al puente intercadenas",
+      "guide": {
+        "title": "Cómo Transferir Activos",
+        "intro": "Transfiere tus activos entre las redes ApeChain y Solana de forma segura y eficiente.",
+        "step1": "Selecciona el tipo de activo a transferir (tokens CRAA o NFTs)",
+        "step2": "Elige las redes de origen y destino",
+        "step3": "Ingresa la cantidad o selecciona el NFT a transferir",
+        "step4": "Confirma la transacción y espera la finalización",
+        "note": "El proceso de transferencia típicamente toma 30-60 segundos. Los activos están asegurados por contratos inteligentes durante la transferencia."
+      },
+      "interface": {
+        "title": "Interfaz del Puente",
+        "amountLabel": "Cantidad a Transferir",
+        "amountPlaceholder": "0.00",
+        "available": "Disponible: 1,234.56 CRAA",
+        "useMax": "Usar Máximo",
+        "selectNftLabel": "Seleccionar NFT para Transferir",
+        "selectNftPlaceholder": "Elige tu NFT CrazyCube",
+        "bridgeButton": "Transferir {type}",
+        "bridgeAgain": "Transferir de Nuevo",
+        "preparing": "Preparando...",
+        "processing": "Procesando...",
+        "confirming": "Confirmando...",
+        "insufficientCRAA": "CRAA Insuficiente",
+        "insufficientCRAADesc": "Necesitas {required} CRAA para transferir. Tu balance: {balance} CRAA",
+        "balanceDetails": {
+          "you": "👤 Tú",
+          "pool": "🏦 Pool",
+          "burn": "🔥 Quemar",
+          "split": "60% / 30% / 10%"
+        }
+      },
+      "status": {
+        "ready": "Listo para Transferir",
+        "preparing": "Preparando Transacción",
+        "processing": "Procesando Transferencia",
+        "confirming": "Confirmando en Destino",
+        "success": "Transferencia Completada",
+        "error": "Error en Transferencia",
+        "remaining": "~{time}s restantes"
+      },
+      "success": {
+        "title": "¡Transferencia Exitosa!",
+        "description": "Tus {type} han sido transferidos exitosamente a {network}.",
+        "transaction": "Transacción: {hash}"
+      },
+      "info": {
+        "title": "Información del Puente",
+        "security": {
+          "title": "Seguridad",
+          "description": "Los activos están asegurados por contratos inteligentes durante el proceso de transferencia"
+        },
+        "speed": {
+          "title": "Velocidad",
+          "description": "La finalización de la transferencia típicamente toma 30-60 segundos"
+        },
+        "fees": {
+          "title": "Comisiones",
+          "description": "Comisiones mínimas para transferencias intercadenas"
+        }
+      },
+      "comingSoon": {
+        "title": "🚀 Próximas Funciones",
+        "features": [
+          "Transferir tokens CRAA entre ApeChain y Solana",
+          "Transferir NFTs CrazyCube entre redes",
+          "Mantener metadatos y rareza de NFTs",
+          "Transacciones intercadenas de bajo costo",
+          "Seguimiento de estado de transferencia en tiempo real",
+          "Sincronización automática de balances"
+        ]
+      }
+    },
+    "burn": {
+      "title": "Quemar NFT (¡Asar el cubo!)",
+      "description": "¡Quema NFT y obtén tokens CRAA! Escena épica de una parrilla ardiente con cubos gritando con lamentos: \"¡Díganle a mi mamá que la amo!\"",
+      "button": "Quemar NFT",
+      "feeBox": {
+        "title": "🔥 Comisión y pasos de quemado",
+        "line1": "• La comisión de quemado es el <1>5% del CRAA bloqueado</1> dentro del cubo.",
+        "line2": "• Quemar requiere <1>tres confirmaciones</1>:",
+        "step1": "1. Dar permiso al contrato para mover tu NFT.",
+        "step2": "2. Permitir gasto de CRAA por el 5% de monedas bloqueadas.",
+        "step3": "3. Confirmar transacción final — el cubo se quema, CRAA va a ti.",
+        "note": "Asegúrate de tener suficiente CRAA en tu billetera para la comisión antes de comenzar.",
+        "guide": {
+          "title": "🔥 Guía de Quemado Haz clic aquí",
+          "intro": "Antes de quemar, DEBES hacer ping (una vez cada 7 días) para desbloquear el CRAA minado.",
+          "loss": "Después del quemado, el NFT se envía permanentemente al cementerio. El CRAA se puede reclamar en la sección de recompensas.",
+          "step1": "1. Dar permiso al contrato para mover tu NFT.",
+          "step2": "2. Permitir gasto de CRAA por el 5% de monedas bloqueadas.",
+          "step3": "3. Confirmar transacción final — el cubo se quema, CRAA va a ti.",
+          "timing": "El CRAA llega después del retraso seleccionado (12h / 24h / 48h). Durante este tiempo el cubo está gris (cooldown).",
+          "note": "Ejemplo: 10,000 CRAA bloqueado → comisión 500 CRAA (5%). Retraso más largo = menor participación del pool.",
+          "pingLock": "Al hacer ping, el CRAA NO va a la billetera — las monedas permanecen bloqueadas dentro del NFT. Solo se puede retirar quemando.",
+          "bridgeNote": "Resucitar NFT del cementerio en la sección 'Puente'. Cantidad de cubos limitada a 5000 y nunca cambia. El CRAA quemado en cada acción va a la billetera muerta para siempre — nadie puede recuperarlo.",
+          "sellCRAA": "Vender CRAA: <a>Camelot Exchange</a>",
+          "fees": "🔹 Comisiones del Token CRAA • 3% de comisión en transferencias — va al contrato del juego • 10% de comisión en ventas DEX — va al contrato del juego • 0% de comisión en compras DEX — sin comisión al comprar • Todas las comisiones apoyan el ecosistema del juego y el pool de recompensas",
+          "contractAddress": "Contrato del Token CRAA: 0xBb526D657Cc1Ba772469A6EC96AcB2ed9D2A93e5"
+        }
+      }
+    },
+    "claim": {
+      "title": "Reclamar Recompensas (¿Dónde está mi CRAA?)",
+      "description": "Un cubo con enormes ojos tristes grita: \"¡Reclámame y obtén tu CRAA!\"",
+      "button": "Reclamar Recompensa",
+      "processing": "PROCESANDO...",
+      "claimReward": "RECLAMAR RECOMPENSA",
+      "waitingForWallet": "Esperando confirmación de billetera...",
+      "processingClaim": "Procesando reclamo..."
+    },
+    "stats": {
+      "title": "Estadísticas (Contador de Lágrimas y Dolor)",
+      "description": "Muestra cuántos NFTs fueron quemados, regresaron del cementerio y cuánto CRAA hay en el pool",
+      "button": "Ver Estadísticas",
+      "analytics": "Analíticas"
+    },
+    "ping": {
+      "title": "Ping NFTs",
+      "description": "¡Haz ping a tus NFTs cada 10 días para ganar tokens CRAA! Tu bonus crece con pings consistentes.",
+      "connectWallet": "Conecta tu billetera para ver tus cubos",
+      "noNFTs": "No se encontraron NFTs CrazyCube.",
+      "sentFor": "Ping enviado para",
+      "error": "Error de ping",
+      "interval": "Intervalo de Ping: 10 días",
+      "bonusGrowth": "Bonus crece +2.7% cada 10 días",
+      "maxBonus": "Bonus máximo: +97.2%",
+      "penaltyReset": "Fallar 20+ días = bonus se reinicia a -18.9%",
+      "activate": "Activar",
+      "pingNow": "Ping Ahora",
+      "cooldown": "Enfriamiento",
+      "ready": "Listo",
+      "button": "Ping",
+      "readyToPing": "Listo para Ping",
+      "waitingForWallet": "Esperando confirmación de billetera...",
+      "processingPing": "Procesando ping...",
+      "accumulated": "Acumulado",
+      "nextPing": "Siguiente Ping",
+      "live": "En vivo",
+      "basePerHour": "Base/h",
+      "rarity": "Rareza",
+      "streak": "Racha",
+      "penalty": "Penalización",
+      "totalBonus": "Bono Total",
+      "pending": "Pendiente",
+      "lockedCRAA": "CRAA Bloqueado",
+      "status": "Estado",
+      "active": "Activo"
+    },
+    "graveyard": {
+      "title": "Cementerio",
+      "description": "Mira tus cubos quemados, llámentalos y reclama recompensas CRAA.",
+      "button": "Ir al Cementerio",
+      "phrases": [
+        "¿Por qué está tan oscuro aquí… ☠️",
+        "Tengo frío… 🥶",
+        "¿Es esa la luz? 💀",
+        "¡No me arrepiento de nada! 🔥",
+        "Cenizas a las cenizas…",
+        "¡Dile a mamá que estoy bien!",
+        "Está acogedor aquí… ¿tal vez?"
+      ],
+      "loading": "Cargando tus NFTs del cementerio...",
+      "empty": {
+        "title": "EL CEMENTERIO ESTÁ VACÍO",
+        "description": "No se encontraron cubos quemados."
+      },
+      "showingFirst": "Mostrando los primeros 20 cubos. Total: {count}"
+    },
+    "game": {
+      "title": "Juego 3D de Cubos",
+      "description": "¡Juego interactivo estilo Minecraft con un mundo loco abierto, física increíblemente loca y jugabilidad! ¡PRÓXIMAMENTE!",
+      "button": "Jugar"
+    },
+    "breed": {
+      "title": "Cruzar NFT (¡Amor Cúbico!)",
+      "description": "¡Combina dos NFTs para resucitar uno del cementerio! ¡El amor está en el aire! 💕",
+      "button": "Cruzar NFT",
+      "feeNotice": "20% del precio actual del NFT en OpenSea o Magic Eden",
+      "cooldown": "⏳ Cooldown:",
+      "needTwoNfts": "Necesitas seleccionar exactamente 2 NFTs para cruzar",
+      "waitingForWallet": "Esperando confirmación de billetera...",
+      "processingBreeding": "Procesando cruzamiento...",
+      "graveyardCooldown": "Cooldown del cementerio activo",
+      "graveyardCooldownDesc": "Espera hasta que al menos un cubo quemado termine el cooldown",
+      "graveyardReady": "El cementerio está listo para cruzar",
+      "graveyardEmpty": "No hay cubos quemados en el cementerio",
+      "graveyardEmptyDesc": "El cementerio está vacío. Quema algunos NFTs primero para habilitar el cruzamiento.",
+      "timeUntilReady": "Tiempo hasta estar listo:",
+      "selectNft": "Seleccionar NFT",
+      "selectedNft": "NFT Seleccionado",
+      "breeding": "Cruzando...",
+      "breedNfts": "Cruzar NFTs",
+      "returnToHome": "Volver al Inicio",
+      "connectWallet": "Conectar Billetera",
+      "connectWalletDesc": "Por favor conecta tu billetera para ver y cruzar tus NFTs",
+      "connectWalletButton": "Conectar Billetera",
+      "errorLoadingNfts": "Error Cargando NFTs",
+      "loadingNfts": "Cargando NFTs...",
+      "loadingNftsDesc": "Obteniendo tu colección CrazyCube",
+      "noNftsFound": "No se Encontraron NFTs",
+      "noNftsFoundDesc": "No tienes NFTs de CrazyCube para cruzar",
+      "goToCollection": "Ir a la Colección",
+      "selectNftsForBreeding": "Selecciona 2 NFTs para Cruzar",
+      "loadingGraveyardStatus": "Cargando estado del cementerio...",
+      "insufficientCra": "CRAA Insuficiente",
+      "needCraToBreed": "Necesitas {amount} CRAA para cruzar",
+      "approveCra": "Aprobar CRAA",
+      "approveCraDesc": "Primera transacción: dar permiso al contrato para gastar CRAA",
+      "approvalConfirmed": "Aprobación confirmada",
+      "craAllowanceSet": "Permiso de CRAA establecido",
+      "confirmBreeding": "Confirmar cruzamiento",
+      "signBreedingTransaction": "Firmar transacción de cruzamiento",
+      "breedingCanceled": "Cruzamiento cancelado",
+      "transactionRejected": "Transacción rechazada",
+      "breedingSuccessful": "¡Cruzamiento Exitoso! 💕",
+      "txConfirmed": "Tx confirmada: {hash}...",
+      "transactionError": "Error de transacción",
+      "inactiveNftSelected": "NFT inactivo seleccionado",
+      "nftNoStarsLeft": "NFT #{id} no tiene estrellas restantes y no puede ser usado para cruzar.",
+      "maximumSelectionReached": "Selección máxima alcanzada",
+      "canOnlySelectTwoNfts": "Solo puedes seleccionar 2 NFTs para cruzar",
+      "invalidSelection": "Selección inválida",
+      "mustSelectExactlyTwoNfts": "Debes seleccionar exactamente 2 NFTs para cruzar",
+      "walletNotConnected": "Billetera no conectada",
+      "pleaseConnectWalletFirst": "Por favor conecta tu billetera primero",
+      "selectedNftsNoStars": "¡Los NFTs seleccionados no tienen estrellas restantes! Elige NFTs activos con estrellas.",
+      "cannotBreedSelectedNfts": "No se pueden cruzar los NFTs seleccionados. Verifica los requisitos.",
+      "breedYourCubes": "Cruza tus Cubos",
+      "select2NftsToCreate": "Selecciona 2 NFTs para crear uno nuevo del cementerio",
+      "breedingCost": "Costo de Cruzamiento",
+      "yourBalance": "Tu Balance",
+      "graveyardSize": "Tamaño del Cementerio",
+      "selectedParents": "Padres Seleccionados",
+      "breedSelectedNfts": "Cruzar NFTs Seleccionados",
+      "guide": {
+        "title": "🪄 Guía de Cruzamiento Haz clic aquí",
+        "intro": "Puedes cruzar un nuevo cubo pagando una comisión CRAA igual al 20% de su precio actual en OpenSea o Magic Eden.",
+        "fee": "La comisión se calcula automáticamente del último precio de mercado y se quema permanentemente.",
+        "requirement": "Selecciona cualquier 2 NFTs con al menos 1 ⭐ para cruzar.",
+        "rarity": "Calificaciones de estrellas: 1 ⭐ — Común, 2 ⭐ — Poco Común, 3 ⭐ — Raro, 4 ⭐ — Épico, 5 ⭐ — Legendario, 6 ⭐ — Mítico.",
+        "penalty": "¡Se perderá una estrella!",
+        "step1": "1. Permitir gasto de CRAA para comisión del 20%.",
+        "step2": "2. Confirmar transacción de cruzamiento — se crea nuevo cubo, CRAA se quema.",
+        "note": "Colección limitada a 5,000 cubos; CRAA se quema en billetera muerta sin posibilidad de recuperación.",
+        "buyNFT": "Comprar NFTs: <a>Magic Eden</a>",
+        "contractAddress": "Contrato del Token CRAA: 0xBb526D657Cc1Ba772469A6EC96AcB2ed9D2A93e5"
+      }
+    }
+  },
+  "footer": {
+    "copyright": "© 2025 CrazyCube — ¡Donde los cubos lloran y bromean!",
+    "crashMessage": "Si el sitio se cayó, el cubo fue por pizza"
+  },
+  "construction": {
+    "title": "EN CONSTRUCCIÓN",
+    "message": "Esta sección aún está en desarrollo. ¡Pronto habrá muchas cosas interesantes aquí!",
+    "returnHome": "Volver a Casa",
+    "phrases": [
+      "¡Estoy trabajando aquí! ¡No molestes!",
+      "¡Próximamente, llevo casco!",
+      "¡Construcción en progreso!",
+      "¡Cubo en obra, vuelve después!",
+      "¡Será hermoso aquí, lo prometo!",
+      "¡Ups, llegaste temprano! ¡No terminamos!",
+      "Cubo construye, pinta, cansado..."
+    ]
+  },
+  "wallet": {
+    "connect": "Conectar Billetera",
+    "connecting": "Conectando…",
+    "copyAddress": "Copiar Dirección",
+    "copied": "¡Copiado!",
+    "openExplorer": "Abrir en Explorador",
+    "disconnect": "Desconectar",
+    "balance": "Balance",
+    "notConnected": "Cartera no conectada",
+    "connectFirst": "Por favor conecta tu cartera primero",
+    "connected": "Conectado",
+    "instruction": "Instrucción",
+    "gameGuide": "Guía del Juego CrazyCube",
+    "gameGuideContent": "🎮 Guía del Juego CrazyCube\n\n🔹 Primeros Pasos\n• Obtén tokens CRAA — para tarifas de gas y acciones del juego\n• Compra NFTs CrazyCube en el mercado\n\n🔹 Cómo Empezar a Jugar\n• Ve a la pestaña Ping — verás tus NFTs\n• Para un cubo nuevo, presiona Activar — este es el primer Ping, no da CRAA pero inicia el temporizador\n• Después de la activación, puedes hacer ping (hacer clic en Ping). Por defecto es una vez cada 10 días, las recompensas comienzan a acumularse\n• Cada Ping exitoso trae CRAA — la cantidad depende de:\n  - Rareza del cubo (Common, Rare, Mystic, etc.)\n  - Tu bono de experiencia — crece cada 10 días sin perder pings\n  - Tiempo entre pings (si pasaron más períodos, más CRAA)\n\n🔹 Qué es el Bono de Experiencia\n• Inicialmente todos los cubos tienen penalización -18.9%\n• Cada 10 días sin perder — +2.7%\n• Máximo que puedes alcanzar +97.2%\n• Si pierdes más de 10 días — el bono no aumentará\n• Si pierdes 20+ días — el bono se reinicia a -18.9%\n\n🔹 Cómo Obtener CRAA\n• CRAA no cae a la billetera inmediatamente, sino que se acumula dentro del cubo (así cada NFT tiene valor real)\n• Para recoger — necesitas quemar el cubo (Burn) (tu cubo va a la sección cementerio y ya no te pertenece, obtienes monedas CRAA en la sección claim)\n\n🔹 Cómo Quemar\n• Ve a la sección Burn\n• Elige cubo y tiempo de espera:\n  - 12 horas → 60% al jugador\n  - 24 horas → 70%\n  - 48 horas → 80%\n• El resto se divide entre el pool y quema permanente (va a la billetera oficial muerta)\n• Después del tiempo elegido, ve y presiona Claim — CRAA vendrá a tu billetera\n\n🔹 Cómo Revivir Cubo (Breed)\n• Ve a la sección Breed\n• Elige 2 cubos vivos (que tengan estrellas y no estén en enfriamiento)\n• Paga CRAA (8% del precio mínimo del mercado, constantemente actualizado)\n• Un NFT aleatorio del cementerio regresará a ti como nuevo, con todas las estrellas pero sin monedas:\n  - El bono se reinicia (de vuelta a -18.9%)\n  - Las estrellas se restauran\n  - Puede hacer ping de nuevo desde cero\n\n🔹 Dónde está CRAA en el Sistema\n• CRAA para Ping viene del pool de recompensas mensual\n• CRAA gastado en Breed regresa a este pool\n• CRAA de Burn se quema para siempre\n• Todo lo quemado va a la billetera especial 0x...dead y desaparece para siempre\n\n🔹 Comisiones del Token CRAA\n• 3% de comisión en transferencias — va al contrato del juego\n• 10% de comisión en ventas DEX — va al contrato del juego\n• 0% de comisión en compras DEX — sin comisión al comprar\n• Todas las comisiones apoyan el ecosistema del juego y el pool de recompensas\n\n🔹 Estrategia de Ejemplo\nTienes tres cubos:\n• Common (regular) — hazle ping, el bono crece 2.7% cada 10 días hasta 97%, luego se detiene. Puedes vender, transferir NFT, el bono se preserva\n• Rare — úsalo para Breed o acumula CRAA\n• Mystic — raro, trae más CRAA, mejor no quemar\n\nJuega tranquilo:\n• Una vez cada 10 días entra y presiona Ping\n• Periódicamente quema cubos débiles → obtén tokens\n• O revive muertos — obtén oportunidad para uno más raro\n\n💡 Consejos\n¿Quieres máxima ganancia? — haz ping regularmente y no quemes cubos raros demasiado pronto.\n💥 Los tokens quemados no regresarán — esto aumenta el valor de los CRAA restantes.\n\n🚀 Nuestra Visión\nNuestros planes dentro de 1-2 meses son ajustar el gameplay y renunciar a los derechos de administrador en los contratos NFT y token. Queremos conducir un experimento social y crear gameplay completamente social donde no hay posibilidades de cambiar nada — solo el mercado y la gente deciden.\n\nEl equipo no tiene bonos en el contrato en forma de monedas CRAA. Puedes crear una billetera, por ejemplo, en Rabby wallet en 1 minuto y jugar nuestro juego.\n\nPronto nuestro juego será 100% descentralizado con autorregulación del mercado.",
+    "switchNetwork": "Cambiar Red",
+    "gameGuideContent": "🎮 Guía del Juego CrazyCube\n\n🔹 Para Empezar\n• Consigue tokens CRA — para las tasas de gas y acciones del juego\n• Compra NFTs de CrazyCube en el marketplace\n\n🔹 Cómo Empezar a Jugar\n• Ve a la pestaña de Ping — verás tus NFTs\n• Para un cubo nuevo, presiona Activar — este es el primer Ping, no da CRA pero inicia el temporizador\n• Después de la activación, puedes hacer ping (clic en Ping). Por defecto es una vez cada 10 días, las recompensas comienzan a acumularse\n• Cada Ping exitoso trae CRA — la cantidad depende de:\n  - La rareza del cubo (Común, Raro, Místico, etc.)\n  - Tu bonificación de experiencia — crece cada 10 días sin perder pings\n  - El tiempo entre pings (si pasaron más períodos, más CRA)\n\n🔹 Qué es la Bonificación de Experiencia\n• Inicialmente todos los cubos tienen una penalización de -18.9%\n• Cada 10 días sin falta — +2.7%\n• El máximo que puedes alcanzar es +97.2%\n• Si te saltas más de 10 días — la bonificación no aumentará\n• Si te saltas más de 20 días — la bonificación se reinicia a -18.9%\n\n🔹 Cómo Conseguir CRA\n• El CRA no cae en la cartera inmediatamente, sino que se acumula dentro del cubo (de esta manera cada NFT tiene un valor real)\n• Para recolectar — necesitas quemar el cubo (Burn) (tu cubo va a la sección del cementerio y ya no te pertenece, obtienes monedas de CRA en la sección de reclamación)\n\n🔹 Cómo Quemar\n• Ve a la sección de Quemar\n• Elige el cubo y el tiempo de espera:\n  - 12 horas → 60% para el jugador\n  - 24 horas → 70%\n  - 48 horas → 80%\n• El resto se divide entre la piscina y la quema permanente (va a la cartera muerta oficial)\n• Después del tiempo elegido, ve y presiona Reclamar — el CRA llegará a tu cartera\n\n🔹 Cómo Revivir un Cubo (Cruzar)\n• Ve a la sección de Cruzar\n• Elige 2 cubos vivos (que tengan estrellas y no estén en enfriamiento)\n• Paga CRA (8% del precio mínimo del marketplace, actualizado constantemente)\n• Un NFT aleatorio del cementerio volverá a ti como nuevo, con todas las estrellas pero sin monedas:\n  - La bonificación se reinicia (vuelve a -18.9%)\n  - Las estrellas se restauran\n  - Se puede hacer ping de nuevo desde cero\n\n🔹 Dónde está el CRA en el Sistema\n• El CRA para el Ping proviene de la piscina de recompensas mensual\n• El CRA gastado en Cruzar vuelve a esta piscina\n• El CRA de la Quema se quema para siempre\n• Todo lo quemado va a una cartera especial 0x...dead y desaparece para siempre\n\n🔹 Tasas del Token CRA\n• 3% de tasa en las transferencias — va al contrato del juego\n• 10% de tasa en las ventas de DEX — va al contrato del juego\n• 0% de tasa en las compras de DEX — sin tasa al comprar\n• Todas las tasas apoyan el ecosistema del juego y la piscina de recompensas\n\n🔹 Estrategia de Ejemplo\nTienes tres cubos:\n• Común (regular) — hazle ping, la bonificación crece un 2.7% cada 10 días hasta el 97%, luego se detiene. Se puede vender, transferir el NFT, la bonificación se conserva\n• Raro — úsalo para Cruzar o acumular CRA\n• Místico — raro, trae más CRA, mejor no quemarlo\n\nJuega con calma:\n• Una vez cada 10 días inicia sesión y presiona Ping\n• Periódicamente quema cubos débiles → obtén tokens\n• O revive los muertos — obtén la oportunidad de uno más raro\n\n💡 Consejos\n¿Quieres el máximo beneficio? — haz ping regularmente y no quemes los cubos raros demasiado pronto.\n💥 Los tokens quemados no volverán — esto aumenta el valor del CRA restante.\n\n🚀 Nuestra Visión\nNuestros planes en 1-2 meses son ajustar la jugabilidad y renunciar a los derechos de administrador en los contratos de NFT y tokens. Queremos realizar un experimento social y crear una jugabilidad totalmente social donde no haya posibilidades de cambiar nada — solo el mercado y la gente deciden.\n\nEl equipo no tiene bonificaciones en el contrato en forma de monedas de CRA. Puedes crear una cartera, por ejemplo, en la cartera de Rabby en 1 minuto y jugar a nuestro juego.\n\nPronto nuestro juego será 100% descentralizado con autorregulación del mercado."
+  },
+  "userNFTs": {
+    "title": "Tus NFTs",
+    "connectToView": "Conecta tu billetera para ver tus CrazyCube NFTs",
+    "errorLoading": "Error al cargar NFTs",
+    "noNFTs": "Aún no tienes CrazyCube NFTs",
+    "yourCrazyCubeNFTs": "Tus CrazyCube NFTs",
+    "showing": "Mostrando {{count}} de {{total}} NFTs"
+  },
+  "cubeAnimation": {
+    "loading": "Cargando...",
+    "loadingMessage": "¡Oh no, el sitio está atascado! Espera, solo somos perezosos 🦥",
+    "speechBubbles": [
+      "¡Cansado de estar de pie! 🥱",
+      "¡Oye, ¿a dónde se fueron todos?! 😱",
+      "¡Yo también me voy! 👋",
+      "¡Voy por pizza! 🍕",
+      "¡Hora de manicura! 💅"
+    ],
+    "partyBubble": "¡Sí! ¡Todos se fueron! ¡Hora de fiesta! 🎵🎉",
+    "whereIsEveryone": "¡Oye, ¿a dónde se fueron todos?! 😱",
+    "waitingForMusicPhrases": [
+      "¡Oye, enciende la música! 🎵",
+      "Aburrido sin música... 😴",
+      "¡Quiero bailar! ¡Necesito música! 💃",
+      "¡Alguien, presiona el botón! 👆"
+    ],
+    "partyPhrases": [
+      "¡Bailando toda la noche! 🕺",
+      "¡La fiesta apenas comienza! 🎉",
+      "¿Quién dijo que los cubos no pueden festejar? 🎵",
+      "¡Sube la música! 🔊",
+      "¡Soy el rey de esta fiesta! 👑",
+      "¡Nadie baila mejor que yo! 💃",
+      "¡Esta es mi canción favorita! 🎧",
+      "¡DJ, súbele! 🎚️",
+      "¡Cubos en la casa! 🏠",
+      "¡Fiesta hasta el amanecer! 🌅"
+    ],
+    "musicOn": "Apagar Música",
+    "musicOff": "Encender Música"
+  },
+  "social": {
+    "telegram": "Telegram",
+    "discord": "Discord",
+    "followUs": "Síguenos",
+    "megaGiveaway": "¡MEGA SORTEO!",
+    "supportAndWin": "¡Apóyanos y GANA NFT + tokens CRAA!",
+    "prizePool": "FONDO DE PREMIOS:",
+    "exclusiveNFTs": "NFTs Exclusivos",
+    "craTokens": "Tokens CRAA (varias cantidades)",
+    "discordRoles": "Roles especiales de Discord",
+    "bonusSurprises": "Bonificaciones y sorpresas",
+    "joinTelegram": "Únete a Telegram",
+    "joinDiscord": "Únete a Discord",
+    "twitterActions": "Acciones de Twitter:",
+    "followTwitter": "Seguir @crazy___cube",
+    "viewPost": "Ver publicación",
+    "like": "Me gusta",
+    "retweet": "Retweet",
+    "allDone": "¡LO HICE TODO!",
+    "later": "Más tarde",
+    "participateNow": "¡PARTICIPA AHORA!",
+    "weeklyGiveaway": "¡Sorteo cada semana entre participantes activos!",
+    "github": "GitHub",
+    "share": "Compartir",
+    "shareTitle": "CrazyCube - ¡Donde los cubos lloran y bromean!"
+  },
+  "tabs": {
+    "breed": "Cruzar",
+    "bridge": "Puente",
+    "burn": "Quemar",
+    "claim": "Recompensas",
+    "stats": "Estadísticas",
+    "graveyard": "Cementerio",
+    "ping": "Ping",
+    "rewards": "Recompensas",
+    "info": "Info"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "returnHome": "Volver al inicio"
+  },
+  "tokenInfo": {
+    "priceUSD": "Precio USD",
+    "marketCap": "Capitalización de Mercado",
+    "volume24h": "Volumen 24h",
+    "totalBurns": "Total Quemado",
+    "avg": "Prom.",
+    "totalSupply": "Suministro Total",
+    "circulating": "En Circulación",
+    "burned": "Quemado",
+    "overview": "Resumen Token CRAA",
+    "holders": "Tenedores",
+    "comingSoon": "métrica próximamente"
+  },
+  "common": {
+    "retry": "Reintentar",
+    "loading": "Cargando...",
+    "loadingNFTs": "Cargando NFTs...",
+    "fetchingCollection": "Obteniendo tu colección CrazyCube",
+    "noNFTsFound": "No se encontraron NFTs",
+    "goToCollection": "Ir a la colección",
+    "total": "total"
+  },
+  "market": {
+    "loading": "Cargando datos del mercado...",
+    "failed": "Error al cargar datos del mercado",
+    "header": "Precios del Mercado",
+    "subtitle": "NFT y tokens en tiempo real",
+    "error": "Error",
+    "live": "En Vivo",
+    "floorPrice": "Precio Mínimo",
+    "buyNft": "Comprar NFT en MagicEden",
+    "gameToken": "Token del Juego",
+    "baseCurrency": "Moneda Base",
+    "tradeDex": "Comerciar en Camelot DEX",
+    "additional": "Información Adicional",
+    "change1h": "Cambio 1h",
+    "change24h": "Cambio 24h",
+    "volume24h": "Volumen 24h",
+    "marketCap": "Cap. de Mercado"
+  },
+  "rewards": {
+    "loading": {
+      "title": "Buscando tus recompensas…"
+    },
+    "accumulated": "Acumulado:",
+    "toPool": "Al Pool",
+    "burned": "Quemado",
+    "toClaim": "A Reclamar",
+    "availableIn": "Disponible en:",
+    "processing": "PROCESANDO...",
+    "claim": "RECLAMAR RECOMPENSA",
+    "claimed": "RECOMPENSA RECLAMADA"
+  },
+  "info": {
+    "nftInspector": "⏱️ Inspector de Cooldown NFT",
+    "lockedCra": "CRAA Bloqueado",
+    "enterNftId": "Ingresa ID del NFT para verificar",
+    "connectWallet": "Conecta billetera para verificar NFT",
+    "connectWalletNfts": "Conecta billetera para ver tus NFTs",
+    "noNfts": "No tienes NFTs de CrazyCube",
+    "yourNfts": "Tus NFTs",
+    "live": "vivos",
+    "inGraveyard": "en cementerio",
+    "activeNfts": "NFTs Activos",
+    "nftsInGraveyard": "NFTs en Cementerio",
+    "noStars": "Sin Estrellas",
+    "totalCraLocked": "Total CRAA bloqueado en tus NFTs",
+    "nftCollection": "Colección NFT",
+    "totalNfts": "Total NFTs",
+    "craSupply": "Suministro CRAA",
+    "rarity": "Rareza",
+    "stars": "Estrellas",
+    "status": "Estado",
+    "graveyard": "Cementerio",
+    "active": "Activo",
+    "locked": "Bloqueado",
+    "timeLeft": "Tiempo Restante",
+    "guide": {
+      "title": "Cómo Jugar CrazyCube",
+      "subtitle": "Guía completa de mecánicas del juego"
+    },
+    "tabs": {
+      "overview": "Resumen",
+      "craToken": "Token CRA",
+      "contract": "Contrato",
+      "contractData": "Datos del Contrato",
+      "liveAnalytics": "Análisis en Vivo"
+    },
+    "features": {
+      "title": "⚡ Características Únicas del Juego",
+      "accumulate": {
+        "title": "Las monedas acumuladas no se queman",
+        "desc": "¡Tus tokens CRA están bloqueados y se acumulan, no se queman para siempre!"
+      },
+      "future": {
+        "title": "Futuro Descentralizado",
+        "desc": "Después de la depuración (1-2 meses) el equipo deshabilitará los derechos de administrador y transferirá el control al agente autónomo"
+      },
+      "autonomy": {
+        "title": "Autonomía Completa",
+        "desc": "La colección NFT hará la transición a una gobernanza de mercado completamente descentralizada"
+      }
+    },
+    "actions": {
+      "title": "📊 Acciones del Juego y Temporizadores",
+      "timeLabel": "Tiempo:",
+      "burn": {
+        "title": "Quemar NFT",
+        "time": "12/24/48 horas",
+        "desc": "Quema NFT y bloquea tokens CRA para recompensas"
+      },
+      "graveyard": {
+        "title": "Cementerio",
+        "desc": "Los NFTs quemados van al cementerio con cooldown de 48h"
+      },
+      "breed": {
+        "title": "Cruzamiento",
+        "desc": "Crea nuevos NFTs del cementerio",
+        "note": "Después del cruzamiento el NFT no puede participar en acciones"
+      },
+      "ping": {
+        "title": "Ping",
+        "desc": "Activa NFT para recompensas",
+        "time": "Intervalo de 7 días",
+        "note": "¡Los NFTs se acumulan y no se queman!"
+      },
+      "rewards": {
+        "title": "Recompensas del Pool",
+        "desc": "Obtén tokens CRA del pool de recompensas",
+        "time": "Intervalo de 30 días"
+      },
+      "other": {
+        "title": "Otras Acciones",
+        "desc": "Varias mecánicas del juego",
+        "time": "Cooldown de 24h"
+      },
+      "cooldown48": "Cooldown de 48h"
+    },
+    "roadmap": {
+      "title": "Camino hacia la descentralización",
+      "phase1": {
+        "title": "Fase 1: Depuración",
+        "desc": "1-2 meses de pruebas y optimización de todas las mecánicas del juego"
+      },
+      "phase2": {
+        "title": "Fase 2: Autonomía",
+        "desc": "Conectar agente autónomo y eliminar derechos de admin"
+      },
+      "phase3": {
+        "title": "Fase 3: Libertad",
+        "desc": "Gestión completamente descentralizada solo por mercado"
+      },
+      "tagline": "🚀 CrazyCube - ¡primera colección NFT con plan de descentralización completa!"
+    },
+    "title": "Información y analíticas"
+  },
+  "status": {
+    "ready": "Listo",
+    "readyToClaim": "Listo para Reclamar",
+    "waiting": "No Listo",
+    "processing": "Procesando",
+    "success": "Éxito",
+    "failed": "Falló",
+    "claim": "Reclamar",
+    "claimed": "Reclamado",
+    "alreadyBurned": "Ya Quemado",
+    "alreadyInGraveyard": "Ya en Cementerio",
+    "noStarsLeft": "Sin Estrellas",
+    "activated": "Activado",
+    "notActivated": "No Activado",
+    "cantPing": "No se puede Ping",
+    "rewardReady": "Recompensa Lista",
+    "readyForBreeding": "Listo para Reproducir",
+    "claimReady": "Listo para Reclamar",
+    "locked": "Bloqueado",
+    "claimable": "Reclamable",
+    "burnable": "Quemable",
+    "done": "¡Hecho!",
+    "graveyard": "Cementerio",
+    "alive": "Vivo",
+    "dying": "Muriendo",
+    "notClaimed": "No",
+    "confirming": "Confirmando..."
+  },
+  "nft": {
+    "burnable": "Se Puede Quemar"
+  },
+  "pages": {
+    "breed": {
+      "title": "Cruzamiento de Cubos",
+      "subtitle": "Crea un nuevo cubo de dos padres",
+      "selectParents": "Selecciona dos padres",
+      "noNftsAvailable": "No hay NFTs disponibles para cruzar",
+      "needTwoParents": "Necesitas seleccionar dos padres",
+      "breedingFee": "Comisión de cruzamiento",
+      "breedingSuccess": "¡Cruzamiento exitoso!",
+      "breedingFailed": "Cruzamiento falló",
+      "howItWorks": "Cómo funciona",
+      "breedingGuide": "Guía de cruzamiento",
+      "selectTwoNfts": "Selecciona 2 NFTs con al menos 1 estrella",
+      "payFee": "Paga comisión del 20% del precio de mercado",
+      "getNewCube": "Obtén nuevo cubo en tu colección"
+    },
+    "burn": {
+      "title": "Quemado de Cubos",
+      "subtitle": "Quema NFT para obtener CRA bloqueado",
+      "selectToBurn": "Selecciona NFT para quemar",
+      "burnFee": "Comisión de quemado",
+      "burnSuccess": "¡Quemado exitoso!",
+      "burnFailed": "Quemado falló",
+      "confirmBurn": "Confirmar quemado",
+      "burnWarning": "Advertencia: ¡el quemado es irreversible!",
+      "nftWillBeDestroyed": "El NFT será destruido para siempre",
+      "craWillBeTransferred": "CRA será transferido a tu billetera",
+      "noNFTsDescription": "No tienes NFTs de CrazyCube para quemar"
+    },
+    "ping": {
+      "title": "Ping de Cubos",
+      "subtitle": "Haz ping a los cubos cada 3 minutos para ganar CRA",
+      "pingYourCubes": "Haz ping a tus cubos",
+      "howPingWorks": "Cómo funciona el ping",
+      "pingInterval": "Intervalo de ping",
+      "betweenPings": "Entre pings",
+      "pingableNfts": "NFTs listos para ping",
+      "noPingableNfts": "No hay NFTs listos para ping",
+      "nftsNeedActivation": "Tus NFTs deben estar activados y no en el cementerio para hacer ping",
+      "pingInitiated": "¡Ping iniciado!",
+      "pingTransaction": "Transacción de ping enviada para NFT",
+      "earnCraBasedOnRarity": "¡Ganarás CRA basado en la rareza!",
+      "pingSuccessful": "¡Ping exitoso!",
+      "nftPinged": "¡Tu NFT fue pingeado y CRA ganado!"
+    },
+    "claim": {
+      "title": "Reclamar Recompensas",
+      "subtitle": "Reclama tus tokens CRA ganados",
+      "searchingRewards": "Buscando tus recompensas",
+      "scanningBlockchain": "Escaneando blockchain y cementerio, esto puede tomar unos segundos",
+      "noRewards": "No se encontraron recompensas",
+      "noRewardsDescription": "Aún no tienes recompensas disponibles para reclamar"
+    },
+    "graveyard": {
+      "title": "Cementerio de Cubos",
+      "subtitle": "Lugar de descanso de NFTs quemados",
+      "burnedCubes": "Cubos quemados",
+      "restInPeace": "Descansen en paz",
+      "someStillWhisper": "Algunos aún susurran desde las cenizas",
+      "totalBurned": "Total quemado",
+      "viewBurnedNft": "Ver NFT quemado"
+    },
+    "stats": {
+      "title": "Estadísticas del Juego",
+      "subtitle": "Datos del estado del juego en tiempo real",
+      "totalNfts": "Total NFTs",
+      "activeNfts": "NFTs Activos",
+      "burnedNfts": "NFTs Quemados",
+      "totalCra": "Total CRAA",
+      "lockedCra": "CRAA bloqueado",
+      "burnedCra": "CRAA quemado",
+      "gameActivity": "Actividad del Juego",
+      "recentTransactions": "Transacciones Recientes"
+    },
+    "info": {
+      "title": "Información",
+      "nalaPhrases": [
+        "📊 Los datos están un poco desajustados, ¡pero arreglaremos todo! Danos tiempo ⏰",
+        "🔧 Depuración del sistema en progreso, ¡pronto todo funcionará perfectamente! ✨",
+        "📈 Los números aún no coinciden, pero el equipo está trabajando en las correcciones 🛠️",
+        "⚡ Probando nuevas funciones, ten paciencia - ¡será genial! 🚀",
+        "🎯 Ajustando algoritmos para máxima precisión de datos 📊",
+        "🌟 ¡Todas las discrepancias temporales se arreglarán pronto! 💫",
+        "🔄 El sistema se está actualizando, ¡pronto todo funcionará como un reloj! ⏰"
+      ],
+      "subtitle": "Información detallada sobre tus NFTs y el juego",
+      "overview": "Resumen",
+      "yourCollection": "Tu Colección",
+      "gameRules": "Reglas del Juego",
+      "tokenomics": "Tokenómica",
+      "connectWalletNfts": "Conecta tu billetera para ver tus NFTs.",
+      "noNfts": "No posees ningún NFT de CrazyCube.",
+      "yourNfts": "Tus NFTs",
+      "live": "vivos",
+      "inGraveyard": "en cementerio",
+      "activeNfts": "NFTs Activos",
+      "nftsInGraveyard": "NFTs en Cementerio",
+      "noStars": "Sin estrellas",
+      "lockedCra": "CRAA Bloqueado",
+      "totalCraLocked": "Total de CRAA bloqueado en tus NFTs",
+      "craLockedWarning": "El CRAA bloqueado dentro de un NFT no se quema y viaja con el NFT cuando se transfiere, vende o mueve de cualquier manera. Pertenece permanentemente al propio NFT. Solo puedes obtener estos tokens quemando el NFT.",
+      "craLockedWarningBurn": "quemando"
+    }
+  },
+  "components": {
+    "buttons": {
+      "connect": "Conectar",
+      "disconnect": "Desconectar",
+      "approve": "Aprobar",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar",
+      "retry": "Reintentar",
+      "close": "Cerrar",
+      "back": "Atrás",
+      "next": "Siguiente",
+      "save": "Guardar",
+      "load": "Cargar",
+      "refresh": "Actualizar"
+    },
+    "messages": {
+      "loading": "Cargando...",
+      "connecting": "Conectando...",
+      "processing": "Procesando...",
+      "success": "¡Éxito!",
+      "error": "Error",
+      "warning": "Advertencia",
+      "info": "Información",
+      "noData": "Sin datos",
+      "noResults": "No se encontraron resultados",
+      "tryAgain": "Inténtalo de nuevo",
+      "somethingWentWrong": "Algo salió mal",
+      "pleaseWait": "Por favor espera",
+      "transactionPending": "Transacción pendiente",
+      "transactionConfirmed": "Transacción confirmada",
+      "transactionFailed": "Transacción falló"
+    },
+    "forms": {
+      "required": "Campo requerido",
+      "invalid": "Valor inválido",
+      "tooShort": "Muy corto",
+      "tooLong": "Muy largo",
+      "enterAmount": "Ingresa cantidad",
+      "selectOption": "Selecciona opción",
+      "searchPlaceholder": "Buscar...",
+      "noOptionsAvailable": "No hay opciones disponibles"
+    },
+    "navigation": {
+      "home": "Inicio",
+      "back": "Atrás",
+      "forward": "Adelante",
+      "menu": "Menú",
+      "settings": "Configuraciones",
+      "help": "Ayuda",
+      "about": "Acerca de"
+    }
+  },
+  "rarity": {
+    "common": "Común",
+    "uncommon": "Poco Común",
+    "rare": "Raro",
+    "epic": "Épico",
+    "legendary": "Legendario",
+    "mythic": "Mítico",
+    "unknown": "Desconocido"
+  },
+  "cube": "Cubo",
+  "glueCube": {
+    "phrases": [
+      "¡Ahora lo arreglaré todo!",
+      "¡Ups... mi culpa!",
+      "¡No te preocupes, lo arreglaremos!"
+    ]
+  },
+  "cubeObservers": {
+    "idlePhrases": [
+      "¿Qué haces aquí?",
+      "¿Quién hace ruido?",
+      "¡Oh-oh-oh...!",
+      "¡No estoy mirando!",
+      "¡No molestes mi sueño!"
+    ],
+    "successPhrases": [
+      "¡Felicidades por tu nuevo cubo!",
+      "¡Hurra, un nuevo bebé cubo!",
+      "¡Bienvenido, pequeñín!"
+    ]
+  },
+  "shyCubes": {
+    "bubbles": [
+      "¡Oh-oh-oh!",
+      "¿Qué está pasando aquí?",
+      "¿Quién hace ruido?",
+      "¡No vimos nada!",
+      "¡No mires!"
+    ]
+  },
+  "distribution": {
+    "activeVsGraveyard": "Activos vs En cementerio por rareza",
+    "rarity": "Rareza",
+    "byRarity": "Por Rareza",
+    "byStatus": "Por Estado",
+    "nfts": "NFTs"
+  },
+  "graveyard": {
+    "claimedReward": "Recompensa reclamada",
+    "claimError": "Error al reclamar"
+  },
+  "contractInteraction": {
+    "error": "Error",
+    "enterTokenId": "Por favor ingresa un ID de token",
+    "enterTokenIdAndHours": "Por favor ingresa ID de token y horas de espera",
+    "enterBothParents": "Por favor ingresa ambos IDs de tokens padre"
+  },
+  "burn": {
+    "description": "Burn the cube — get CRA. Easy money! 💰",
+    "noNFTsDescription": "You don't have any CrazyCube NFTs to burn",
+    "interface": {
+      "burnButton": "Quemar",
+      "insufficientCRAA": "CRAA insuficiente",
+      "balanceDetails": {
+        "you": "👤 Tú",
+        "pool": "🏦 Pool",
+        "burn": "🔥 Quemar",
+        "split": "División 60% / 30% / 10%"
+      }
+    }
+  },
+  "stats": {
+    "analytics": "Analytics",
+    "yourNFTs": "Your NFTs",
+    "bridgeNFT": "Bridge NFT"
+  },
+  "nftInspector": {
+    "title": "Inspector de Cooldown NFT",
+    "description": "El Inspector NFT funciona sin conexión de billetera - ingresa cualquier ID de NFT para ver estadísticas públicas.",
+    "enterNftId": "Ingresa ID de NFT",
+    "inspect": "Inspeccionar",
+    "loading": "Cargando datos de NFT...",
+    "error": "Error al obtener datos de NFT",
+    "notFound": "NFT no encontrado o no activado",
+    "status": {
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "lockedCRAA": "CRAA Bloqueado",
+    "pendingCRAA": "CRAA Pendiente",
+    "periods": "Períodos",
+    "ping": "Ping",
+    "breed": "Cruzamiento",
+    "ready": "Listo"
+  }
+}
