@@ -160,7 +160,8 @@ export function middleware(request: NextRequest) {
     // `report-uri /api/csp-report`, // УДАЛЕНО, Edge-плагин сам логирует
   ].join('; ');
 
-  response.headers.set('Content-Security-Policy', cspHeader);
+  // Удаляю строку:
+  // response.headers.set('Content-Security-Policy', cspHeader);
   response.headers.set('X-Request-ID', crypto.randomUUID());
 
   return response;

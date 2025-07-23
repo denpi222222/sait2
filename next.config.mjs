@@ -28,6 +28,10 @@ const nextConfig = {
         source: '/(.*)',
         headers: [
           {
+            key: 'Content-Security-Policy',
+            value: "default-src 'self'; script-src 'self' 'nonce-${process.env.CSP_NONCE}'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; upgrade-insecure-requests;",
+          },
+          {
             key: 'X-Frame-Options',
             value: 'DENY',
           },
