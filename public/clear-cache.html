@@ -1,0 +1,154 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Clear Cache - CrazyCube</title>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background: #1a1a1a;
+        color: #fff;
+      }
+      .btn {
+        background: #0ea5e9;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 10px 5px;
+        font-size: 16px;
+      }
+      .btn:hover {
+        background: #0284c7;
+      }
+      .status {
+        margin: 20px 0;
+        padding: 10px;
+        border-radius: 5px;
+      }
+      .success {
+        background: #065f46;
+        border: 1px solid #10b981;
+      }
+      .warning {
+        background: #92400e;
+        border: 1px solid #f59e0b;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🧹 CrazyCube Cache Cleaner</h1>
+    <p>Очистить все данные браузера для перезагрузки сайта:</p>
+
+    <button class="btn" onclick="clearAll()">🗑️ Очистить ВСЁ</button>
+    <button class="btn" onclick="clearStorage()">📦 LocalStorage</button>
+    <button class="btn" onclick="clearWallet()">👛 Wallet Data</button>
+    <button class="btn" onclick="clearTokens()">🪙 Token Cache</button>
+
+    <div id="status"></div>
+
+    <h3>Что будет очищено:</h3>
+    <ul>
+      <li>LocalStorage (балансы, настройки)</li>
+      <li>SessionStorage (временные данные)</li>
+      <li>Wallet Connection данные</li>
+      <li>Token кеш и балансы</li>
+      <li>NFT данные</li>
+      <li>Web3Modal кеш</li>
+    </ul>
+
+    <script>
+      function showStatus(message, type = 'success') {
+        const status = document.getElementById('status');
+        status.innerHTML = `<div class="status ${type}">${message}</div>`;
+        setTimeout(() => (status.innerHTML = ''), 3000);
+      }
+
+      function clearStorage() {
+        try {
+          localStorage.clear();
+          sessionStorage.clear();
+          showStatus('✅ Storage очищен!');
+        } catch (e) {
+          showStatus('❌ Ошибка очистки storage', 'warning');
+        }
+      }
+
+      function clearWallet() {
+        try {
+          // Clear wallet-related data
+          const walletKeys = Object.keys(localStorage).filter(
+            key =>
+              key.includes('wallet') ||
+              key.includes('web3modal') ||
+              key.includes('wagmi') ||
+              key.includes('connector')
+          );
+          walletKeys.forEach(key => localStorage.removeItem(key));
+          showStatus('✅ Wallet данные очищены!');
+        } catch (e) {
+          showStatus('❌ Ошибка очистки wallet', 'warning');
+        }
+      }
+
+      function clearTokens() {
+        try {
+          // Clear token and balance data
+          const tokenKeys = Object.keys(localStorage).filter(
+            key =>
+              key.includes('token') ||
+              key.includes('balance') ||
+              key.includes('cra') ||
+              key.includes('nft')
+          );
+          tokenKeys.forEach(key => localStorage.removeItem(key));
+          showStatus('✅ Token кеш очищен!');
+        } catch (e) {
+          showStatus('❌ Ошибка очистки tokens', 'warning');
+        }
+      }
+
+      function clearAll() {
+        try {
+          // Clear all storage
+          localStorage.clear();
+          sessionStorage.clear();
+
+          // Clear IndexedDB if available
+          if (window.indexedDB) {
+            indexedDB.databases().then(databases => {
+              databases.forEach(db => {
+                indexedDB.deleteDatabase(db.name);
+              });
+            });
+          }
+
+          // Clear Cache API if available
+          if ('caches' in window) {
+            caches.keys().then(names => {
+              names.forEach(name => {
+                caches.delete(name);
+              });
+            });
+          }
+
+          showStatus('✅ ВСЁ ОЧИЩЕНО! Перезагрузка через 2 секунды...');
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 2000);
+        } catch (e) {
+          showStatus('❌ Ошибка полной очистки', 'warning');
+        }
+      }
+
+      // Auto-clear on load if requested
+      if (window.location.search.includes('auto=true')) {
+        clearAll();
+      }
+    </script>
+  </body>
+</html>
