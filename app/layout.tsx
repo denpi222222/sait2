@@ -58,6 +58,7 @@ function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <head>
+        <script src="/trusted-types-tinyfill.js"></script>
         <meta
           name='viewport'
           content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
